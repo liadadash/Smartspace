@@ -17,7 +17,7 @@ public class HelloWorldTest {
 		// Then the application responds with "Hello World!"
 		String expected = "Hello World!";
 		if(!output.getText().equals(expected)) {
-			throw new Exception("Error while generating message. expected: " + expected + ", while actual: " + output.getText());
+			throw new Exception("Error while generating the message. expected: " + expected + ", while actual: " + output.getText());
 		}
 	}
 }
