@@ -1,0 +1,17 @@
+package smartspace.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import smartspace.data.ElementEntity;
+//Amit 13\03
+public interface ElementDao<ElementKey> {
+	public ElementEntity create(ElementEntity elementEntity);
+	public List<ElementEntity> readById(ElementKey elementKey);
+	public Optional<ElementEntity> readAll(ElementEntity elementEntity);
+	public void update(ElementEntity ElementEntity);
+	public void deleteByKey(ElementKey elementKey);
+	public void delete(ElementEntity elementEntity);
+	public void deleteAll();
+}
+//
