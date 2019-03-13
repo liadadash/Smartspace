@@ -5,13 +5,13 @@ import java.util.Optional;
 
 import smartspace.data.UserEntity;
 
-//Amit 13\03
+//Amit 13/03
 public interface UserDao<UserKey> {
 	public UserEntity create(UserEntity userEntity);
 
-	public List<UserEntity> readAll(UserEntity userEntity);
+	public List<UserEntity> readAll();
 
-	public Optional<UserEntity> readbyId(UserKey userKey);
+	public Optional<UserEntity> readById(UserKey userKey);
 
 	public void update(UserEntity userEntity);
 

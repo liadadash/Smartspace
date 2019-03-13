@@ -3,24 +3,23 @@ package smartspace.data;
 //aviel
 public class UserEntity implements SmartspaceEntity<String> {
 
-	private String userSmartSpace;
+	private String userSmartspace;
 	private String userEmail;
 	private String username;
 	private String avatar;
 	private UserRole role;
 	private long points;
-	
 
 	// default constructor
 	public UserEntity() {
 	}
 
-	public String getUserSmartSpace() {
-		return userSmartSpace;
+	public String getUserSmartspace() {
+		return userSmartspace;
 	}
 
-	public void setUserSmartSpace(String userSmartSpace) {
-		this.userSmartSpace = userSmartSpace;
+	public void setUserSmartspace(String userSmartspace) {
+		this.userSmartspace = userSmartspace;
 	}
 
 	public String getUserEmail() {
@@ -65,18 +64,18 @@ public class UserEntity implements SmartspaceEntity<String> {
 
 	@Override
 	public String getKey() {
-		return this.userEmail + this.userSmartSpace;
+		return this.userEmail + this.userSmartspace;
 	}
 
 	@Override
 	public void setKey(String k) {
-		//not sure yet
+		// not sure yet
 	}
 
 	@Override
 	public String toString() {
-		return "UserEntity [userSmartSpace=" + userSmartSpace + ", userEmail=" + userEmail + ", username=" + username
-				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points +  "]";
+		return "UserEntity [userSmartspace=" + userSmartspace + ", userEmail=" + userEmail + ", username=" + username
+				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points + "]";
 	}
 
 }
