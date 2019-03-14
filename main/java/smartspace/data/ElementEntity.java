@@ -13,7 +13,7 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	private String name;
 	private String type;
 	private Date creationTimestamp;
-	private boolean expierd;
+	private boolean expired;
 	private String creatorSmartspace;
 	private String creatorEmail;
 	private Map<String, Object> moreAttributes;
@@ -54,12 +54,12 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.type = type;
 	}
 
-	public boolean isExpierd() {
-		return expierd;
+	public boolean isExpired() {
+		return expired;
 	}
 
-	public void setExpierd(boolean expierd) {
-		this.expierd = expierd;
+	public void setExpired(boolean expired) {
+		this.expired = expired;
 	}
 
 	public String getCreatorSmartspace() {
@@ -105,7 +105,7 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	public String toString() {
 		return "ElementEntity [elementSmartSpace=" + elementSmartSpace + ", elementId=" + elementId + ", location="
 				+ location + ", name=" + name + ", type=" + type + ", creationTimestamp=" + creationTimestamp
-				+ ", expierd=" + expierd + ", creatorSmartspace=" + creatorSmartspace + ", creatorEmail=" + creatorEmail
+				+ ", expierd=" + expired + ", creatorSmartspace=" + creatorSmartspace + ", creatorEmail=" + creatorEmail
 				+ ", moreAttributes=" + moreAttributes + "]";
 	}
 
