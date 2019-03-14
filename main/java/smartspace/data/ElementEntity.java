@@ -58,8 +58,8 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		return expired;
 	}
 
-	public void setExpired(boolean expierd) {
-		this.expired = expierd;
+	public void setExpired(boolean expired) {
+		this.expired = expired;
 	}
 
 	public String getCreatorSmartspace() {

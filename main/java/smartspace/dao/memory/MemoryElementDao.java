@@ -45,7 +45,7 @@ public class MemoryElementDao implements ElementDao<String> {
 
 	@Override
 	public void update(ElementEntity update) {
-		synchronized (this.elements) 	{
+		synchronized (this.elements) {
 
 			ElementEntity existing = this.readById(update.getKey())
 					.orElseThrow(() -> new RuntimeException("not element to update "));
