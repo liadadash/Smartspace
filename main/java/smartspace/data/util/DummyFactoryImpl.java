@@ -1,0 +1,31 @@
+package smartspace.data.util;
+
+import java.util.Date;
+import java.util.Map;
+
+import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
+import smartspace.data.Location;
+import smartspace.data.UserEntity;
+import smartspace.data.UserRole;
+
+//nofar
+public class DummyFactoryImpl implements EntityFactory {
+
+	@Override
+	public UserEntity createNewUser(String userEmail, String userSmartspace, String userName, String avatar,UserRole role, long points) {
+		return new UserEntity(userEmail,userSmartspace,userName,avatar,role,points);
+	}
+
+	@Override
+	public ElementEntity createNewElement(String name, String type, Location location, Date creationTimestamp,String creatorEmail, String CreatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
+		return new ElementEntity(name,type,location,creationTimestamp,creatorEmail,CreatorSmartspace,expiredBoolean,moreAtributes);
+	}
+
+	@Override
+	public ActionEntity createNewAction(String elementId, String elementSmartspace, String actionType,Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
+		return new ActionEntity (elementId,elementSmartspace,actionType,creationTimestamp,playerEmail,playerSmartspace,moreAttributes) ;
+	}
+	
+
+}
