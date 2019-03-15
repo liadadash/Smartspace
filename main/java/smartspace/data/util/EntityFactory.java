@@ -12,7 +12,7 @@ import smartspace.data.Location;
 //Amit 13/03
 public interface EntityFactory {
 	public UserEntity createNewUser(String userEmail, String userSmartspace, String userName, String avatar,
-			UserRole rule, long points);
+			UserRole role, long points);
 
 	public ElementEntity createNewElement(String name, String type, Location location, Date creationTimestamp,
 			String creatorEmail, String CreatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes);

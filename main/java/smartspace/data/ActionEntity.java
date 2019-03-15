@@ -18,6 +18,16 @@ public class ActionEntity implements SmartspaceEntity<String> {
 
 	// default constructor
 	public ActionEntity() {
+		
+	}
+	public ActionEntity(String elementId, String elementSmartspace, String actionType, Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
+		this.elementId=elementId;
+		this.elementSmartspace=elementSmartspace;
+		this.actionType=actionType;
+		this.creationTimestamp=creationTimestamp;
+		this.playerEmail=playerEmail;
+		this.playerSmartspace=playerSmartspace;
+		this.moreAttributes=moreAttributes;
 	}
 
 	public String getActionSmartspace() {

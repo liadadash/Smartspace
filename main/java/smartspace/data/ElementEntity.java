@@ -21,6 +21,17 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	// default constructor
 	public ElementEntity() {
 	}
+	
+	public ElementEntity(String name, String type, Location location, Date creationTimestamp, String creatorEmail, String creatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
+		this.name=name;
+		this.type=type;
+		this.location=location;
+		this.creationTimestamp=creationTimestamp;
+		this.creatorEmail=creatorEmail;
+		this.creatorSmartspace=creatorSmartspace;
+		this.expired=expiredBoolean;
+		this.moreAttributes=moreAtributes;
+	}
 
 	public String getElementSmartSpace() {
 		return elementSmartSpace;
