@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -31,20 +30,23 @@ public class ElementEntityDemo implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		String smartspace = "ShoppingList";
+		System.err.println("\n---------- ElementEntityDemo ----------");
 
-		Map<String, Object> moreAtributes = new HashMap<>();
-		moreAtributes.put("title", "Food");
-		moreAtributes.put("created", new Date());
-		moreAtributes.put("langauge", "EN");
-		moreAtributes.put("important", false);
+		Map<String, Object> moreAttributes = new HashMap<>();
+		moreAttributes.put("title", "Food");
+		moreAttributes.put("lastUpdate", new Date());
+		moreAttributes.put("langauge", "EN");
+		moreAttributes.put("important", false);
 
-		ElementEntity entity1 = this.factory.createNewElement("category", "category", new Location(0, 0), new Date(), "john123@gmail.com", "ShoppingList", false, moreAtributes);
-		entity1.setElementSmartspace("ShoppingList");
+		ElementEntity entity1 = this.factory.createNewElement("category", "category", new Location(0, 0), new Date(), "john123@gmail.com", smartspace, false, moreAttributes);
+		entity1.setElementSmartspace(smartspace);
 
 		System.err.println("entity before saving to database: " + entity1);
 
 		entity1 = this.dao.create(entity1);
-		System.err.println("message after saving to database: " + entity1);
+		System.err.println("entity after saving to database: " + entity1);
 
 		ElementEntity updatedElement = new ElementEntity();
 
@@ -53,7 +55,7 @@ public class ElementEntityDemo implements CommandLineRunner {
 		updatedElement.setKey(entity1.getKey());
 
 		// update moreAttributes
-		Map<String, Object> updatedAttributes = new HashMap<>(moreAtributes);
+		Map<String, Object> updatedAttributes = new HashMap<>(moreAttributes);
 		updatedAttributes.put("title", "Drinks");
 		updatedAttributes.put("maxItems", 50);
 		updatedElement.setMoreAttributes(updatedAttributes);
@@ -70,13 +72,37 @@ public class ElementEntityDemo implements CommandLineRunner {
 		}
 		
 		System.err.println("entity after update: " + entity1);
+		
+		// # ---------- check delete by key ---------- #
+		
+		moreAttributes = new HashMap<>();
+		moreAttributes.put("title", "Dairy");
+		moreAttributes.put("lastUpdate", new Date());
+		
+		ElementEntity entity2 = this.factory.createNewElement("category", "category", new Location(2, 0), new Date(), "david80@gmail.com", smartspace, false, moreAttributes);
+		entity2.setElementSmartspace(smartspace);
+		entity2 = this.dao.create(entity2);
+		
+		System.err.println("\nentity2 after saving to database: " + entity2);
+		
+		if (!this.dao.readAll().contains(entity2)) {
+			throw new RuntimeException("failed to save entity2");
+		}
+		
+		System.err.println("elements before delete: " + this.dao.readAll().size());
+		this.dao.deleteByKey(entity2.getKey());
+		System.err.println("elements after delete: " + this.dao.readAll().size());
+		
+		if (this.dao.readAll().contains(entity2)) {
+			throw new RuntimeException("failed to delete entity2");
+		}
 
 		// delete all entities
 		this.dao.deleteAll();
 		if (this.dao.readAll().isEmpty()) {
-			System.err.println("all entities deleted successfully");
+			System.err.println("\nall entities deleted successfully");
 		} else {
-			throw new RuntimeException("some entities were not deleted");
+			throw new RuntimeException("\nsome entities were not deleted");
 		}
 
 	}

@@ -28,8 +28,8 @@ public class MemoryActionDao implements ActionDao {
 
 	@Override
 	public ActionEntity create(ActionEntity actionEntity) {
-		actionEntity.setKey(actionEntity.getActionSmartspace() + actionEntity.getElementId()
-				+ actionEntity.getActionType() + "" + nextId.getAndIncrement());
+		actionEntity.setKey(actionEntity.getActionSmartspace() + "_" + actionEntity.getElementId()
+				+ "_" + actionEntity.getActionType() + "_" + nextId.getAndIncrement());
 		this.actions.add(actionEntity);
 		return actionEntity;
 	}

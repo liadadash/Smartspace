@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.stereotype.Repository;
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
@@ -52,7 +50,7 @@ public class MemoryUserDao implements UserDao<String> {
 	public void update(UserEntity update) {
 		synchronized (this.users) {
 			UserEntity existing = this.readById(update.getKey())
-					.orElseThrow(() -> new RuntimeException("not message to update"));
+					.orElseThrow(() -> new RuntimeException("no user to update"));
 			if (update.getAvatar() != null) {
 				existing.setAvatar(update.getAvatar());
 			}

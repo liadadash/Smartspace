@@ -85,7 +85,10 @@ public class MemoryElementDao implements ElementDao<String> {
 		synchronized (this.elements) {
 			for (ElementEntity current : this.elements) {
 				if (current.getKey().equals(elementKey))
+				{
 					this.elements.remove(current);
+					break; // important iterating a list after it changed gives exception
+				}
 			}
 		}
 	}
