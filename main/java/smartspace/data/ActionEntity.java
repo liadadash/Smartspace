@@ -18,16 +18,27 @@ public class ActionEntity implements SmartspaceEntity<String> {
 
 	// default constructor
 	public ActionEntity() {
-		
+
 	}
+
 	public ActionEntity(String elementId, String elementSmartspace, String actionType, Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
-		this.elementId=elementId;
-		this.elementSmartspace=elementSmartspace;
-		this.actionType=actionType;
-		this.creationTimestamp=creationTimestamp;
-		this.playerEmail=playerEmail;
-		this.playerSmartspace=playerSmartspace;
-		this.moreAttributes=moreAttributes;
+		this.elementId = elementId;
+		this.elementSmartspace = elementSmartspace;
+		this.actionType = actionType;
+		this.creationTimestamp = creationTimestamp;
+		this.playerEmail = playerEmail;
+		this.playerSmartspace = playerSmartspace;
+		this.moreAttributes = moreAttributes;
+	}
+
+	@Override
+	public String getKey() {
+		return this.actionId;
+	}
+
+	@Override
+	public void setKey(String k) {
+		this.actionId = k;
 	}
 
 	public String getActionSmartspace() {
@@ -92,16 +103,6 @@ public class ActionEntity implements SmartspaceEntity<String> {
 
 	public void setMoreAttributes(Map<String, Object> moreAttributes) {
 		this.moreAttributes = moreAttributes;
-	}
-
-	@Override
-	public String getKey() {
-		return this.actionSmartspace + this.actionId;
-	}
-
-	@Override
-	public void setKey(String k) {
-		this.actionId = k;
 	}
 
 	@Override

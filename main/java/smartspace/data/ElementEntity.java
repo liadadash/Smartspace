@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ElementEntity implements SmartspaceEntity<String> {
 
-	private String elementSmartSpace;
+	private String elementSmartspace;
 	private String elementId;
 	private Location location;
 	private String name;
@@ -21,24 +21,34 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	// default constructor
 	public ElementEntity() {
 	}
-	
+
 	public ElementEntity(String name, String type, Location location, Date creationTimestamp, String creatorEmail, String creatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
-		this.name=name;
-		this.type=type;
-		this.location=location;
-		this.creationTimestamp=creationTimestamp;
-		this.creatorEmail=creatorEmail;
-		this.creatorSmartspace=creatorSmartspace;
-		this.expired=expiredBoolean;
-		this.moreAttributes=moreAtributes;
+		this.name = name;
+		this.type = type;
+		this.location = location;
+		this.creationTimestamp = creationTimestamp;
+		this.creatorEmail = creatorEmail;
+		this.creatorSmartspace = creatorSmartspace;
+		this.expired = expiredBoolean;
+		this.moreAttributes = moreAtributes;
+	}
+	
+	@Override
+	public String getKey() {
+		return this.elementId;
 	}
 
-	public String getElementSmartSpace() {
-		return elementSmartSpace;
+	@Override
+	public void setKey(String k) {
+		this.elementId = k;
 	}
 
-	public void setElementSmartSpace(String elementSmartSpace) {
-		this.elementSmartSpace = elementSmartSpace;
+	public String getElementSmartspace() {
+		return elementSmartspace;
+	}
+
+	public void setElementSmartspace(String elementSmartSpace) {
+		this.elementSmartspace = elementSmartSpace;
 	}
 
 	public Location getLocation() {
@@ -101,20 +111,9 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		return creationTimestamp;
 	}
 
-
-	@Override
-	public String getKey() {
-		return this.elementId;
-	}
-
-	@Override
-	public void setKey(String k) {
-		this.elementId = k;
-	}
-
 	@Override
 	public String toString() {
-		return "ElementEntity [elementSmartSpace=" + elementSmartSpace + ", elementId=" + elementId + ", location="
+		return "ElementEntity [elementSmartSpace=" + elementSmartspace + ", elementId=" + elementId + ", location="
 				+ location + ", name=" + name + ", type=" + type + ", creationTimestamp=" + creationTimestamp
 				+ ", expierd=" + expired + ", creatorSmartspace=" + creatorSmartspace + ", creatorEmail=" + creatorEmail
 				+ ", moreAttributes=" + moreAttributes + "]";
