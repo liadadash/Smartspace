@@ -4,21 +4,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.stereotype.Repository;
 
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 
+@Repository
 public class MemoryElementDao implements ElementDao<String> {
 
 	private List<ElementEntity> elements;
+	private AtomicLong nextId;
 
 	public MemoryElementDao() {
 		this.elements = Collections.synchronizedList(new ArrayList<>());
+		this.nextId = new AtomicLong(1);
 	}
 
 	@Override
 	public ElementEntity create(ElementEntity elementEntity) {
-		// elementEntity.setKey(somthing)
+		elementEntity.setKey(elementEntity.getElementSmartspace() + "." + elementEntity.getType() + "#"
+				+ this.nextId.getAndIncrement());
 		this.elements.add(elementEntity);
 		return elementEntity;
 	}
@@ -48,7 +55,7 @@ public class MemoryElementDao implements ElementDao<String> {
 		synchronized (this.elements) {
 
 			ElementEntity existing = this.readById(update.getKey())
-					.orElseThrow(() -> new RuntimeException("not element to update "));
+					.orElseThrow(() -> new RuntimeException("no element to update "));
 
 			if (update.getLocation() != null)
 				existing.setLocation(update.getLocation());
@@ -66,8 +73,8 @@ public class MemoryElementDao implements ElementDao<String> {
 			existing.setExpired(update.isExpired());
 
 			// not sure about it yet
-			if (update.getElementSmartSpace() != null)
-				existing.setElementSmartSpace(update.getElementSmartSpace());
+			if (update.getElementSmartspace() != null)
+				existing.setElementSmartspace(update.getElementSmartspace());
 
 			// i didn't update the creationTimestamp, creatorEmail , creatorSmartspace
 		}
@@ -75,15 +82,19 @@ public class MemoryElementDao implements ElementDao<String> {
 
 	@Override
 	public void deleteByKey(String elementKey) {
-		for (ElementEntity current : this.elements) {
-			if (current.getKey().equals(elementKey))
-				this.elements.remove(current);
+		synchronized (this.elements) {
+			for (ElementEntity current : this.elements) {
+				if (current.getKey().equals(elementKey))
+					this.elements.remove(current);
+			}
 		}
 	}
 
 	@Override
 	public void delete(ElementEntity elementEntity) {
-		this.elements.remove(elementEntity);
+		synchronized (this.elements) {
+			this.elements.remove(elementEntity);
+		}
 	}
 
 	@Override

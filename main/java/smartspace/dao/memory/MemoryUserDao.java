@@ -14,7 +14,8 @@ import smartspace.data.UserEntity;
 @Repository
 public class MemoryUserDao implements UserDao<String> {
 	private List<UserEntity> users;
-//Amit - have to decide about the key...
+	
+	//Amit - have to decide about the key...
 	public MemoryUserDao() {
 		this.users = Collections.synchronizedList(new ArrayList<>());
 	}
@@ -46,7 +47,7 @@ public class MemoryUserDao implements UserDao<String> {
 		}
 	}
 
-//Amit - Have to decide about line 66
+//Amit - Have to decide about line 70
 	@Override
 	public void update(UserEntity update) {
 		synchronized (this.users) {
@@ -71,6 +72,11 @@ public class MemoryUserDao implements UserDao<String> {
 //			if (update.getPoints() >= 0) {
 //				existing.setPoints(update.getPoints());
 //			}
+			
+			// maybe its to add / remove points?
+			if (update.getPoints() != 0) {
+				existing.setPoints(existing.getPoints() + update.getPoints());
+			}
 
 		}
 	}

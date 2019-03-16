@@ -13,14 +13,24 @@ public class UserEntity implements SmartspaceEntity<String> {
 	// default constructor
 	public UserEntity() {
 	}
-	public UserEntity(String userEmail,String userSmartspace,String username,String avatar,UserRole role,long points){
-		
-		this.userEmail=userEmail;
-		this.userSmartspace=userSmartspace;
-		this.username=username;
-		this.avatar=avatar;
-		this.role=role;
-		this.points=points;
+
+	public UserEntity(String userEmail, String userSmartspace, String username, String avatar, UserRole role, long points) {
+		this.userEmail = userEmail;
+		this.userSmartspace = userSmartspace;
+		this.username = username;
+		this.avatar = avatar;
+		this.role = role;
+		this.points = points;
+	}
+	
+	@Override
+	public String getKey() {
+		return this.userSmartspace + this.userEmail;
+	}
+
+	@Override
+	public void setKey(String k) {
+		// not sure yet
 	}
 
 	public String getUserSmartspace() {
@@ -69,16 +79,6 @@ public class UserEntity implements SmartspaceEntity<String> {
 
 	public void setPoints(long points) {
 		this.points = points;
-	}
-
-	@Override
-	public String getKey() {
-		return this.userEmail + this.userSmartspace;
-	}
-
-	@Override
-	public void setKey(String k) {
-		// not sure yet
 	}
 
 	@Override

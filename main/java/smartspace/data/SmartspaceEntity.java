@@ -1,8 +1,7 @@
 package smartspace.data;
 
 //aviel
-public interface SmartspaceEntity<Key> {
-	public Key getKey();
-
-	public void setKey(Key k);
+public interface SmartspaceEntity<K> {
+	public K getKey();
+	public void setKey(K k);
 }
