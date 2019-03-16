@@ -29,5 +29,10 @@ public class Location {
 	public void setY(double y) {
 		this.y = y;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("(%s, %s)", this.x, this.y);
+	}
 
 }
