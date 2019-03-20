@@ -10,9 +10,10 @@ import org.springframework.stereotype.Repository;
 
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.ElementKey;
 
 @Repository
-public class MemoryElementDao implements ElementDao<String> {
+public class MemoryElementDao implements ElementDao<ElementKey> {
 
 	private List<ElementEntity> elements;
 	private AtomicLong nextId;
@@ -24,14 +25,13 @@ public class MemoryElementDao implements ElementDao<String> {
 
 	@Override
 	public ElementEntity create(ElementEntity elementEntity) {
-		elementEntity.setKey(elementEntity.getElementSmartspace() + "." + elementEntity.getType() + "#"
-				+ this.nextId.getAndIncrement());
+		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), this.nextId.getAndIncrement()));
 		this.elements.add(elementEntity);
 		return elementEntity;
 	}
 
 	@Override
-	public Optional<ElementEntity> readById(String elementKey) {
+	public Optional<ElementEntity> readById(ElementKey elementKey) {
 		ElementEntity target = null;
 		for (ElementEntity current : this.elements) {
 			if (current.getKey().equals(elementKey))
@@ -81,11 +81,10 @@ public class MemoryElementDao implements ElementDao<String> {
 	}
 
 	@Override
-	public void deleteByKey(String elementKey) {
+	public void deleteByKey(ElementKey elementKey) {
 		synchronized (this.elements) {
 			for (ElementEntity current : this.elements) {
-				if (current.getKey().equals(elementKey))
-				{
+				if (current.getKey().equals(elementKey)) {
 					this.elements.remove(current);
 					break; // important iterating a list after it changed gives exception
 				}

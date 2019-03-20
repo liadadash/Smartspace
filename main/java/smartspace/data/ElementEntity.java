@@ -5,7 +5,7 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
-public class ElementEntity implements SmartspaceEntity<String> {
+public class ElementEntity implements SmartspaceEntity<ElementKey> {
 
 	private String elementSmartspace;
 	private String elementId;
@@ -22,7 +22,8 @@ public class ElementEntity implements SmartspaceEntity<String> {
 	public ElementEntity() {
 	}
 
-	public ElementEntity(String name, String type, Location location, Date creationTimestamp, String creatorEmail, String creatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
+	public ElementEntity(String name, String type, Location location, Date creationTimestamp, String creatorEmail,
+			String creatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
 		this.name = name;
 		this.type = type;
 		this.location = location;
@@ -31,16 +32,6 @@ public class ElementEntity implements SmartspaceEntity<String> {
 		this.creatorSmartspace = creatorSmartspace;
 		this.expired = expiredBoolean;
 		this.moreAttributes = moreAtributes;
-	}
-	
-	@Override
-	public String getKey() {
-		return this.elementId;
-	}
-
-	@Override
-	public void setKey(String k) {
-		this.elementId = k;
 	}
 
 	public String getElementSmartspace() {
@@ -117,6 +108,29 @@ public class ElementEntity implements SmartspaceEntity<String> {
 				+ location + ", name=" + name + ", type=" + type + ", creationTimestamp=" + creationTimestamp
 				+ ", expierd=" + expired + ", creatorSmartspace=" + creatorSmartspace + ", creatorEmail=" + creatorEmail
 				+ ", moreAttributes=" + moreAttributes + "]";
+	}
+
+	/*
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#getKey()
+	 * 
+	 */
+	@Override
+	public ElementKey getKey() {
+		return new ElementKey(this.elementSmartspace, Long.parseLong(this.elementId));
+	}
+
+	/*
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	 * 
+	 */
+	@Override
+	public void setKey(ElementKey k) {
+		this.setElementSmartspace(k.getElementSmartspace());
+		this.elementId = String.valueOf(k.getId());
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Map;
 
 //aviel
-public class ActionEntity implements SmartspaceEntity<String> {
+public class ActionEntity implements SmartspaceEntity<ActionKey> {
 
 	private String actionSmartspace;
 	private String actionId;
@@ -21,7 +21,8 @@ public class ActionEntity implements SmartspaceEntity<String> {
 
 	}
 
-	public ActionEntity(String elementId, String elementSmartspace, String actionType, Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
+	public ActionEntity(String elementId, String elementSmartspace, String actionType, Date creationTimestamp,
+			String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
 		this.elementId = elementId;
 		this.elementSmartspace = elementSmartspace;
 		this.actionType = actionType;
@@ -29,16 +30,6 @@ public class ActionEntity implements SmartspaceEntity<String> {
 		this.playerEmail = playerEmail;
 		this.playerSmartspace = playerSmartspace;
 		this.moreAttributes = moreAttributes;
-	}
-
-	@Override
-	public String getKey() {
-		return this.actionId;
-	}
-
-	@Override
-	public void setKey(String k) {
-		this.actionId = k;
 	}
 
 	public String getActionSmartspace() {
@@ -111,6 +102,29 @@ public class ActionEntity implements SmartspaceEntity<String> {
 				+ elementSmartspace + ", elementId=" + elementId + ", playerSmartspace=" + playerSmartspace
 				+ ", playerEmail=" + playerEmail + ", actionType=" + actionType + ", creationTimestamp="
 				+ creationTimestamp + ", moreAttributes=" + moreAttributes + "]";
+	}
+
+	/*
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#getKey()
+	 * 
+	 */
+	@Override
+	public ActionKey getKey() {
+		return new ActionKey(actionSmartspace, Long.parseLong(this.elementId));
+	}
+
+	/*
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	 * 
+	 */
+	@Override
+	public void setKey(ActionKey k) {
+		this.setActionSmartspace(k.getActionSmartspace());
+		this.elementId = String.valueOf(k.getId());
 	}
 
 }

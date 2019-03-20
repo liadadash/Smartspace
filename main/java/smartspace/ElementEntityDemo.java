@@ -11,26 +11,27 @@ import org.springframework.stereotype.Component;
 
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.ElementKey;
 import smartspace.data.Location;
 import smartspace.data.util.EntityFactoryImpl;
 
 @Component
 public class ElementEntityDemo implements CommandLineRunner {
 	private EntityFactoryImpl factory;
-	private ElementDao<String> dao;
+	private ElementDao<ElementKey> dao;
 
 	public ElementEntityDemo() {
 	}
 
 	@Autowired
-	public ElementEntityDemo(EntityFactoryImpl factory, ElementDao<String> dao) {
+	public ElementEntityDemo(EntityFactoryImpl factory, ElementDao<ElementKey> dao) {
 		this.factory = factory;
 		this.dao = dao;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		
+
 		String smartspace = "ShoppingList";
 		System.err.println("\n---------- ElementEntityDemo ----------");
 
@@ -40,7 +41,8 @@ public class ElementEntityDemo implements CommandLineRunner {
 		moreAttributes.put("langauge", "EN");
 		moreAttributes.put("important", false);
 
-		ElementEntity entity1 = this.factory.createNewElement("category", "category", new Location(0, 0), new Date(), "john123@gmail.com", smartspace, false, moreAttributes);
+		ElementEntity entity1 = this.factory.createNewElement("category", "category", new Location(0, 0), new Date(),
+				"john123@gmail.com", smartspace, false, moreAttributes);
 		entity1.setElementSmartspace(smartspace);
 
 		System.err.println("entity before saving to database: " + entity1);
@@ -70,29 +72,30 @@ public class ElementEntityDemo implements CommandLineRunner {
 		} else {
 			throw new RuntimeException("entity was lost after update");
 		}
-		
+
 		System.err.println("entity after update: " + entity1);
-		
+
 		// # ---------- check delete by key ---------- #
-		
+
 		moreAttributes = new HashMap<>();
 		moreAttributes.put("title", "Dairy");
 		moreAttributes.put("lastUpdate", new Date());
-		
-		ElementEntity entity2 = this.factory.createNewElement("category", "category", new Location(2, 0), new Date(), "david80@gmail.com", smartspace, false, moreAttributes);
+
+		ElementEntity entity2 = this.factory.createNewElement("category", "category", new Location(2, 0), new Date(),
+				"david80@gmail.com", smartspace, false, moreAttributes);
 		entity2.setElementSmartspace(smartspace);
 		entity2 = this.dao.create(entity2);
-		
+
 		System.err.println("\nentity2 after saving to database: " + entity2);
-		
+
 		if (!this.dao.readAll().contains(entity2)) {
 			throw new RuntimeException("failed to save entity2");
 		}
-		
+
 		System.err.println("elements before delete: " + this.dao.readAll().size());
 		this.dao.deleteByKey(entity2.getKey());
 		System.err.println("elements after delete: " + this.dao.readAll().size());
-		
+
 		if (this.dao.readAll().contains(entity2)) {
 			throw new RuntimeException("failed to delete entity2");
 		}
