@@ -16,18 +16,23 @@ import smartspace.data.UserRole;
 public class EntityFactoryImpl implements EntityFactory {
 
 	@Override
-	public UserEntity createNewUser(String userEmail, String userSmartspace, String userName, String avatar, UserRole role, long points) {
+	public UserEntity createNewUser(String userEmail, String userSmartspace, String userName, String avatar,
+			UserRole role, long points) {
 		return new UserEntity(userEmail, userSmartspace, userName, avatar, role, points);
 	}
 
 	@Override
-	public ElementEntity createNewElement(String name, String type, Location location, Date creationTimestamp, String creatorEmail, String CreatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
-		return new ElementEntity(name, type, location, creationTimestamp, creatorEmail, CreatorSmartspace, expiredBoolean, moreAtributes);
+	public ElementEntity createNewElement(String name, String type, Location location, Date creationTimestamp,
+			String creatorEmail, String CreatorSmartspace, boolean expiredBoolean, Map<String, Object> moreAtributes) {
+		return new ElementEntity(name, type, location, creationTimestamp, creatorEmail, CreatorSmartspace,
+				expiredBoolean, moreAtributes);
 	}
 
 	@Override
-	public ActionEntity createNewAction(String elementId, String elementSmartspace, String actionType, Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
-		return new ActionEntity(elementId, elementSmartspace, actionType, creationTimestamp, playerEmail, playerSmartspace, moreAttributes);
+	public ActionEntity createNewAction(String elementId, String elementSmartspace, String actionType,
+			Date creationTimestamp, String playerEmail, String playerSmartspace, Map<String, Object> moreAttributes) {
+		return new ActionEntity(elementId, elementSmartspace, actionType, creationTimestamp, playerEmail,
+				playerSmartspace, moreAttributes);
 	}
 
 }

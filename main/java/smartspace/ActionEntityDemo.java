@@ -37,7 +37,8 @@ public class ActionEntityDemo implements CommandLineRunner {
 		moreAttributes.put("oldName", "Food");
 		moreAttributes.put("newName", "Drinks");
 
-		ActionEntity action1 = this.factory.createNewAction("ShoppingList.category#1", smartspace, "editName", new Date(), "john123@gmail.com", smartspace, moreAttributes);
+		ActionEntity action1 = this.factory.createNewAction("ShoppingList.category#1", smartspace, "editName",
+				new Date(), "john123@gmail.com", smartspace, moreAttributes);
 		action1.setActionSmartspace(smartspace);
 
 		System.err.println("action1 before saving to database: " + action1);
@@ -51,7 +52,8 @@ public class ActionEntityDemo implements CommandLineRunner {
 		moreAttributes.put("deletedItems", "{Item#123, Item#64, Item#87}");
 		moreAttributes.put("restoreAvailable", "true");
 
-		ActionEntity action2 = this.factory.createNewAction("ShoppingList.category#2", smartspace, "deleteCategory", new Date(), "david80@gmail.com", smartspace, moreAttributes);
+		ActionEntity action2 = this.factory.createNewAction("ShoppingList.category#2", smartspace, "deleteCategory",
+				new Date(), "david80@gmail.com", smartspace, moreAttributes);
 		action2.setActionSmartspace(smartspace);
 
 		System.err.println("\naction2 before saving to database: " + action2);

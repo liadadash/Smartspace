@@ -7,10 +7,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
+import smartspace.data.UserKey;
 
 //Amit 13/03
 @Repository
-public class MemoryUserDao implements UserDao<String> {
+public class MemoryUserDao implements UserDao<UserKey> {
 	private List<UserEntity> users;
 
 	public MemoryUserDao() {
@@ -29,7 +30,7 @@ public class MemoryUserDao implements UserDao<String> {
 	}
 
 	@Override
-	public Optional<UserEntity> readById(String userKey) {
+	public Optional<UserEntity> readById(UserKey userKey) {
 		UserEntity target = null;
 		for (UserEntity current : this.users) {
 			if (current.getKey().equals(userKey)) {
@@ -72,4 +73,3 @@ public class MemoryUserDao implements UserDao<String> {
 		this.users.clear();
 	}
 }
-//
