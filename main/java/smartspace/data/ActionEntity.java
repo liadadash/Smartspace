@@ -112,7 +112,18 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	 */
 	@Override
 	public ActionKey getKey() {
-		return new ActionKey(actionSmartspace, Long.parseLong(this.elementId));
+		
+		// added this because otherwise calling getKey before create causes exception.
+		long id = 0;
+		
+		try {
+			id = Long.parseLong(this.actionId);
+		}
+		catch (Exception e) {
+			return null;
+		}
+		
+		return new ActionKey(actionSmartspace, id);
 	}
 
 	/*
@@ -124,7 +135,7 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	@Override
 	public void setKey(ActionKey k) {
 		this.setActionSmartspace(k.getActionSmartspace());
-		this.elementId = String.valueOf(k.getId());
+		this.actionId = String.valueOf(k.getId());
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.ActionDao;
@@ -12,6 +13,7 @@ import smartspace.data.ActionEntity;
 import smartspace.data.util.EntityFactoryImpl;
 
 @Component
+@Profile("production")
 public class ActionEntityDemo implements CommandLineRunner {
 	private EntityFactoryImpl factory;
 	private ActionDao dao;
@@ -42,8 +44,11 @@ public class ActionEntityDemo implements CommandLineRunner {
 		action1.setActionSmartspace(smartspace);
 
 		System.err.println("action1 before saving to database: " + action1);
+		System.err.println("key = " + action1.getKey());
+		
 		action1 = this.dao.create(action1);
 		System.err.println("action1 after saving to database: " + action1);
+		System.err.println("key = " + action1.getKey());
 
 		// # ------ action2 ------#
 

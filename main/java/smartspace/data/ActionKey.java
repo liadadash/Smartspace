@@ -98,4 +98,9 @@ public class ActionKey {
 		ActionKey ActionKey = (ActionKey) obj;
 		return this.actionSmartspace.equals(ActionKey.actionSmartspace) && this.id == ActionKey.id;
 	}
+	
+	@Override
+	public String toString() {
+		return this.actionSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;
+	}
 }

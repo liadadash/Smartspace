@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import smartspace.dao.memory.MemoryElementDao;
 import smartspace.data.ElementEntity;
@@ -22,7 +23,7 @@ import smartspace.data.util.EntityFactoryImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@TestPropertySource(properties= {"spring.profiles.active=default"})
+@TestPropertySource(properties= {"spring.profiles.active=default"})
 public class MemoryElementDaoIntegrationTests {
 	private MemoryElementDao dao;
 	private EntityFactoryImpl factory;
@@ -69,6 +70,8 @@ public class MemoryElementDaoIntegrationTests {
 		moreAttributes.put("item1", "test1");
 		ElementEntity elementEntity = this.factory.createNewElement("ListElement", "testType", new Location(1, 1),
 				new Date(), "test@gmail.com", "testSmartspace", false, moreAttributes);
+		elementEntity.setElementSmartspace("2019B.nadav.peleg");
+		
 		ElementEntity elementInDB = this.dao.create(elementEntity);
 		ElementEntity elementFromDB = this.dao.readById(elementInDB.getKey())
 				.orElseThrow(() -> new RuntimeException("could not find message by key"));
@@ -77,7 +80,7 @@ public class MemoryElementDaoIntegrationTests {
 		// THEN created element id >0
 		// AND return the same element
 		// AND the dao not contain the element
-		assertThat(elementInDB.getKey()).isNotNull().isGreaterThan("0");/// ??????????
+		assertThat(elementInDB.getKey().getId()).isNotNull().isGreaterThan(0);
 
 		assertThat(elementFromDB).isNotNull()
 				.extracting("name", "type", "creatorEmail", "expired", "moreAttributes", "creatorSmartspace")
@@ -101,6 +104,8 @@ public class MemoryElementDaoIntegrationTests {
 		moreAttributes.put("item1", "test1");
 		ElementEntity elementEntity = this.factory.createNewElement("ListElement", "testType", new Location(1, 1),
 				new Date(), "test@gmail.com", "testSmartspace", false, moreAttributes);
+		elementEntity.setElementSmartspace("2019B.nadav.peleg");
+		
 		ElementEntity elementInDB = this.dao.create(elementEntity);
 		ElementEntity update = new ElementEntity();
 		update.setKey(elementInDB.getKey());
@@ -115,7 +120,7 @@ public class MemoryElementDaoIntegrationTests {
 
 		// THEN created element id >0
 		// AND the dao is empty
-		assertThat(elementInDB.getKey()).isNotNull().isGreaterThan("0");/// ??????????
+		assertThat(elementInDB.getKey().getId()).isNotNull().isGreaterThan(0);
 		assertThat(rvElements.isEmpty());
 
 	}

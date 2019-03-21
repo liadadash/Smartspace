@@ -97,4 +97,9 @@ public class ElementKey {
 		ElementKey ElementKey = (ElementKey) obj;
 		return this.elementSmartspace.equals(ElementKey.elementSmartspace) && this.id == ElementKey.id;
 	}
+	
+	@Override
+	public String toString() {
+		return this.elementSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;
+	}
 }

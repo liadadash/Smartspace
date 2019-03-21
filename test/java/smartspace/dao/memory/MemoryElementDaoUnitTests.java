@@ -9,10 +9,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import smartspace.data.ElementEntity;
 import smartspace.data.Location;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@TestPropertySource(properties= {"spring.profiles.active=default"})
 public class MemoryElementDaoUnitTests {
 
 	@Test
@@ -36,7 +43,7 @@ public class MemoryElementDaoUnitTests {
 
 		assertThat(dao.readAll()).usingElementComparatorOnFields("name").contains(elementEntity);
 
-		assertThat(rvElement.getKey()).isNotNull().isGreaterThan("0");// need to decide about the key!!!!!
+		assertThat(rvElement.getKey().getId()).isNotNull().isGreaterThan(0);
 	}
 
 	@Test
@@ -53,6 +60,8 @@ public class MemoryElementDaoUnitTests {
 
 		ElementEntity elementEntity = new ElementEntity("ListElement", "testType", new Location(1, 1.1), new Date(),
 				"test@gmail.com", "testSmartspace", false, moreAttributes);
+		elementEntity.setElementSmartspace("2019B.nadav.peleg");
+
 		ElementEntity elementInDB = dao.create(elementEntity);
 		ElementEntity rvElement = dao.readById(elementInDB.getKey())
 				.orElseThrow(() -> new RuntimeException("could not find element by key"));
@@ -113,6 +122,8 @@ public class MemoryElementDaoUnitTests {
 		
 		ElementEntity elementEntity1 = new ElementEntity("ListElement1", "testType1", new Location(1, 1), new Date(),
 				"test1@gmail.com", "test1Smartspace", false, moreAttributes1);
+		elementEntity1.setElementSmartspace("2019B.nadav.peleg");
+		
 		dao.create(elementEntity1);
 		
 		ElementEntity update = new ElementEntity();
