@@ -76,4 +76,14 @@ public class MemoryUserDao implements UserDao<UserKey> {
 	public void deleteAll() {
 		this.users.clear();
 	}
+	
+	// for unit tests
+	protected List<UserEntity> getUsers() {
+		return this.users;
+	}
+	
+	// for unit tests
+	protected void setUsers(List<UserEntity> users) {
+		this.users = users;
+	}
 }

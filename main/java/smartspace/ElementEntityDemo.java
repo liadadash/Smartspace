@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.ElementDao;
@@ -16,6 +17,7 @@ import smartspace.data.Location;
 import smartspace.data.util.EntityFactoryImpl;
 
 @Component
+@Profile("production")
 public class ElementEntityDemo implements CommandLineRunner {
 	private EntityFactoryImpl factory;
 	private ElementDao<ElementKey> dao;
@@ -46,9 +48,11 @@ public class ElementEntityDemo implements CommandLineRunner {
 		entity1.setElementSmartspace(smartspace);
 
 		System.err.println("entity before saving to database: " + entity1);
+		System.err.println("key = " + entity1.getKey());
 
 		entity1 = this.dao.create(entity1);
 		System.err.println("entity after saving to database: " + entity1);
+		System.err.println("key = " + entity1.getKey());
 
 		ElementEntity updatedElement = new ElementEntity();
 

@@ -118,7 +118,17 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	 */
 	@Override
 	public ElementKey getKey() {
-		return new ElementKey(this.elementSmartspace, Long.parseLong(this.elementId));
+		
+		// added this because otherwise calling getKey before create causes exception.
+		long id = 0;
+
+		try {
+			id = Long.parseLong(this.elementId);
+		} catch (Exception e) {
+			return null;
+		}
+
+		return new ElementKey(this.elementSmartspace, id);
 	}
 
 	/*

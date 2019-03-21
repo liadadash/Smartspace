@@ -94,4 +94,9 @@ public class UserKey {
 		UserKey UserKey = (UserKey) obj;
 		return this.userSmartspace.equals(UserKey.userSmartspace) && this.userEmail.equals(UserKey.userEmail);
 	}
+	
+	@Override
+	public String toString() {
+		return this.userSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.userEmail;
+	}
 }

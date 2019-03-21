@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.UserDao;
@@ -13,6 +14,7 @@ import smartspace.data.UserRole;
 import smartspace.data.util.EntityFactoryImpl;
 
 @Component
+@Profile("production")
 public class UserEntityDemo implements CommandLineRunner {
 	private EntityFactoryImpl factory;
 	private UserDao<UserKey> dao;
@@ -37,9 +39,11 @@ public class UserEntityDemo implements CommandLineRunner {
 		user1.setUserSmartspace(smartspace);
 
 		System.err.println("user before saving to database: " + user1);
+		System.err.println("key = " + user1.getKey());
 
 		user1 = this.dao.create(user1);
 		System.err.println("user after saving to database: " + user1);
+		System.err.println("key = " + user1.getKey());
 
 		UserEntity updatedUser = new UserEntity();
 
