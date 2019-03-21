@@ -68,7 +68,7 @@ public class MemoryElementDao implements ElementDao<String> {
 
 			if (update.getType() != null)
 				existing.setType(update.getType());
-
+		
 			// expired is a boolean
 			existing.setExpired(update.isExpired());
 
@@ -76,7 +76,13 @@ public class MemoryElementDao implements ElementDao<String> {
 			if (update.getElementSmartspace() != null)
 				existing.setElementSmartspace(update.getElementSmartspace());
 
-			// i didn't update the creationTimestamp, creatorEmail , creatorSmartspace
+			if (update.getCreatorEmail() != null)
+				existing.setCreatorEmail(update.getCreatorEmail());
+			
+			if (update.getCreatorSmartspace() != null)
+				existing.setCreatorSmartspace(update.getCreatorSmartspace());
+			
+			// i didn't update the creationTimestamp 
 		}
 	}
 
