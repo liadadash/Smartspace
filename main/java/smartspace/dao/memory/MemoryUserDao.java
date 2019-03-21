@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 import smartspace.dao.UserDao;
 import smartspace.data.UserEntity;
@@ -14,12 +15,15 @@ import smartspace.data.UserKey;
 public class MemoryUserDao implements UserDao<UserKey> {
 	private List<UserEntity> users;
 
+
 	public MemoryUserDao() {
 		this.users = Collections.synchronizedList(new ArrayList<>());
 	}
 
 	@Override
 	public UserEntity create(UserEntity userEntity) {
+		userEntity.setKey(new UserKey(userEntity.getUserSmartspace(),
+				userEntity.getUserEmail()));
 		this.users.add(userEntity);
 		return userEntity;
 	}
