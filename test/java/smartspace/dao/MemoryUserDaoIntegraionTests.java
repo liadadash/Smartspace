@@ -23,7 +23,7 @@ import smartspace.data.util.EntityFactory;
 @TestPropertySource(properties = { "spring.profiles.active=default" })
 
 //aviel
-public class MemoryUserDauIntegraionTests {
+public class MemoryUserDaoIntegraionTests {
 
 	private UserDao<UserKey> dao;
 	private EntityFactory factory;
