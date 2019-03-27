@@ -1,10 +1,14 @@
 
 package smartspace.data;
 
+import javax.persistence.Embeddable;
+
 /**
  * @author liadk
  *
  */
+
+@Embeddable
 public class ActionKey {
 
 	private String actionSmartspace;
