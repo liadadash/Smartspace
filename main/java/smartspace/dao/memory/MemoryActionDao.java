@@ -16,7 +16,7 @@ import smartspace.data.ActionKey;
  *
  */
 
-@Repository
+//@Repository
 public class MemoryActionDao implements ActionDao {
 
 	private List<ActionEntity> actions;

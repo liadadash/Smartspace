@@ -1,6 +1,8 @@
 
 package smartspace.data;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 /**
@@ -9,7 +11,7 @@ import javax.persistence.Embeddable;
  */
 
 @Embeddable
-public class ActionKey {
+public class ActionKey implements Serializable{
 
 	private String actionSmartspace;
 	private long id;

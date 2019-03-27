@@ -36,11 +36,11 @@ public class RdbActionDao implements ActionDao {
 		actionKey.setId(nextId.getAndIncrement());
 		actionEntity.setKey(actionKey);
 
-		if (!this.actionCrud.existsById(actionEntity.getKey().getId())) {
+		if (!this.actionCrud.existsById(actionEntity.getKey())) {
 			ActionEntity rv = this.actionCrud.save(actionEntity);
 			return rv;
 		} else {
-			throw new RuntimeException("message already exists with key: " + actionEntity.getKey().getId());
+			throw new RuntimeException("message already exists with key: " + actionEntity.getKey());
 		}
 	}
 

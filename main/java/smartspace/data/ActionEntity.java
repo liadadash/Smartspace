@@ -1,16 +1,18 @@
-package smartspace.data;
+	package smartspace.data;
 
 import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.Convert;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+
+import smartspace.dao.rdb.MapToJsonConverter;
 
 //aviel
 //Added DB - persistence by Amit 27/3
@@ -44,6 +46,7 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.moreAttributes = moreAttributes;
 	}
 
+	@Column(name = "actionSmartSpaceaK")
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}
@@ -101,9 +104,8 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.creationTimestamp = creationTimestamp;
 	}
 
-//	@Lob
-//	@Convert(converter = MapToJsonConverter.class)
-	@Transient
+	@Lob
+	@Convert(converter = MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -127,8 +129,7 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	 * 
 	 */
 	@Override
-	@Embedded
-	@Id
+	@EmbeddedId
 	@Column(name = "ID")
 	public ActionKey getKey() {
 		// added this because otherwise calling getKey before create causes exception.
