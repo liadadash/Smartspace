@@ -46,7 +46,6 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.moreAttributes = moreAttributes;
 	}
 
-	@Column(name = "actionSmartSpaceaK")
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}

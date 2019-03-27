@@ -3,6 +3,7 @@ package smartspace.data;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -41,6 +42,8 @@ public class ActionKey implements Serializable{
 	 *
 	 * @return the actionSmartspace
 	 */
+	
+	@Column(name = "actionSmartspace_key")
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}

@@ -34,6 +34,8 @@ public class RdbActionDao implements ActionDao {
 		// TODO replace this with id stored in db
 		ActionKey actionKey = new ActionKey();
 		actionKey.setId(nextId.getAndIncrement());
+		actionKey.setActionSmartspace(actionEntity.getActionSmartspace());
+		
 		actionEntity.setKey(actionKey);
 
 		if (!this.actionCrud.existsById(actionEntity.getKey())) {
