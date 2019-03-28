@@ -1,9 +1,13 @@
 package smartspace.data;
 
+import javax.persistence.Embeddable;
+
 /**
  * @author liadk
  *
  */
+
+@Embeddable
 public class ElementKey {
 
 	private String elementSmartspace;
@@ -97,7 +101,7 @@ public class ElementKey {
 		ElementKey ElementKey = (ElementKey) obj;
 		return this.elementSmartspace.equals(ElementKey.elementSmartspace) && this.id == ElementKey.id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.elementSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;

@@ -12,7 +12,6 @@ import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
-@Repository
 public class MemoryElementDao implements ElementDao<ElementKey> {
 
 	private List<ElementEntity> elements;

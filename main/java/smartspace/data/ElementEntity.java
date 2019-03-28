@@ -8,8 +8,8 @@ import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import smartspace.dao.rdb.MapToJsonConverter;
 
 @Entity
-@Table(name="ELEMENTS")
+@Table(name = "ELEMENTS")
 public class ElementEntity implements SmartspaceEntity<ElementKey> {
 
 	private String elementSmartspace;
@@ -55,7 +55,7 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	public void setElementSmartspace(String elementSmartSpace) {
 		this.elementSmartspace = elementSmartSpace;
 	}
-	
+
 	@Embedded
 	public Location getLocation() {
 		return location;
@@ -135,10 +135,10 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	 * 
 	 */
 	@Override
-	@Id
-	@Column(name="ID")
+	@EmbeddedId
+	@Column(name = "ID")
 	public ElementKey getKey() {
-		
+
 		// added this because otherwise calling getKey before create causes exception.
 		long id = 0;
 

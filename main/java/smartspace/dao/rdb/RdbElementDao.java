@@ -6,12 +6,14 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.ElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
+@Repository
 public class RdbElementDao implements ElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 
@@ -79,6 +81,8 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 
 		if (update.getCreatorEmail() != null)
 			existing.setCreatorEmail(update.getCreatorEmail());
+
+		this.elementCrud.save(existing);
 
 	}
 
