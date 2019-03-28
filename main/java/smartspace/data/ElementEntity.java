@@ -5,6 +5,20 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import smartspace.dao.rdb.MapToJsonConverter;
+
+@Entity
+@Table(name="ELEMENTS")
 public class ElementEntity implements SmartspaceEntity<ElementKey> {
 
 	private String elementSmartspace;
@@ -41,7 +55,8 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	public void setElementSmartspace(String elementSmartSpace) {
 		this.elementSmartspace = elementSmartSpace;
 	}
-
+	
+	@Embedded
 	public Location getLocation() {
 		return location;
 	}
@@ -90,6 +105,8 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 		this.creatorEmail = creatorEmail;
 	}
 
+	@Lob
+	@Convert(converter = MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -98,6 +115,7 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 		this.moreAttributes = moreAttributes;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
@@ -117,6 +135,8 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	 * 
 	 */
 	@Override
+	@Id
+	@Column(name="ID")
 	public ElementKey getKey() {
 		
 		// added this because otherwise calling getKey before create causes exception.
