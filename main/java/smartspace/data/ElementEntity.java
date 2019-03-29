@@ -117,6 +117,10 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
+	
+	public void setCreationTimestamp(Date date) {
+		this.creationTimestamp = date;
+	}
 
 	@Override
 	public String toString() {

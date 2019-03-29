@@ -1,11 +1,15 @@
 
 package smartspace.data;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+
 /**
  * @author liadk
  *
  */
-public class UserKey {
+public class UserKey implements Serializable {
 
 	private String userSmartspace;
 	private String userEmail;
@@ -31,6 +35,7 @@ public class UserKey {
 	 *
 	 * @return the userSmartspace
 	 */
+	@Column(name = "userSmartspace_key")
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -49,6 +54,7 @@ public class UserKey {
 	 *
 	 * @return the userEmail
 	 */
+	@Column(name = "userEmail_key")
 	public String getUserEmail() {
 		return userEmail;
 	}
