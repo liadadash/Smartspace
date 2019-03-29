@@ -14,26 +14,17 @@ import smartspace.data.UserKey;
 public class RdbUserDao implements UserDao<UserKey> {
 	private UserCrud userCrud;
 
-	// TODO remove this
-	private UserKey nextId;
-
 	@Autowired
 	public RdbUserDao(UserCrud userCrud) {
 		super();
 		this.userCrud = userCrud;
-		// TODO remove this
-		this.nextId = new UserKey();
 	}
 
 	@Override
 	@Transactional
 	public UserEntity create(UserEntity userEntity) {
-		// SQL: INSERT INTO USERS (USERNAME,AVATAR ,ROLE,POINTS,KEY) VALUES (?,?,?,?,?);
-
-		nextId.setUserSmartspace(userEntity.getUserSmartspace());
-		nextId.setUserEmail(userEntity.getUserEmail());
-
-		userEntity.setKey(nextId);
+		userEntity.setUserSmartspace("2019B.nadav.peleg");
+		userEntity.setKey(new UserKey(userEntity.getUserSmartspace(), userEntity.getUserEmail()));
 
 		if (!this.userCrud.existsById(userEntity.getKey())) {
 			UserEntity rv = this.userCrud.save(userEntity);
@@ -48,7 +39,6 @@ public class RdbUserDao implements UserDao<UserKey> {
 	public List<UserEntity> readAll() {
 		List<UserEntity> rv = new ArrayList<>();
 
-		// SQL: SELECT
 		this.userCrud.findAll().forEach(rv::add);
 		return rv;
 	}
@@ -56,7 +46,6 @@ public class RdbUserDao implements UserDao<UserKey> {
 	@Override
 	@Transactional(readOnly = true)
 	public Optional<UserEntity> readById(UserKey userKey) {
-		// SQL: SELECT
 		return this.userCrud.findById(userKey);
 	}
 
@@ -84,14 +73,12 @@ public class RdbUserDao implements UserDao<UserKey> {
 		}
 		existing.setPoints(update.getPoints());
 
-		// SQL: UPDATE
 		this.userCrud.save(existing);
 	}
 
 	@Override
 	@Transactional
 	public void deleteAll() {
-		// SQL: DELETE
 		this.userCrud.deleteAll();
 	}
 

@@ -1,4 +1,4 @@
-	package smartspace.data;
+package smartspace.data;
 
 import java.util.Date;
 import java.util.Map;
@@ -14,8 +14,6 @@ import javax.persistence.TemporalType;
 
 import smartspace.dao.rdb.MapToJsonConverter;
 
-//aviel
-//Added DB - persistence by Amit 27/3
 @Entity
 @Table(name = "ACTIONS")
 public class ActionEntity implements SmartspaceEntity<ActionKey> {
@@ -121,12 +119,6 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 				+ creationTimestamp + ", moreAttributes=" + moreAttributes + "]";
 	}
 
-	/*
-	 * @author liadk
-	 *
-	 * @see smartspace.data.SmartspaceEntity#getKey()
-	 * 
-	 */
 	@Override
 	@EmbeddedId
 	@Column(name = "ID")
@@ -142,12 +134,6 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		return new ActionKey(actionSmartspace, id);
 	}
 
-	/*
-	 * @author liadk
-	 *
-	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
-	 * 
-	 */
 	@Override
 	public void setKey(ActionKey k) {
 		this.setActionSmartspace(k.getActionSmartspace());

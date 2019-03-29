@@ -2,8 +2,6 @@ package smartspace.data;
 
 import javax.persistence.Embeddable;
 
-//aviel
-
 @Embeddable
 public class Location {
 

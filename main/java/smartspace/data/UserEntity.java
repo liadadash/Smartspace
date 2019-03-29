@@ -18,7 +18,6 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	private String avatar;
 	private UserRole role;
 	private long points;
-	private UserKey userKey;
 
 	// default constructor
 	public UserEntity() {
@@ -33,7 +32,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.role = role;
 		this.points = points;
 	}
-	@Transient
+	
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -41,7 +40,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	public void setUserSmartspace(String userSmartspace) {
 		this.userSmartspace = userSmartspace;
 	}
-	@Transient
+	
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -65,6 +64,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+	
 	@Enumerated(EnumType.STRING)
 	public UserRole getRole() {
 		return role;
@@ -82,9 +82,9 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.points = points;
 	}
 
-	@EmbeddedId
-	@Column(name="KEY")
 	@Override
+	@EmbeddedId
+	@Column(name="ID")
 	public UserKey getKey() {
 		return new UserKey(userSmartspace, userEmail);
 	}

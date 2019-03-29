@@ -26,12 +26,13 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 		this.elementCrud = elementCrud;
 
 		// TODO remove this
-		this.nextId = new AtomicLong(100);
+		this.nextId = new AtomicLong(0);
 	}
 
 	@Override
 	@Transactional
 	public ElementEntity create(ElementEntity elementEntity) {
+		elementEntity.setElementSmartspace("2019B.nadav.peleg");
 		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getAndIncrement()));
 
 		if (!this.elementCrud.existsById(elementEntity.getKey())) {
@@ -83,7 +84,6 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 			existing.setCreatorEmail(update.getCreatorEmail());
 
 		this.elementCrud.save(existing);
-
 	}
 
 	@Override
