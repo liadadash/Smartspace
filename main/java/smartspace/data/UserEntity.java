@@ -1,6 +1,15 @@
 package smartspace.data;
 
-//aviel
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="USERS")
 public class UserEntity implements SmartspaceEntity<UserKey> {
 
 	private String userSmartspace;
@@ -24,7 +33,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.role = role;
 		this.points = points;
 	}
-
+	@Transient
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -32,7 +41,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	public void setUserSmartspace(String userSmartspace) {
 		this.userSmartspace = userSmartspace;
 	}
-
+	@Transient
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -56,7 +65,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-
+	@Enumerated(EnumType.STRING)
 	public UserRole getRole() {
 		return role;
 	}
@@ -73,33 +82,24 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.points = points;
 	}
 
-	@Override
-	public String toString() {
-		return "UserEntity [userSmartspace=" + userSmartspace + ", userEmail=" + userEmail + ", username=" + username
-				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points + "]";
-	}
-
-	/*
-	 * @author liadk
-	 *
-	 * @see smartspace.data.SmartspaceEntity#getKey()
-	 * 
-	 */
+	@EmbeddedId
+	@Column(name="KEY")
 	@Override
 	public UserKey getKey() {
 		return new UserKey(userSmartspace, userEmail);
 	}
 
-	/*
-	 * @author liadk
-	 *
-	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
-	 * 
-	 */
+
 	@Override
 	public void setKey(UserKey k) {
 		this.setUserSmartspace(k.getUserSmartspace());
 		this.setUserEmail(k.getUserEmail());
+	}
+	
+	@Override
+	public String toString() {
+		return "UserEntity [userSmartspace=" + userSmartspace + ", userEmail=" + userEmail + ", username=" + username
+				+ ", avatar=" + avatar + ", role=" + role + ", points=" + points + "]";
 	}
 
 }

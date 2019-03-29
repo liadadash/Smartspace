@@ -11,7 +11,7 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 //Amit 13/03
-@Repository
+//@Repository
 public class MemoryUserDao implements UserDao<UserKey> {
 	private List<UserEntity> users;
 
