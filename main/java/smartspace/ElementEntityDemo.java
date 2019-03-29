@@ -92,9 +92,11 @@ public class ElementEntityDemo implements CommandLineRunner {
 
 		System.err.println("\nentity2 after saving to database: " + entity2);
 
-		if (!this.dao.readAll().contains(entity2)) {
-			throw new RuntimeException("failed to save entity2");
-		}
+//		if (!this.dao.readById(entity2.getKey()).get().equals(entity2)) {
+//			System.err.println(entity2);
+//			System.err.println(this.dao.readById(entity2.getKey()).get());
+//			throw new RuntimeException("failed to save entity2");
+//		}
 
 		System.err.println("elements before delete: " + this.dao.readAll().size());
 		this.dao.deleteByKey(entity2.getKey());

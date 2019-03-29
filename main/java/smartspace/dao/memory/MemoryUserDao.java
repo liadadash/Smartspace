@@ -22,6 +22,7 @@ public class MemoryUserDao implements UserDao<UserKey> {
 
 	@Override
 	public UserEntity create(UserEntity userEntity) {
+		userEntity.setUserSmartspace("2019B.nadav.peleg");
 		userEntity.setKey(new UserKey(userEntity.getUserSmartspace(),
 				userEntity.getUserEmail()));
 		this.users.add(userEntity);

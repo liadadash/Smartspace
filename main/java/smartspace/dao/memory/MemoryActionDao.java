@@ -33,6 +33,7 @@ public class MemoryActionDao implements ActionDao {
 
 	@Override
 	public ActionEntity create(ActionEntity actionEntity) {
+		actionEntity.setActionSmartspace("2019B.nadav.peleg");
 		actionEntity.setKey(new ActionKey(actionEntity.getActionSmartspace(), nextId.getAndIncrement()));
 		this.actions.add(actionEntity);
 		return actionEntity;

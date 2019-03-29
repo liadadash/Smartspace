@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
  */
 
 @Embeddable
-public class ActionKey implements Serializable{
+public class ActionKey implements Serializable {
 
 	private String actionSmartspace;
 	private long id;
@@ -42,7 +42,7 @@ public class ActionKey implements Serializable{
 	 *
 	 * @return the actionSmartspace
 	 */
-	
+
 	@Column(name = "actionSmartspace_key")
 	public String getActionSmartspace() {
 		return actionSmartspace;
@@ -107,7 +107,7 @@ public class ActionKey implements Serializable{
 		ActionKey ActionKey = (ActionKey) obj;
 		return this.actionSmartspace.equals(ActionKey.actionSmartspace) && this.id == ActionKey.id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.actionSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;

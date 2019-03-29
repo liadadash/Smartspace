@@ -23,26 +23,22 @@ public class RdbActionDao implements ActionDao {
 	public RdbActionDao(ActionCrud actionCrud) {
 		super();
 		this.actionCrud = actionCrud;
+		
 		// TODO remove this
-		this.nextId = new AtomicLong(100);
+		this.nextId = new AtomicLong(0);
 	}
 
 	@Override
 	@Transactional
 	public ActionEntity create(ActionEntity actionEntity) {
-		// SQL: INSERT INTO MESSAGES (ID, NAME) VALUES (?,?);
-		// TODO replace this with id stored in db
-		ActionKey actionKey = new ActionKey();
-		actionKey.setId(nextId.getAndIncrement());
-		actionKey.setActionSmartspace(actionEntity.getActionSmartspace());
-		
-		actionEntity.setKey(actionKey);
+		actionEntity.setActionSmartspace("2019B.nadav.peleg");
+		actionEntity.setKey(new ActionKey(actionEntity.getActionSmartspace(), nextId.getAndIncrement()));
 
 		if (!this.actionCrud.existsById(actionEntity.getKey())) {
 			ActionEntity rv = this.actionCrud.save(actionEntity);
 			return rv;
 		} else {
-			throw new RuntimeException("message already exists with key: " + actionEntity.getKey());
+			throw new RuntimeException("action already exists with key: " + actionEntity.getKey());
 		}
 	}
 
@@ -50,7 +46,6 @@ public class RdbActionDao implements ActionDao {
 	@Transactional(readOnly = true)
 	public List<ActionEntity> readAll() {
 		List<ActionEntity> rv = new ArrayList<>();
-		// SQL: SELECT
 		this.actionCrud.findAll().forEach(rv::add);
 
 		return rv;
@@ -59,7 +54,6 @@ public class RdbActionDao implements ActionDao {
 	@Override
 	@Transactional
 	public void deleteAll() {
-		// SQL: DELETE
 		this.actionCrud.deleteAll();
 	}
 

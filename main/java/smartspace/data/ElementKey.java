@@ -1,29 +1,21 @@
 package smartspace.data;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-/**
- * @author liadk
- *
- */
-
 @Embeddable
-public class ElementKey {
+public class ElementKey implements Serializable {
 
 	private String elementSmartspace;
 	private long id;
 
-	/**
-	 * @author liadk
-	 *
-	 */
 	public ElementKey() {
 
 	}
 
 	/**
-	 * @author liadk
-	 *
 	 * @param elementSmartspace
 	 * @param id
 	 */
@@ -34,17 +26,14 @@ public class ElementKey {
 	}
 
 	/**
-	 * @author liadk
-	 *
 	 * @return the elementSmartspace
 	 */
+	@Column(name = "elementSmartspace_key")
 	public String getElementSmartspace() {
 		return elementSmartspace;
 	}
 
 	/**
-	 * @author liadk
-	 *
 	 * @param elementSmartspace the elementSmartspace to set
 	 */
 	public void setElementSmartspace(String elementSmartspace) {
@@ -52,8 +41,6 @@ public class ElementKey {
 	}
 
 	/**
-	 * @author liadk
-	 *
 	 * @return the id
 	 */
 	public long getId() {
@@ -61,20 +48,12 @@ public class ElementKey {
 	}
 
 	/**
-	 * @author liadk
-	 *
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	/*
-	 * @author liadk
-	 *
-	 * @see java.lang.Object#hashCode()
-	 * 
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,13 +62,7 @@ public class ElementKey {
 		result = (int) (prime * result + this.id);
 		return result;
 	}
-
-	/*
-	 * @author liadk
-	 *
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 * 
-	 */
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

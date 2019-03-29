@@ -24,6 +24,7 @@ public class MemoryElementDao implements ElementDao<ElementKey> {
 
 	@Override
 	public ElementEntity create(ElementEntity elementEntity) {
+		elementEntity.setElementSmartspace("2019B.nadav.peleg");
 		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), this.nextId.getAndIncrement()));
 		this.elements.add(elementEntity);
 		return elementEntity;
