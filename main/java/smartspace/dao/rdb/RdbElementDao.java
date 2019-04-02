@@ -26,7 +26,7 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 		this.elementCrud = elementCrud;
 
 		// TODO remove this
-		this.nextId = new AtomicLong(0);
+		this.nextId = new AtomicLong(1);
 	}
 
 	@Override

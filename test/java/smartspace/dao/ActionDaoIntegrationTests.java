@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import smartspace.dao.memory.MemoryActionDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.util.EntityFactoryImpl;
 
@@ -21,13 +20,13 @@ import smartspace.data.util.EntityFactoryImpl;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(properties = { "spring.profiles.active=default" })
-public class MemoryActionDaoIntegrationTests {
+public class ActionDaoIntegrationTests {
 
-	private MemoryActionDao dao;
+	private ActionDao dao;
 	private EntityFactoryImpl factory;
 
 	@Autowired
-	public void setDao(MemoryActionDao dao) {
+	public void setDao(ActionDao dao) {
 		this.dao = dao;
 	}
 

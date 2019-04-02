@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import smartspace.dao.memory.MemoryElementDao;
 import smartspace.data.ElementEntity;
+import smartspace.data.ElementKey;
 import smartspace.data.Location;
 import smartspace.data.util.EntityFactoryImpl;
 
@@ -24,12 +24,12 @@ import smartspace.data.util.EntityFactoryImpl;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(properties= {"spring.profiles.active=default"})
-public class MemoryElementDaoIntegrationTests {
-	private MemoryElementDao dao;
+public class ElementDaoIntegrationTests {
+	private ElementDao<ElementKey> dao;
 	private EntityFactoryImpl factory;
 
 	@Autowired
-	public void setDao(MemoryElementDao dao) {
+	public void setDao(ElementDao<ElementKey> dao) {
 		this.dao = dao;
 	}
 
