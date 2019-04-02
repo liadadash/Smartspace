@@ -3,6 +3,7 @@
  */
 package smartspace.dao.rdb;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import javax.persistence.Id;
  * @author liadkh
  *
  */
+@Entity
 public class GenericIdGenerator {
 private Long id;
 	

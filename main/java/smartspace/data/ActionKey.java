@@ -3,7 +3,6 @@ package smartspace.data;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 /**
@@ -12,7 +11,7 @@ import javax.persistence.Embeddable;
  */
 
 @Embeddable
-public class ActionKey implements Serializable {
+public class ActionKey implements Comparable<ActionKey>, Serializable {
 
 	private String actionSmartspace;
 	private long id;
@@ -110,5 +109,16 @@ public class ActionKey implements Serializable {
 	@Override
 	public String toString() {
 		return this.actionSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(ActionKey o) {
+		int res = this.actionSmartspace.compareTo(o.actionSmartspace);
+		return (int) (res == 0 ? this.id - o.id : res);
 	}
 }

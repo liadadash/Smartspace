@@ -2,11 +2,10 @@ package smartspace.data;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class ElementKey implements Serializable {
+public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	private String elementSmartspace;
 	private long id;
@@ -61,7 +60,7 @@ public class ElementKey implements Serializable {
 		result = (int) (prime * result + this.id);
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,5 +76,16 @@ public class ElementKey implements Serializable {
 	@Override
 	public String toString() {
 		return this.elementSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(ElementKey o) {
+		int res = this.elementSmartspace.compareTo(o.elementSmartspace);
+		return (int) (res == 0 ? this.id - o.id : res);
 	}
 }
