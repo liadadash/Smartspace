@@ -63,10 +63,9 @@ public class UserDaoIntegraionTests {
 		// GIVEN dao is initialized and clean
 
 		// WHEN I create a user
-		String smartspace = " testSmartspace";
 		String email = "test@gmail.com";
 
-		UserEntity user = this.factory.createNewUser(email, smartspace, "test1", null, UserRole.PLAYER, 0);
+		UserEntity user = this.factory.createNewUser(email, null, "test1", null, UserRole.PLAYER, 0);
 		// AND we get the user by key
 
 		UserEntity userInDB = this.dao.create(user);
@@ -75,8 +74,7 @@ public class UserDaoIntegraionTests {
 				.orElseThrow(() -> new RuntimeException("could not find user by key"));
 
 		// THEN the same user is returned
-		assertThat(userFromDB).isNotNull().extracting("userSmartspace", "userEmail", "role").containsExactly(smartspace,
-				email, UserRole.PLAYER);
+		assertThat(userFromDB).isNotNull().extracting("userEmail", "role").containsExactly(email, UserRole.PLAYER);
 	}
 
 	@Test
@@ -84,10 +82,9 @@ public class UserDaoIntegraionTests {
 		// GIVEN nothing
 
 		// WHEN I create a new user
-		String smartspace = " testSmartspace";
 		String email = "test@gmail.com";
 
-		UserEntity user = this.factory.createNewUser(email, smartspace, "test1", null, UserRole.PLAYER, 0);
+		UserEntity user = this.factory.createNewUser(email, null, "test1", null, UserRole.PLAYER, 0);
 		user = this.dao.create(user);
 
 		// AND update user
