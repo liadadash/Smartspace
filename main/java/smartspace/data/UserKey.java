@@ -3,13 +3,11 @@ package smartspace.data;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-
 /**
  * @author liadk
  *
  */
-public class UserKey implements Serializable {
+public class UserKey implements Comparable<UserKey>, Serializable {
 
 	private String userSmartspace;
 	private String userEmail;
@@ -98,9 +96,20 @@ public class UserKey implements Serializable {
 		UserKey UserKey = (UserKey) obj;
 		return this.userSmartspace.equals(UserKey.userSmartspace) && this.userEmail.equals(UserKey.userEmail);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.userSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.userEmail;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(UserKey o) {
+		int res = this.userSmartspace.compareTo(o.userSmartspace);
+		return res == 0 ? this.userEmail.compareTo(o.userEmail) : res;
 	}
 }

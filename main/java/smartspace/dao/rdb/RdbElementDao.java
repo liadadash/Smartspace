@@ -3,13 +3,12 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.ElementDao;
+import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
@@ -17,23 +16,25 @@ import smartspace.data.ElementKey;
 public class RdbElementDao implements ElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 
-	// TODO remove this
-	private AtomicLong nextId;
+	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
-	@Autowired
-	public RdbElementDao(ElementCrud elementCrud) {
+	/**
+	 * @author liadkh
+	 * @param elementCrud
+	 * @param genericIdGeneratorCrud
+	 */
+	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
 		super();
 		this.elementCrud = elementCrud;
-
-		// TODO remove this
-		this.nextId = new AtomicLong(1);
+		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
 	}
 
 	@Override
 	@Transactional
 	public ElementEntity create(ElementEntity elementEntity) {
+		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		elementEntity.setElementSmartspace("2019B.nadav.peleg");
-		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getAndIncrement()));
+		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getId()));
 
 		if (!this.elementCrud.existsById(elementEntity.getKey())) {
 			ElementEntity rv = this.elementCrud.save(elementEntity);
