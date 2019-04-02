@@ -35,7 +35,6 @@ public class UserKey implements Serializable {
 	 *
 	 * @return the userSmartspace
 	 */
-	@Column(name = "userSmartspace_key")
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -54,7 +53,6 @@ public class UserKey implements Serializable {
 	 *
 	 * @return the userEmail
 	 */
-	@Column(name = "userEmail_key")
 	public String getUserEmail() {
 		return userEmail;
 	}

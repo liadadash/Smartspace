@@ -28,7 +28,6 @@ public class ElementKey implements Serializable {
 	/**
 	 * @return the elementSmartspace
 	 */
-	@Column(name = "elementSmartspace_key")
 	public String getElementSmartspace() {
 		return elementSmartspace;
 	}
