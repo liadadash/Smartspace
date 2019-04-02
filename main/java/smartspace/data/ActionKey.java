@@ -43,7 +43,6 @@ public class ActionKey implements Serializable {
 	 * @return the actionSmartspace
 	 */
 
-	@Column(name = "actionSmartspace_key")
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}

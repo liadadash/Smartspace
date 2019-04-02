@@ -59,15 +59,15 @@ public class RdbUserDao implements UserDao<UserKey> {
 		if (update.getAvatar() != null) {
 			existing.setAvatar(update.getAvatar());
 		}
-		if (update.getUserEmail() != null) {
-			existing.setUserEmail(update.getUserEmail());
-		}
+//		if (update.getUserEmail() != null) {
+//			existing.setUserEmail(update.getUserEmail());
+//		}
 		if (update.getUsername() != null) {
 			existing.setUsername(update.getUsername());
 		}
-		if (update.getUserSmartspace() != null) {
-			existing.setUserSmartspace(update.getUserSmartspace());
-		}
+//		if (update.getUserSmartspace() != null) {
+//			existing.setUserSmartspace(update.getUserSmartspace());
+//		}
 		if (update.getRole() != null) {
 			existing.setRole(update.getRole());
 		}

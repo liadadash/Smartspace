@@ -74,14 +74,17 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 		if (update.getLocation() != null)
 			existing.setLocation(update.getLocation());
 
-		if (update.getElementSmartspace() != null)
-			existing.setElementSmartspace(update.getElementSmartspace());
+		// Eyal said to not update key attributes
+//		if (update.getElementSmartspace() != null)
+//			existing.setElementSmartspace(update.getElementSmartspace());
 
-		if (update.getCreatorSmartspace() != null)
-			existing.setCreatorSmartspace(update.getCreatorSmartspace());
+		// this can not update (attributes of user key)
+//		if (update.getCreatorSmartspace() != null)
+//			existing.setCreatorSmartspace(update.getCreatorSmartspace());
 
-		if (update.getCreatorEmail() != null)
-			existing.setCreatorEmail(update.getCreatorEmail());
+		// this can not update (attributes of user key)
+//		if (update.getCreatorEmail() != null)
+//			existing.setCreatorEmail(update.getCreatorEmail());
 
 		this.elementCrud.save(existing);
 	}

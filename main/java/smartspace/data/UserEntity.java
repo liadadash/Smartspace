@@ -33,6 +33,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.points = points;
 	}
 	
+	@Transient
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -41,6 +42,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.userSmartspace = userSmartspace;
 	}
 	
+	@Transient
 	public String getUserEmail() {
 		return userEmail;
 	}

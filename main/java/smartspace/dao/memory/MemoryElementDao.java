@@ -72,9 +72,9 @@ public class MemoryElementDao implements ElementDao<ElementKey> {
 			// expired is a boolean
 			existing.setExpired(update.isExpired());
 
-			// not sure about it yet
-			if (update.getElementSmartspace() != null)
-				existing.setElementSmartspace(update.getElementSmartspace());
+			// key attributes can not update
+//			if (update.getElementSmartspace() != null)
+//				existing.setElementSmartspace(update.getElementSmartspace());
 
 			if (update.getCreatorEmail() != null)
 				existing.setCreatorEmail(update.getCreatorEmail());
