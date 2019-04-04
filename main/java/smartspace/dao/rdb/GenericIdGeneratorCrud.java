@@ -6,8 +6,10 @@ package smartspace.dao.rdb;
 import org.springframework.data.repository.CrudRepository;
 
 /**
- * @author liadkh
+ * The Interface GenericIdGeneratorCrud.
  *
+ * @author liadkh
+ * @param <Key> the generic type
  */
 public interface GenericIdGeneratorCrud<Key> extends CrudRepository<GenericIdGenerator, Key>{
 

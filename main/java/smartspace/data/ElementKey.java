@@ -4,19 +4,30 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+/**
+ * The Class ElementKey.
+ */
 @Embeddable
 public class ElementKey implements Comparable<ElementKey>, Serializable {
 
+	/** The element smartspace. */
 	private String elementSmartspace;
+	
+	/** The id. */
 	private long id;
 
+	/**
+	 * Instantiates a new element key.
+	 */
 	public ElementKey() {
 
 	}
 
 	/**
-	 * @param elementSmartspace
-	 * @param id
+	 * Instantiates a new element key.
+	 *
+	 * @param elementSmartspace the element smartspace
+	 * @param id the id
 	 */
 	public ElementKey(String elementSmartspace, long id) {
 		super();
@@ -25,6 +36,8 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 	}
 
 	/**
+	 * Gets the element smartspace.
+	 *
 	 * @return the elementSmartspace
 	 */
 	public String getElementSmartspace() {
@@ -32,6 +45,8 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 	}
 
 	/**
+	 * Sets the element smartspace.
+	 *
 	 * @param elementSmartspace the elementSmartspace to set
 	 */
 	public void setElementSmartspace(String elementSmartspace) {
@@ -39,6 +54,8 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 	}
 
 	/**
+	 * Gets the id.
+	 *
 	 * @return the id
 	 */
 	public long getId() {
@@ -46,12 +63,17 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 	}
 
 	/**
+	 * Sets the id.
+	 *
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -61,6 +83,9 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -73,6 +98,9 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 		return this.elementSmartspace.equals(ElementKey.elementSmartspace) && this.id == ElementKey.id;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return this.elementSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;

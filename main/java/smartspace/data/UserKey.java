@@ -4,24 +4,32 @@ package smartspace.data;
 import java.io.Serializable;
 
 /**
- * @author liadk
+ * The Class UserKey.
  *
+ * @author liadk
  */
 public class UserKey implements Comparable<UserKey>, Serializable {
 
+	/** The user smartspace. */
 	private String userSmartspace;
+	
+	/** The user email. */
 	private String userEmail;
 
 	/**
-	 * @author liadk
+	 * Instantiates a new user key.
 	 *
+	 * @author liadk
 	 */
 	public UserKey() {
 	}
 
 	/**
-	 * @author liadk
+	 * Instantiates a new user key.
 	 *
+	 * @author liadk
+	 * @param userSmartspace the user smartspace
+	 * @param userEmail the user email
 	 */
 	public UserKey(String userSmartspace, String userEmail) {
 		this.userSmartspace = userSmartspace;
@@ -29,8 +37,9 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the user smartspace.
 	 *
+	 * @author liadk
 	 * @return the userSmartspace
 	 */
 	public String getUserSmartspace() {
@@ -38,8 +47,9 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the user smartspace.
 	 *
+	 * @author liadk
 	 * @param userSmartspace the userSmartspace to set
 	 */
 	public void setUserSmartspace(String userSmartspace) {
@@ -47,8 +57,9 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the user email.
 	 *
+	 * @author liadk
 	 * @return the userEmail
 	 */
 	public String getUserEmail() {
@@ -56,8 +67,9 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the user email.
 	 *
+	 * @author liadk
 	 * @param userEmail the userEmail to set
 	 */
 	public void setUserEmail(String userEmail) {
@@ -97,6 +109,9 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 		return this.userSmartspace.equals(UserKey.userSmartspace) && this.userEmail.equals(UserKey.userEmail);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return this.userSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.userEmail;

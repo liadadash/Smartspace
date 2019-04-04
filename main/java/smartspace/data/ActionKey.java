@@ -6,29 +6,35 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
- * @author liadk
+ * The Class ActionKey.
  *
+ * @author liadk
  */
 
 @Embeddable
 public class ActionKey implements Comparable<ActionKey>, Serializable {
 
+	/** The action smartspace. */
 	private String actionSmartspace;
+	
+	/** The id. */
 	private long id;
 
 	/**
-	 * @author liadk
+	 * Instantiates a new action key.
 	 *
+	 * @author liadk
 	 */
 	public ActionKey() {
 
 	}
 
 	/**
-	 * @author liadk
+	 * Instantiates a new action key.
 	 *
-	 * @param actionSmartspace
-	 * @param id
+	 * @author liadk
+	 * @param actionSmartspace the action smartspace
+	 * @param id the id
 	 */
 	public ActionKey(String actionSmartspace, long id) {
 		super();
@@ -37,8 +43,9 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the action smartspace.
 	 *
+	 * @author liadk
 	 * @return the actionSmartspace
 	 */
 
@@ -47,8 +54,9 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the action smartspace.
 	 *
+	 * @author liadk
 	 * @param actionSmartspace the actionSmartspace to set
 	 */
 	public void setActionSmartspace(String actionSmartspace) {
@@ -56,8 +64,9 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the id.
 	 *
+	 * @author liadk
 	 * @return the id
 	 */
 	public long getId() {
@@ -65,8 +74,9 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the id.
 	 *
+	 * @author liadk
 	 * @param id the id to set
 	 */
 	public void setId(long id) {
@@ -106,6 +116,9 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 		return this.actionSmartspace.equals(ActionKey.actionSmartspace) && this.id == ActionKey.id;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		return this.actionSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;

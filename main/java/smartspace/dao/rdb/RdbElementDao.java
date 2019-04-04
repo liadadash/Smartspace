@@ -19,9 +19,11 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
 	/**
+	 * Instantiates a new rdb element dao.
+	 *
 	 * @author liadkh
-	 * @param elementCrud
-	 * @param genericIdGeneratorCrud
+	 * @param elementCrud the element crud
+	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
 	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
 		super();

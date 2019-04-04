@@ -12,25 +12,33 @@ import smartspace.data.ActionEntity;
 import smartspace.data.ActionKey;
 
 /**
- * @author liadk
+ * The Class MemoryActionDao.
  *
+ * @author liadk
  */
 
 //@Repository
 public class MemoryActionDao implements ActionDao {
 
+	/** The actions. */
 	private List<ActionEntity> actions;
+	
+	/** The next id. */
 	private AtomicLong nextId;
 
 	/**
-	 * @author liadk
+	 * Instantiates a new memory action dao.
 	 *
+	 * @author liadk
 	 */
 	public MemoryActionDao() {
 		this.actions = Collections.synchronizedList(new ArrayList<>());
 		this.nextId = new AtomicLong(1);
 	}
 
+	/* (non-Javadoc)
+	 * @see smartspace.dao.ActionDao#create(smartspace.data.ActionEntity)
+	 */
 	@Override
 	public ActionEntity create(ActionEntity actionEntity) {
 		actionEntity.setActionSmartspace("2019B.nadav.peleg");
@@ -40,8 +48,9 @@ public class MemoryActionDao implements ActionDao {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the actions.
 	 *
+	 * @author liadk
 	 * @return the actions
 	 */
 	public List<ActionEntity> getActions() {
@@ -49,8 +58,9 @@ public class MemoryActionDao implements ActionDao {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the actions.
 	 *
+	 * @author liadk
 	 * @param actions the actions to set
 	 */
 	public void setActions(List<ActionEntity> actions) {
@@ -58,8 +68,9 @@ public class MemoryActionDao implements ActionDao {
 	}
 
 	/**
-	 * @author liadk
+	 * Gets the next id.
 	 *
+	 * @author liadk
 	 * @return the nextId
 	 */
 	public AtomicLong getNextId() {
@@ -67,19 +78,26 @@ public class MemoryActionDao implements ActionDao {
 	}
 
 	/**
-	 * @author liadk
+	 * Sets the next id.
 	 *
+	 * @author liadk
 	 * @param nextId the nextId to set
 	 */
 	public void setNextId(AtomicLong nextId) {
 		this.nextId = nextId;
 	}
 
+	/* (non-Javadoc)
+	 * @see smartspace.dao.ActionDao#readAll()
+	 */
 	@Override
 	public List<ActionEntity> readAll() {
 		return this.actions;
 	}
 
+	/* (non-Javadoc)
+	 * @see smartspace.dao.ActionDao#deleteAll()
+	 */
 	@Override
 	public void deleteAll() {
 		this.actions.clear();
