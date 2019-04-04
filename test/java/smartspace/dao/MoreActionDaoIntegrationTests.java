@@ -25,37 +25,63 @@ import smartspace.data.ActionKey;
 import smartspace.data.util.EntityFactoryImpl;
 
 /**
- * @author liadkh
+ * The Class MoreActionDaoIntegrationTests.
  *
+ * @author liadkh
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(properties = { "spring.profiles.active=default" })
 public class MoreActionDaoIntegrationTests {
 
+	/** The dao. */
 	private ActionDao dao;
+	
+	/** The factory. */
 	private EntityFactoryImpl factory;
 
+	/**
+	 * Sets the dao.
+	 *
+	 * @param dao the new dao
+	 */
 	@Autowired
 	public void setDao(ActionDao dao) {
 		this.dao = dao;
 	}
 
+	
+	/**
+	 * Sets the factory.
+	 *
+	 * @param factory the new factory
+	 */
 	@Autowired
-	public void seFactory(EntityFactoryImpl factory) {
+	public void setFactory(EntityFactoryImpl factory) {
 		this.factory = factory;
 	}
 
+	/**
+	 * Setup.
+	 */
 	@Before
 	public void setup() {
 		dao.deleteAll();
 	}
 
+	/**
+	 * Teardown.
+	 */
 	@After
 	public void teardown() {
 		dao.deleteAll();
 	}
 
+	/**
+	 * Test save action to dao the action save with ID.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testSaveActionToDaoTheActionSaveWithID() throws Exception {
 		// Given the database is clean
@@ -70,6 +96,11 @@ public class MoreActionDaoIntegrationTests {
 		assertThat(rv.getKey()).isNotNull().extracting("id").isNotNull();
 	}
 
+	/**
+	 * Test save many action to dao the action save with unique ID.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testSaveManyActionToDaoTheActionSaveWithUniqueID() throws Exception {
 		// Given the database is clean
@@ -86,6 +117,11 @@ public class MoreActionDaoIntegrationTests {
 		assertThat(keys).isNotNull().hasSize(size);
 	}
 
+	/**
+	 * Testread actions from dao.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void testreadActionsFromDao() throws Exception {
 		// Given the database with 12 actions
