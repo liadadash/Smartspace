@@ -121,6 +121,12 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 				+ creationTimestamp + ", moreAttributes=" + moreAttributes + "]";
 	}
 
+	/*
+	* @author liadk
+	*
+	* @see smartspace.data.SmartspaceEntity#getKey()
+	* 
+	*/
 	@Override
 	@EmbeddedId
 	@Column(name = "ID")
@@ -136,6 +142,12 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		return new ActionKey(actionSmartspace, id);
 	}
 
+	/*
+	* @author liadk
+	*
+	* @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	* 
+	*/
 	@Override
 	public void setKey(ActionKey k) {
 		this.setActionSmartspace(k.getActionSmartspace());

@@ -15,7 +15,6 @@ import smartspace.data.ElementKey;
 @Repository
 public class RdbElementDao implements ElementDao<ElementKey> {
 	private ElementCrud elementCrud;
-
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
 	/**
@@ -37,6 +36,7 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		elementEntity.setElementSmartspace("2019B.nadav.peleg");
 		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getId()));
+		this.genericIdGeneratorCrud.delete(nextId);
 
 		if (!this.elementCrud.existsById(elementEntity.getKey())) {
 			ElementEntity rv = this.elementCrud.save(elementEntity);
