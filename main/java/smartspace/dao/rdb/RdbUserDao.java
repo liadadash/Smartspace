@@ -15,7 +15,7 @@ public class RdbUserDao implements UserDao<UserKey> {
 	private UserCrud userCrud;
 
 	@Autowired
-	public RdbUserDao(UserCrud userCrud,GenericIdGeneratorCrud<UserKey> genericIdGeneratorCrud) {
+	public RdbUserDao(UserCrud userCrud) {
 		super();
 		this.userCrud = userCrud;
 	}
