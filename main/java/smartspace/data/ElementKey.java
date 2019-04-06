@@ -1,7 +1,11 @@
 package smartspace.data;
 
-import java.io.Serializable;
+/**
+- * @author liadk
+- *
+- */
 
+import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
@@ -17,6 +21,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 	private long id;
 
 	/**
+	 * @author liadk
 	 * Instantiates a new element key.
 	 */
 	public ElementKey() {
@@ -25,6 +30,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	/**
 	 * Instantiates a new element key.
+	 * @author liadk
 	 *
 	 * @param elementSmartspace the element smartspace
 	 * @param id the id
@@ -37,6 +43,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	/**
 	 * Gets the element smartspace.
+	 * @author liadk
 	 *
 	 * @return the elementSmartspace
 	 */
@@ -46,6 +53,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	/**
 	 * Sets the element smartspace.
+	 * @author liadk
 	 *
 	 * @param elementSmartspace the elementSmartspace to set
 	 */
@@ -55,6 +63,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	/**
 	 * Gets the id.
+	 * @author liadk
 	 *
 	 * @return the id
 	 */
@@ -64,6 +73,7 @@ public class ElementKey implements Comparable<ElementKey>, Serializable {
 
 	/**
 	 * Sets the id.
+	 * @author liadk
 	 *
 	 * @param id the id to set
 	 */

@@ -132,7 +132,12 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 				+ ", moreAttributes=" + moreAttributes + "]";
 	}
 
-	
+	/*
+	* @author liadk
+	*
+	* @see smartspace.data.SmartspaceEntity#getKey()
+	* 
+	*/
 	@Override
 	@EmbeddedId
 	@Column(name = "ID")
@@ -150,6 +155,12 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 		return new ElementKey(this.elementSmartspace, id);
 	}
 
+	/*
+	* @author liadk
+	*
+	* @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	* 
+	*/
 	@Override
 	public void setKey(ElementKey k) {
 		this.setElementSmartspace(k.getElementSmartspace());

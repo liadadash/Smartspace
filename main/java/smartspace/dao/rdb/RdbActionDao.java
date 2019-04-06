@@ -14,7 +14,6 @@ import smartspace.data.ActionKey;
 @Repository
 public class RdbActionDao implements ActionDao {
 	private ActionCrud actionCrud;
-
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
 	/**
@@ -35,6 +34,7 @@ public class RdbActionDao implements ActionDao {
 		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		actionEntity.setActionSmartspace("2019B.nadav.peleg");
 		actionEntity.setKey(new ActionKey(actionEntity.getActionSmartspace(), nextId.getId()));
+		this.genericIdGeneratorCrud.delete(nextId);
 
 		if (!this.actionCrud.existsById(actionEntity.getKey())) {
 			ActionEntity rv = this.actionCrud.save(actionEntity);
