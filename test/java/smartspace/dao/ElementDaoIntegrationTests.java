@@ -89,7 +89,9 @@ public class ElementDaoIntegrationTests {
 				.extracting("name", "type", "creatorEmail", "expired", "moreAttributes", "creatorSmartspace")
 				.containsExactly("ListElement", "testType", "test@gmail.com", false, moreAttributes, "testSmartspace");
 
-		assertThat(this.dao.readAll()).isNotNull().doesNotContain(elementInDB);
+		assertThat(this.dao.readAll()).isNotNull();
+		assertThat(this.dao.readById(elementInDB.getKey())).isEmpty();
+
 	}
 
 	@Test
@@ -163,8 +165,8 @@ public class ElementDaoIntegrationTests {
 		this.dao.deleteByKey(chosenElement.getKey());
 		elementsInDB.remove(chosenElement);
 
-		assertThat(this.dao.readAll()).doesNotContain(chosenElement).hasSize(size - 1);
-
+		assertThat(this.dao.readAll()).hasSize(size - 1);
+		assertThat(this.dao.readById(chosenElement.getKey())).isEmpty();
 	}
 
 	@Test(expected = Exception.class)
@@ -215,80 +217,66 @@ public class ElementDaoIntegrationTests {
 	}
 
 	@Test
-	public void testDeleteAllOnEmptyDB() throws Exception{
+	public void testDeleteAllOnEmptyDB() throws Exception {
 		// GIVEN nothing
 		// WHEN I want to delete all elements in empty DB
 		this.dao.deleteAll();
 		// THEN deleteAll method deleteAll
-	
+
 	}
 
 	@Test(expected = Exception.class)
-	public void testUpdateElementThatNotInDBWIthoutAnyKey() throws Exception{
+	public void testUpdateElementThatNotInDBWIthoutAnyKey() throws Exception {
 		// GIVEN nothing
 		// WHEN I want to update element that not in DB
 		String smartspace = "2019B.nadav.peleg";
-		ElementEntity update = new ElementEntity("test1",
-				"test",
-				new Location(1.0,2.0),
-				new Date()
-				, "test@gmail.com",
-				smartspace,
-				true, new HashMap<>());
-		
-		
+		ElementEntity update = new ElementEntity("test1", "test", new Location(1.0, 2.0), new Date(), "test@gmail.com",
+				smartspace, true, new HashMap<>());
+
 		// THEN update method throws exception
 		this.dao.update(update);
 
 	}
 
 	@Test(expected = Exception.class)
-	public void testUpdateElementThatNotInDBWithRandomKey() throws Exception{
+	public void testUpdateElementThatNotInDBWithRandomKey() throws Exception {
 		// GIVEN nothing
 		// WHEN I want to update element that not in DB
 		String smartspace = "2019B.nadav.peleg";
-		ElementEntity update = new ElementEntity("test1",
-				"test",
-				new Location(1.0,2.0),
-				new Date()
-				, "test@gmail.com",
-				smartspace,
-				true, new HashMap<>());
+		ElementEntity update = new ElementEntity("test1", "test", new Location(1.0, 2.0), new Date(), "test@gmail.com",
+				smartspace, true, new HashMap<>());
 		update.setKey(new ElementKey(smartspace, -15));
-		
+
 		// THEN update method throws exception
 		this.dao.update(update);
 
 	}
 
 	@Test(expected = Exception.class)
-	public void testCreateReadByIdDeleteByIdAndUpdate() throws Exception{
+	public void testCreateReadByIdDeleteByIdAndUpdate() throws Exception {
 		// GIVEN dao is initialized and clean
 
-				// WHEN i create elements
-				// AND read by key element
-				// AND delete by id element
-
+		// WHEN i create elements
+		// AND read by key element
+		// AND delete by id element
 
 		Map<String, Object> moreAttributes = new HashMap<String, Object>();
 		moreAttributes.put("item1", "test1");
 		ElementEntity elementEntity = this.factory.createNewElement("ListElement", "testType", new Location(1, 1),
-		new Date(), "test@gmail.com", "testSmartspace", false, moreAttributes);
+				new Date(), "test@gmail.com", "testSmartspace", false, moreAttributes);
 		elementEntity.setElementSmartspace("2019B.nadav.peleg");
-		
-		ElementEntity elementInDB = this.dao.create(elementEntity);	
 
+		ElementEntity elementInDB = this.dao.create(elementEntity);
 
-		ElementEntity fromDb =this.dao.readById(elementInDB.getKey())
+		ElementEntity fromDb = this.dao.readById(elementInDB.getKey())
 				.orElseThrow(() -> new RuntimeException("could not find message by key"));
-		
+
 		this.dao.deleteByKey(fromDb.getKey());
 		fromDb.setExpired(true);
 		this.dao.update(fromDb);
-		
 
 		// THEN readById throws Exception
-				
+
 	}
 
 	@Test
@@ -309,7 +297,7 @@ public class ElementDaoIntegrationTests {
 		elementEntity.setElementSmartspace("2019B.nadav.peleg");
 
 		ElementEntity elementInDB = this.dao.create(elementEntity);
-		
+
 		ElementEntity update = new ElementEntity();
 		update.setKey(elementInDB.getKey());
 		update.setCreatorEmail("update@gmail.com");
@@ -319,12 +307,12 @@ public class ElementDaoIntegrationTests {
 		this.dao.readById(elementInDB.getKey())
 				.orElseThrow(() -> new RuntimeException("could not find message by key"));
 		this.dao.deleteByKey(update.getKey());
-		
+
 		List<ElementEntity> rvElements = this.dao.readAll();
 
 		// THEN created element id >0
 		// AND the dao is empty
-		
+
 		assertThat(elementInDB.getKey().getId()).isNotNull().isGreaterThan(0);
 		assertThat(rvElements.isEmpty());
 
