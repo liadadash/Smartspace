@@ -11,6 +11,7 @@ import javax.persistence.Embeddable;
 /**
  * The Class ElementKey.
  */
+
 @Embeddable
 public class ElementKey implements Comparable<ElementKey>, Serializable {
 

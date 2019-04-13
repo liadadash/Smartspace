@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,9 @@ import smartspace.data.ElementKey;
 public class RdbElementDao implements ElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
+	
+	@Value( "${app.smartspace}" )
+	private String appSmartspace;
 
 	/**
 	 * Instantiates a new rdb element dao.
@@ -34,7 +38,7 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 	@Transactional
 	public ElementEntity create(ElementEntity elementEntity) {
 		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
-		elementEntity.setElementSmartspace("2019B.nadav.peleg");
+		elementEntity.setElementSmartspace(appSmartspace);
 		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getId()));
 		this.genericIdGeneratorCrud.delete(nextId);
 

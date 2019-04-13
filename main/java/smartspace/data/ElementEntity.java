@@ -47,6 +47,14 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 		this.moreAttributes = moreAtributes;
 	}
 
+	public String getElementId() {
+		return elementId;
+	}
+
+	public void setElementId(String elementId) {
+		this.elementId = elementId;
+	}
+
 	@Transient
 	public String getElementSmartspace() {
 		return elementSmartspace;
@@ -81,7 +89,7 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 		this.type = type;
 	}
 
-	public boolean isExpired() {
+	public boolean getExpired() {
 		return expired;
 	}
 
@@ -119,7 +127,7 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
-	
+
 	public void setCreationTimestamp(Date date) {
 		this.creationTimestamp = date;
 	}
@@ -133,11 +141,11 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	}
 
 	/*
-	* @author liadk
-	*
-	* @see smartspace.data.SmartspaceEntity#getKey()
-	* 
-	*/
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#getKey()
+	 * 
+	 */
 	@Override
 	@EmbeddedId
 	@Column(name = "ID")
@@ -156,11 +164,11 @@ public class ElementEntity implements SmartspaceEntity<ElementKey> {
 	}
 
 	/*
-	* @author liadk
-	*
-	* @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
-	* 
-	*/
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	 * 
+	 */
 	@Override
 	public void setKey(ElementKey k) {
 		this.setElementSmartspace(k.getElementSmartspace());
