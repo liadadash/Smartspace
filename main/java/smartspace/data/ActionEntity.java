@@ -45,6 +45,14 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.moreAttributes = moreAttributes;
 	}
 
+	public String getActionId() {
+		return actionId;
+	}
+
+	public void setActionId(String actionId) {
+		this.actionId = actionId;
+	}
+
 	@Transient
 	public String getActionSmartspace() {
 		return actionSmartspace;

@@ -3,11 +3,15 @@ package smartspace.data;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 /**
  * The Class UserKey.
  *
  * @author liadk
  */
+
+@Embeddable
 public class UserKey implements Comparable<UserKey>, Serializable {
 
 	/** The user smartspace. */
