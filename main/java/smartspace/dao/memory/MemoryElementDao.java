@@ -70,7 +70,7 @@ public class MemoryElementDao implements ElementDao<ElementKey> {
 				existing.setType(update.getType());
 		
 			// expired is a boolean
-			existing.setExpired(update.isExpired());
+			existing.setExpired(update.getExpired());
 
 			// key attributes can not update
 //			if (update.getElementSmartspace() != null)
