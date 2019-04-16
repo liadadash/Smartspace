@@ -23,11 +23,13 @@ public interface EnhancedActionDao extends ActionDao {
 	 */
 	public List<ActionEntity> readAllWithPaging(int size, int page);
 
+
 	/**
-	 * Import actions.
+	 * Import action.
 	 *
-	 * @param actions the actions
+	 * @param action the action
+	 * @return the action entity
 	 */
-	public void importActions(ActionEntity[] actions);
+	public ActionEntity importAction(ActionEntity action);
 
 }

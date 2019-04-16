@@ -2,7 +2,6 @@ package smartspace.dao.rdb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,14 +77,15 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	/**
-	 * Import actions.
+	 * Import action.
 	 *
-	 * @param actions the actions
+	 * @param action the action
+	 * @return the action entity
 	 */
 	@Override
 	@Transactional
-	public void importActions(ActionEntity[] actions) {
-		Stream.of(actions).map(this.actionCrud::save);
+	public ActionEntity importAction(ActionEntity action) {
+		return this.actionCrud.save(action);
 	}
 
 }

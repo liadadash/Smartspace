@@ -24,10 +24,12 @@ public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 	 */
 	public List<UserEntity> readAllWithPaging(int size, int page);
 	
+
 	/**
-	 * Import users.
+	 * Import user.
 	 *
-	 * @param users the users
+	 * @param user the user
+	 * @return the user entity
 	 */
-	public void importUsers(UserEntity[] users);
+	public UserEntity importUser(UserEntity user);
 }
