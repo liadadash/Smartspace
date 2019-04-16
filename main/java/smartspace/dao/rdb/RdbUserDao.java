@@ -15,7 +15,7 @@ import smartspace.data.UserKey;
 public class RdbUserDao implements UserDao<UserKey> {
 	private UserCrud userCrud;
 	
-	@Value( "${app.smartspace}" )
+	@Value( "${smartspace.name}" )
 	private String appSmartspace;
 
 	@Autowired
