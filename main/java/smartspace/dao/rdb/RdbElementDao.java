@@ -5,27 +5,29 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.ElementDao;
+import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Repository
-public class RdbElementDao implements ElementDao<ElementKey> {
+public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
-	
-	@Value( "${smartspace.name}" )
+
+	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	/**
 	 * Instantiates a new rdb element dao.
 	 *
 	 * @author liadkh
-	 * @param elementCrud the element crud
+	 * @param elementCrud            the element crud
 	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
 	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
@@ -112,6 +114,18 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 	@Transactional
 	public void deleteAll() {
 		this.elementCrud.deleteAll();
+	}
+
+	/**
+	 * Read all with paging.
+	 *
+	 * @param size the size
+	 * @param page the page
+	 * @return the list
+	 */
+	@Override
+	public List<ElementEntity> readAll(int size, int page) {
+		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 }
