@@ -3,19 +3,22 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import smartspace.dao.UserDao;
+
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 @Repository
-public class RdbUserDao implements UserDao<UserKey> {
+public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	private UserCrud userCrud;
-	
-	@Value( "${smartspace.name}" )
+
+	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
@@ -84,6 +87,19 @@ public class RdbUserDao implements UserDao<UserKey> {
 	@Transactional
 	public void deleteAll() {
 		this.userCrud.deleteAll();
+	}
+
+	/**
+	 * Read all with paging.
+	 *
+	 * @param size the size
+	 * @param page the page
+	 * @return the list
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<UserEntity> readAll(int size, int page) {
+		return this.userCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 }
