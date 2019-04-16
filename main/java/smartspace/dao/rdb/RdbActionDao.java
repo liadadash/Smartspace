@@ -17,7 +17,7 @@ public class RdbActionDao implements ActionDao {
 	private ActionCrud actionCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 	
-	@Value( "${app.smartspace}" )
+	@Value( "${smartspace.name}" )
 	private String appSmartspace;
 
 	/**

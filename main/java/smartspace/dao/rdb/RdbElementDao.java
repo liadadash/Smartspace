@@ -18,7 +18,7 @@ public class RdbElementDao implements ElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 	
-	@Value( "${app.smartspace}" )
+	@Value( "${smartspace.name}" )
 	private String appSmartspace;
 
 	/**
