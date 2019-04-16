@@ -6,6 +6,7 @@ package smartspace.dao;
 import java.util.List;
 
 import smartspace.data.ElementEntity;
+import smartspace.data.UserEntity;
 
 /**
  * The Interface EnhancedElementDao.
@@ -16,13 +17,19 @@ import smartspace.data.ElementEntity;
 public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 
 	/**
-	 * Read all.
+	 * Read all with paging.
 	 *
 	 * @param size the size
 	 * @param page the page
 	 * @return the list
 	 */
-	public List<ElementEntity> readAll(int size, int page);
-	//TODO add import option
+	public List<ElementEntity> readAllWithPaging(int size, int page);
+
+	/**
+	 * Import elements.
+	 *
+	 * @param elements the elements
+	 */
+	public void importElements(ElementEntity[] elements);
 
 }

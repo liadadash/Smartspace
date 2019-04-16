@@ -9,15 +9,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import smartspace.dao.ActionDao;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ActionKey;
+import smartspace.data.ElementKey;
 
 @Repository
 public class RdbActionDao implements EnhancedActionDao {
 	private ActionCrud actionCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
+
+	/** The element CRUD in order to check if the import action has the element. */
+	private ElementCrud elementCrud;
 
 	@Value("${smartspace.name}")
 	private String appSmartspace;
@@ -32,6 +35,15 @@ public class RdbActionDao implements EnhancedActionDao {
 		super();
 		this.actionCrud = actionCrud;
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+	}
+
+	/**
+	 * Sets the element crud.
+	 *
+	 * @param elementCrud the elementCrud to set
+	 */
+	public void setElementCrud(ElementCrud elementCrud) {
+		this.elementCrud = elementCrud;
 	}
 
 	@Override
@@ -73,8 +85,23 @@ public class RdbActionDao implements EnhancedActionDao {
 	 * @return the list
 	 */
 	@Override
-	public List<ActionEntity> readAll(int size, int page) {
+	public List<ActionEntity> readAllWithPaging(int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent();
+	}
+
+	/**
+	 * Import actions.
+	 *
+	 * @param actions the actions
+	 */
+	@Override
+	@Transactional
+	public void importActions(ActionEntity[] actions) {
+		for (ActionEntity action : actions) {
+			elementCrud.findById(new ElementKey(action.getActionSmartspace(), Long.parseLong(action.getActionId())))
+					.orElseThrow(() -> new RuntimeException("could not find element that the action is on"));
+			this.actionCrud.save(action);
+		}
 	}
 
 }
