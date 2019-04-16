@@ -15,13 +15,19 @@ import smartspace.data.ActionEntity;
 public interface EnhancedActionDao extends ActionDao {
 
 	/**
-	 * Read all.
+	 * Read all with paging.
 	 *
 	 * @param size the size
 	 * @param page the page
 	 * @return the list
 	 */
-	public List<ActionEntity> readAll(int size, int page);
-	//TODO add import option
+	public List<ActionEntity> readAllWithPaging(int size, int page);
+
+	/**
+	 * Import actions.
+	 *
+	 * @param actions the actions
+	 */
+	public void importActions(ActionEntity[] actions);
 
 }

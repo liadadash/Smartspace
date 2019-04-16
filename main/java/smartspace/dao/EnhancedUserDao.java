@@ -16,13 +16,18 @@ import smartspace.data.UserEntity;
 public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 
 	/**
-	 * Read all.
+	 * Read all with paging.
 	 *
 	 * @param size the size
 	 * @param page the page
 	 * @return the list
 	 */
-	public List<UserEntity> readAll(int size, int page);
+	public List<UserEntity> readAllWithPaging(int size, int page);
 	
-	//TODO add import option
+	/**
+	 * Import users.
+	 *
+	 * @param users the users
+	 */
+	public void importUsers(UserEntity[] users);
 }
