@@ -15,6 +15,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ElementKey implements Comparable<ElementKey>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7389707561930769755L;
+
 	/** The element smartspace. */
 	private String elementSmartspace;
 	

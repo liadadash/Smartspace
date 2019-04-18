@@ -35,9 +35,11 @@ public class ElementBoundary {
 		this.creator.put("email", entity.getCreatorEmail());
 		this.creator.put("smartspace", entity.getCreatorSmartspace());
 		
-		this.latlng = new TreeMap<String, Double>();
-		this.latlng.put("lat", entity.getLocation().getX());
-		this.latlng.put("lng", entity.getLocation().getY());
+		if (entity.getLocation() != null) {
+			this.latlng = new TreeMap<String, Double>();
+			this.latlng.put("lat", entity.getLocation().getX());
+			this.latlng.put("lng", entity.getLocation().getY());
+		}
 		
 		this.elementProperties = entity.getMoreAttributes();
 	}

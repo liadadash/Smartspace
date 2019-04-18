@@ -14,6 +14,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class ActionKey implements Comparable<ActionKey>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8226215253488114082L;
+
 	/** The action smartspace. */
 	private String actionSmartspace;
 	

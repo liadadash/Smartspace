@@ -37,7 +37,8 @@ public class ElementController {
 		List<ElementEntity> entities = Stream.of(boundaryElements).map(ElementBoundary::convertToEntity).collect(Collectors.toList());
 		
 		// import the elements
-		return this.elementService.importElements(entities, adminSmartspace, adminEmail).toArray(new ElementBoundary[0]);
+		return this.elementService.importElements(entities, adminSmartspace, adminEmail).stream()
+				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 	}
 
 	@RequestMapping(
@@ -51,6 +52,7 @@ public class ElementController {
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		
-		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail).toArray(new ElementBoundary[0]);
+		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
+				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 	}
 }
