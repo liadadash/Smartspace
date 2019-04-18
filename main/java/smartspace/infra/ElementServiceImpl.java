@@ -35,8 +35,10 @@ public class ElementServiceImpl implements ElementService {
 			throw new RuntimeException("this user is not allowed to import elements");
 		}
 
+		// check that all elements are valid
 		boolean allValid = entities.stream().allMatch(this::valiadate);
 
+		// if all valid save to database
 		if (allValid) {
 			return entities.stream().map(this.elementDao::importElement).collect(Collectors.toList());
 		} else {

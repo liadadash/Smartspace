@@ -31,12 +31,12 @@ public class ElementController {
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	
-	public ElementBoundary[] newMessage (@RequestBody ElementBoundary[] boundaryElements, @PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
+	public ElementBoundary[] newElement (@RequestBody ElementBoundary[] boundaryElements, @PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
 		
 		// convert ElementBoundary Array to ElementEntity List.
 		List<ElementEntity> entities = Stream.of(boundaryElements).map(ElementBoundary::convertToEntity).collect(Collectors.toList());
 		
-		// import the elements
+		// import the elements, converts response back to Boundary Array.
 		return this.elementService.importElements(entities, adminSmartspace, adminEmail).stream()
 				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 	}
@@ -52,6 +52,7 @@ public class ElementController {
 			@RequestParam(name="size", required=false, defaultValue="10") int size,
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		
+		// convert the Entity List to Boundary Array
 		return this.elementService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
 				.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 	}

@@ -21,6 +21,7 @@ public class ElementBoundary {
 	public ElementBoundary() {
 	}
 
+	// convert ElementEntity to ElementBoundary
 	public ElementBoundary(ElementEntity entity) {
 		this.key = new TreeMap<String, String>();
 		this.key.put("id", entity.getElementId());
@@ -31,6 +32,7 @@ public class ElementBoundary {
 		this.expired = entity.getExpired();
 		this.created = entity.getCreationTimestamp();
 		
+		// TreeMap put order is important and decides the order in the JSON file
 		this.creator = new TreeMap<String, String>();
 		this.creator.put("email", entity.getCreatorEmail());
 		this.creator.put("smartspace", entity.getCreatorSmartspace());
@@ -111,10 +113,7 @@ public class ElementBoundary {
 	public ElementEntity convertToEntity() {
 		ElementEntity entity = new ElementEntity();
 		
-		// need to check for nulls where it can happen like
-		////		if (this.key != null) { give default value 
-		
-		// need to check parse long exception
+		// check that TreeMap is not null and contains the required keys
 		if (this.key != null && this.key.get("smartspace") != null && this.key.get("id") != null) {
 			entity.setKey(new ElementKey(this.key.get("smartspace"), Long.parseLong(this.key.get("id"))));
 		}
@@ -124,11 +123,13 @@ public class ElementBoundary {
 		entity.setExpired(this.expired);
 		entity.setCreationTimestamp(this.created);
 		
+		// check that TreeMap is not null and contains the required keys
 		if (this.creator != null && this.creator.get("email") != null && this.creator.get("smartspace") != null) {
 			entity.setCreatorEmail(this.creator.get("email"));
 			entity.setCreatorSmartspace(this.creator.get("smartspace"));
 		}
 		
+		// check that TreeMap is not null and contains the required keys
 		if (this.latlng != null && this.latlng.get("lat") != null && this.latlng.get("lng") != null) {
 			entity.setLocation(new Location(this.latlng.get("lat"), this.latlng.get("lng")));
 		}
