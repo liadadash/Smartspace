@@ -9,9 +9,8 @@ import smartspace.data.UserRole;
 
 public class UserBoundary {
 	private Map<String, String> key;
-	private UserRole role;
+	private String role;
 	private String username;
-
 	private String avatar;
 	private long points;
 
@@ -24,17 +23,10 @@ public class UserBoundary {
 		this.key.put("smartspace", entity.getUserSmartspace());
 		this.key.put("email", entity.getUserEmail());
 
-		this.role = entity.getRole();
+		this.role = entity.getRole().toString();
 		this.username = entity.getUsername();
 		this.avatar = entity.getAvatar();
 		this.points = entity.getPoints();
-
-		// TreeMap put order is important and decides the order in the JSON file
-
-		this.key = new TreeMap<String, String>();
-		this.key.put("smartspace", entity.getUserSmartspace());
-		this.key.put("email", entity.getUserEmail());
-
 	}
 
 	public Map<String, String> getKey() {
@@ -45,11 +37,11 @@ public class UserBoundary {
 		this.key = key;
 	}
 
-	public UserRole getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(UserRole role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -86,17 +78,10 @@ public class UserBoundary {
 		}
 		entity.setAvatar(this.avatar);
 		entity.setPoints(this.points);
-		entity.setRole(this.role);
+		entity.setRole(UserRole.valueOf(this.role));
 		entity.setUserSmartspace(this.key.get("smartspace"));
 		entity.setUserEmail(this.key.get("email"));
 		entity.setUsername(this.username);
-
-		// check that TreeMap is not null and contains the required keys
-
-		if (this.key != null && this.key.get("email") != null && this.key.get("smartspace") != null) {
-			entity.setUserSmartspace(this.key.get("smartspace"));
-			entity.setUserEmail(this.key.get("email"));
-		}
 
 		return entity;
 	}
