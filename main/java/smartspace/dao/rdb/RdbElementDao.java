@@ -3,7 +3,6 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -129,14 +128,15 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	}
 
 	/**
-	 * Import elements.
+	 * Import element.
 	 *
-	 * @param elements the elements
+	 * @param element the element
+	 * @return the element entity
 	 */
 	@Override
 	@Transactional
-	public void importElements(ElementEntity[] elements) {
-		Stream.of(elements).map(this.elementCrud::save);
+	public ElementEntity importElement(ElementEntity element) {
+		return this.elementCrud.save(element);
 	}
 
 }

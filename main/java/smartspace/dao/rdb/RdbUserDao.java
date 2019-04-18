@@ -3,7 +3,6 @@ package smartspace.dao.rdb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -104,14 +103,15 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	}
 
 	/**
-	 * Import users.
+	 * Import user.
 	 *
-	 * @param users the users
+	 * @param user the user
+	 * @return the user entity
 	 */
 	@Override
 	@Transactional
-	public void importUsers(UserEntity[] users) {
-		Stream.of(users).map(this.userCrud::save);
+	public UserEntity importUser(UserEntity user) {
+		return this.userCrud.save(user);
 	}
 
 }
