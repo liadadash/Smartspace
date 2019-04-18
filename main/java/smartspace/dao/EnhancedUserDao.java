@@ -6,6 +6,7 @@ package smartspace.dao;
 import java.util.List;
 
 import smartspace.data.UserEntity;
+import smartspace.data.UserKey;
 
 /**
  * The Interface EnhancedUserDao.
@@ -32,4 +33,7 @@ public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 	 * @return the user entity
 	 */
 	public UserEntity importUser(UserEntity user);
+	
+	// check if user is admin
+	public boolean userIsAdmin(UserKey userKey);
 }

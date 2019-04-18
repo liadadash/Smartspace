@@ -14,6 +14,11 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class UserKey implements Comparable<UserKey>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5515382757785840596L;
+
 	/** The user smartspace. */
 	private String userSmartspace;
 	
