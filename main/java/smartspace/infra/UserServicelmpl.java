@@ -25,7 +25,7 @@ public class UserServicelmpl implements UserService {
 	public List<UserEntity> importUsers(List<UserEntity> entities, String adminSmartspace, String adminEmail) {
 		// check if user is ADMIN
 		if (!userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
-			throw new RuntimeException("This user not allowed to improt users");
+			throw new RuntimeException("This user not allowed to import users");
 		}
 		// check that all users are valid
 		boolean isAllUsersValid = entities.stream().allMatch(this ::valiadate);
@@ -33,7 +33,7 @@ public class UserServicelmpl implements UserService {
 		if(isAllUsersValid) 
 			return entities.stream().map(this.userDao :: importUser).collect(Collectors.toList());
 		else
-			throw new RuntimeException("One or more uers are invalide");
+			throw new RuntimeException("One or more users are invalid");
 		
 	}
 
@@ -49,9 +49,7 @@ public class UserServicelmpl implements UserService {
 
 	private boolean valiadate(UserEntity user) {
 		return !user.getKey().getUserSmartspace().equals(appSmartspace) && user.getUsername() != null
-				&& user.getUsername().trim().isEmpty() && user.getAvatar() != null && user.getAvatar().trim().isEmpty()
+				&& !user.getUsername().trim().isEmpty() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty()
 				&& user.getRole() != null;
-
 	}
-
 }
