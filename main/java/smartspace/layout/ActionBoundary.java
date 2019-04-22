@@ -9,10 +9,10 @@ import smartspace.data.ActionKey;
 
 public class ActionBoundary {
 	private Map<String,String> actionKey;
-	private Map<String,String> element;
-	private Map<String,String> player;
 	private String type;
 	private Date created;
+	private Map<String,String> element;
+	private Map<String,String> player;
 	private Map<String, Object> properties;
 
 	
@@ -25,6 +25,10 @@ public class ActionBoundary {
 		this.actionKey.put("id", entity.getActionId());
 		this.actionKey.put("smartspace", entity.getActionSmartspace());
 		
+		this.type = entity.getActionType();
+		
+		this.created = entity.getCreationTimestamp();
+		
 		this.element = new TreeMap<String, String>();
 		this.element.put("smartspace",entity.getElementSmartspace());
 		this.element.put("id",entity.getElementId());
@@ -33,9 +37,6 @@ public class ActionBoundary {
 		this.player.put("smartspace",entity.getPlayerSmartspace());
 		this.player.put("email",entity.getPlayerEmail());
 
-		this.type = entity.getActionType();
-		
-		this.created = entity.getCreationTimestamp();
 		
 		this.properties = entity.getMoreAttributes();
 		
