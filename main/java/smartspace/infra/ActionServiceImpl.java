@@ -8,22 +8,26 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import smartspace.dao.EnhancedActionDao;
+import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementKey;
 import smartspace.data.UserKey;
 
 @Service
 public class ActionServiceImpl implements ActionService {
 	private EnhancedActionDao actionDao;
 	private EnhancedUserDao<UserKey> userDao; // used for admin check
+	private EnhancedElementDao<ElementKey> elementDao; // used to check that action's element was imported before action
 
 	@Value("${smartspace.name}")
 	private String appSmartspace;
 	
 	@Autowired
-	public ActionServiceImpl(EnhancedActionDao actionDao,EnhancedUserDao<UserKey> userDao) {
+	public ActionServiceImpl(EnhancedActionDao actionDao,EnhancedUserDao<UserKey> userDao, EnhancedElementDao<ElementKey> elementDao) {
 		this.actionDao=actionDao;
 		this.userDao=userDao;
+		this.elementDao = elementDao;
 	}
 	
 	
@@ -33,15 +37,16 @@ public class ActionServiceImpl implements ActionService {
 		if(!this.userDao.userIsAdmin(new UserKey(adminSmartspace,adminEmail))) {
 			throw new RuntimeException("this user is not allowed to import actions");
 		}
+		
 		// check that all elements are valid
 		boolean allValid = entities.stream().allMatch(this::valiadate);
 		
 		// if all valid save to database
 		if(allValid) {
 			return entities.stream().map(this.actionDao::importAction).collect(Collectors.toList());
-		}
-		else
+		} else {
 			throw new RuntimeException("one or more of the given Actions are invalid");
+		}
 
 		
 	}
@@ -57,7 +62,8 @@ public class ActionServiceImpl implements ActionService {
 	}
 	
 	private boolean valiadate(ActionEntity entity) {
-		return !entity.getActionSmartspace().equals(appSmartspace) 
+		boolean actionIsValid = (entity.getActionSmartspace() != null
+				&& !entity.getActionSmartspace().equals(appSmartspace) 
 				&& notEmpty(entity.getActionId())
 				&& entity.getCreationTimestamp() != null
 				&& notEmpty(entity.getElementId())
@@ -67,9 +73,17 @@ public class ActionServiceImpl implements ActionService {
 				&& notEmpty(entity.getActionType())
 				&& entity.getKey() != null
 				&& notEmpty(entity.getKey().getActionSmartspace())
-				&& notEmpty(entity.getActionType())
-				&& entity.getMoreAttributes() != null;
+				&& entity.getMoreAttributes() != null);
+		
+		// important, the action's element needs to be in the database (must import elements before actions)
+		if (actionIsValid) {
+			Long elementId = Long.parseLong(entity.getElementId());
+			return elementDao.readById(new ElementKey(entity.getElementSmartspace(), elementId)).isPresent(); // return if element exists
+		}
+		
+		return actionIsValid; // data is not valid return false
 	}
+	
 	private boolean notEmpty(String str) {
 		return (str != null && !str.trim().isEmpty());
 	}
