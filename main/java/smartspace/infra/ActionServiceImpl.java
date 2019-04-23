@@ -24,7 +24,7 @@ public class ActionServiceImpl implements ActionService {
 	private String appSmartspace;
 	
 	@Autowired
-	public ActionServiceImpl(EnhancedActionDao actionDao,EnhancedUserDao<UserKey> userDao, EnhancedElementDao<ElementKey> elementDao) {
+	public ActionServiceImpl(EnhancedActionDao actionDao, EnhancedUserDao<UserKey> userDao, EnhancedElementDao<ElementKey> elementDao) {
 		this.actionDao=actionDao;
 		this.userDao=userDao;
 		this.elementDao = elementDao;
@@ -75,13 +75,14 @@ public class ActionServiceImpl implements ActionService {
 				&& notEmpty(entity.getKey().getActionSmartspace())
 				&& entity.getMoreAttributes() != null);
 		
-		// important, the action's element needs to be in the database (must import elements before actions)
-		if (actionIsValid) {
-			Long elementId = Long.parseLong(entity.getElementId());
-			return elementDao.readById(new ElementKey(entity.getElementSmartspace(), elementId)).isPresent(); // return if element exists
+		// return false when action data is invalid
+		if (!actionIsValid) {
+			return false;
 		}
 		
-		return actionIsValid; // data is not valid return false
+		// data is valid -> the action's element needs to be in the database (must import elements before actions)
+		Long elementId = Long.parseLong(entity.getElementId());
+		return elementDao.readById(new ElementKey(entity.getElementSmartspace(), elementId)).isPresent(); // return if element exists
 	}
 	
 	private boolean notEmpty(String str) {
