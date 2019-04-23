@@ -12,7 +12,7 @@ public class UserBoundary {
 	private String role;
 	private String username;
 	private String avatar;
-	private long points;
+	private Long points;
 
 	public UserBoundary() {
 	}
@@ -61,11 +61,11 @@ public class UserBoundary {
 		this.avatar = avatar;
 	}
 
-	public long getPoints() {
+	public Long getPoints() {
 		return points;
 	}
 
-	public void setPoints(long points) {
+	public void setPoints(Long points) {
 		this.points = points;
 	}
 
@@ -76,12 +76,16 @@ public class UserBoundary {
 		if (this.key != null && this.key.get("smartspace") != null && this.key.get("email") != null) {
 			entity.setKey(new UserKey(this.key.get("smartspace"), this.key.get("email")));
 		}
-		entity.setAvatar(this.avatar);
-		entity.setPoints(this.points);
+
 		entity.setRole(UserRole.valueOf(this.role));
-		entity.setUserSmartspace(this.key.get("smartspace"));
-		entity.setUserEmail(this.key.get("email"));
 		entity.setUsername(this.username);
+		entity.setAvatar(this.avatar);
+
+		if (this.points != null) {
+			entity.setPoints(this.points);
+		} else {
+			entity.setPoints(0);
+		}
 
 		return entity;
 	}

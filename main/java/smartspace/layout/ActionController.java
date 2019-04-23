@@ -29,15 +29,15 @@ public class ActionController {
 			method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary[] newAction (@RequestBody ActionBoundary[] boundaryActions,@PathVariable("adminSmartspace") String adminSmartspace,
-		@PathVariable("adminEmail") String adminEmail) {
+	
+	public ActionBoundary[] newAction (@RequestBody ActionBoundary[] boundaryActions,@PathVariable("adminSmartspace") String adminSmartspace, @PathVariable("adminEmail") String adminEmail) {
 
 		// convert ActionsBoundary Array to ActionsEntity List.
 		List<ActionEntity> entities = Stream.of(boundaryActions).map(ActionBoundary::convertToEntity).collect(Collectors.toList());
 		
 		// import the actions, converts response back to Boundary Array.
-				return this.actionService.importActions(entities, adminSmartspace, adminEmail).stream()
-						.map(ActionBoundary::new).collect(Collectors.toList()).toArray(new ActionBoundary[0]);
+		return this.actionService.importActions(entities, adminSmartspace, adminEmail).stream()
+				.map(ActionBoundary::new).collect(Collectors.toList()).toArray(new ActionBoundary[0]);
 			
 	}
 	
@@ -45,7 +45,9 @@ public class ActionController {
 			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ActionBoundary[] getUsingPagination(@PathVariable("adminSmartspace") String adminSmartspace,
+	
+	public ActionBoundary[] getUsingPagination(
+			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
 			@RequestParam(name="size" , required = false ,defaultValue = "10")int size,
 			@RequestParam(name = "page" , required = false ,defaultValue ="0") int page) {
