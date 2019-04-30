@@ -90,4 +90,9 @@ public class UserBoundary {
 		return entity;
 	}
 
+	@Override
+	public String toString() {
+		return "UserBoundary [key=" + key + ", role=" + role + ", username=" + username + ", avatar=" + avatar
+				+ ", points=" + points + "]";
+	}
 }

@@ -143,4 +143,10 @@ public class ElementBoundary {
 		return entity;
 	}
 
+	@Override
+	public String toString() {
+		return "ElementBoundary [key=" + key + ", elementType=" + elementType + ", name=" + name + ", expired="
+				+ expired + ", created=" + created + ", creator=" + creator + ", latlng=" + latlng
+				+ ", elementProperties=" + elementProperties + "]";
+	}
 }
