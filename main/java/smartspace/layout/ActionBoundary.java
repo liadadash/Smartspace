@@ -117,4 +117,9 @@ public class ActionBoundary {
 		return entity;
 	}
 
+	@Override
+	public String toString() {
+		return "ActionBoundary [actionKey=" + actionKey + ", type=" + type + ", created=" + created + ", element="
+				+ element + ", player=" + player + ", properties=" + properties + "]";
+	}
 }

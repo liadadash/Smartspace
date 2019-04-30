@@ -117,18 +117,13 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 
 	@Override
 	public boolean userIsAdmin(UserKey userKey) {
-		
 		// TODO: Make sure admin email check is case insensitive 
-		
-		/* disabled until we have ADMIN users in database
 		Optional<UserEntity> userData = this.readById(userKey);
 		if (userData.isPresent()) {
 			return (userData.get().getRole() == UserRole.ADMIN);
 		}
 		
-		return false; */
-		
-		return true; // temporary always return true for testing purpose
+		return false;
 	}
 
 }
