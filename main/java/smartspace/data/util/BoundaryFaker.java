@@ -15,9 +15,6 @@ import smartspace.layout.ElementBoundary;
 import smartspace.layout.UserBoundary;
 
 public class BoundaryFaker {
-	
-	private static String[] elementTypes = {"list", "item", "category"};
-	private static String[] actionTypes = {"add_item", "remove_item", "update", "move_item", "rename", "restore_item"};
 
 	private Random random;
 	private Faker faker;
