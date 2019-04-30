@@ -63,7 +63,6 @@ public class Faker {
 	}
 	
 	public Map<String, Object> generateMap(boolean allowMap) {
-		
 		Map<String, Object> map = new TreeMap<>();
 		
 		if (diceThrow(0.5)) {
@@ -94,6 +93,7 @@ public class Faker {
 		if (allowMap && diceThrow(0.3)) {
 			map.put("json", generateMap(false));
 		}
+		
 		return map;
 	}
 	
@@ -103,17 +103,17 @@ public class Faker {
 		if (chance <= successProb) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public Long generateId() {
 		Long id = this.nextID;
 		this.nextID = this.nextID + generateNumber(1, 10);
-		
+
 		return id;
 	}
-	
+
 	public <T extends Enum<?>> T randomEnum(Class<T> clazz) {
 		int x = random.nextInt(clazz.getEnumConstants().length);
 		return clazz.getEnumConstants()[x];
