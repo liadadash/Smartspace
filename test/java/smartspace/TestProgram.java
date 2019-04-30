@@ -15,21 +15,21 @@ public class TestProgram {
 		
 		Faker faker = new Faker();
 	
-		// create fake element entities
+		// # ----------------  create fake element entities ---------------- #
 		ElementEntity entity1 = faker.entity().element();
 		ElementEntity entity2 = faker.entity().element(new ElementKey("Smartspace12", 15)); // choose a specific key
-		List<ElementEntity> elements1 = faker.entity().elementList(3);
-		ElementEntity[] elements2 = faker.entity().elementArray(2);
+		List<ElementEntity> elements1 = faker.entity().elementList(3); 	// list of 3 elements
+		ElementEntity[] elements2 = faker.entity().elementArray(2);		// array of 2 elements
 		
 		// create fake element boundary
 		ElementBoundary boundary1 = faker.boundary().element();
 		List<ElementBoundary> elements3 = faker.boundary().elementList(2);
 		
-		// create fake users
-		UserEntity user1 = faker.entity().user();
-		List<UserEntity> users = faker.entity().userList(3);
+		// # ---------------------- create fake users ---------------------- #
+		UserEntity user1 = faker.entity().user();				// get fake user
+		List<UserEntity> users = faker.entity().userList(3); 	// get list of 3 fake users
 		
-		// create fake actions (on existing elements)
+		// # --------  create fake actions (on existing elements)  --------- #
 		ActionEntity action1 = faker.entity().action(entity1);
 		List<ActionEntity> actions1 = faker.entity().actionList(elements1, 3);
 		List<ActionEntity> actions2 = faker.entity().actionList(elements2, 3);
