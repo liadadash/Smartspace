@@ -54,16 +54,16 @@ public class ElementServiceImpl implements ElementService {
 			throw new RuntimeException("this user is not allowed to import elements");
 		}
 
-		return this.elementDao.readAllWithPaging(size, page).stream().collect(Collectors.toList());
+		return this.elementDao.readAllWithPaging(size, page);
 	}
 
 	private boolean valiadate(ElementEntity entity) {
-		return !entity.getElementSmartspace().equals(appSmartspace) && entity.getCreationTimestamp() != null
-				&& notEmpty(entity.getCreatorEmail()) && notEmpty(entity.getElementId())
-				&& notEmpty(entity.getElementSmartspace()) && notEmpty(entity.getName())
-				&& notEmpty(entity.getType()) && entity.getKey() != null
-				&& notEmpty(entity.getKey().getElementSmartspace()) && entity.getLocation() != null
-				&& entity.getMoreAttributes() != null;
+		return entity.getElementSmartspace() != null && !entity.getElementSmartspace().equals(appSmartspace) 
+				&& entity.getCreationTimestamp() != null && notEmpty(entity.getCreatorEmail()) 
+				&& notEmpty(entity.getElementId()) && notEmpty(entity.getElementSmartspace()) 
+				&& notEmpty(entity.getName()) && notEmpty(entity.getType()) 
+				&& entity.getKey() != null && notEmpty(entity.getKey().getElementSmartspace()) 
+				&& entity.getLocation() != null && entity.getMoreAttributes() != null;
 	}
 	
 	private boolean notEmpty(String str) {
