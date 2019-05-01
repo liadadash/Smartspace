@@ -19,7 +19,7 @@ import smartspace.data.Location;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties= {"spring.profiles.active=default"})
+@TestPropertySource(properties= {"spring.profiles.active=default, test"})
 public class MemoryElementDaoUnitTests {
 
 	@Test
