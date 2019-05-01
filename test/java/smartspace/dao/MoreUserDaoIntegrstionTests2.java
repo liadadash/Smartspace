@@ -17,7 +17,7 @@ import smartspace.data.util.EntityFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.profiles.active=default" })
+@TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class MoreUserDaoIntegrstionTests2 {
 
 	private EnhancedUserDao<UserKey> userDao;
@@ -37,9 +37,19 @@ public class MoreUserDaoIntegrstionTests2 {
 	public void teardown() {
 		this.userDao.deleteAll();
 	}
-
+	
 	@Test
 	public void testReadAllWithPaginationOfEmptyDB() throws Exception {
+		// GIVEN the database is empty
+
+		// WHEN I read first 10 users
+		List<UserEntity> result = this.userDao.readAllWithPaging(10, 0);
+		// THEN I receive no results
+		assertThat(result).hasSize(0).isEmpty();
+	}
+
+	@Test
+	public void testReadAllWithPaginationOfEmptyDB2() throws Exception {
 		// GIVEN the database is empty
 
 		// WHEN I read 10 users after skipping first 10 users

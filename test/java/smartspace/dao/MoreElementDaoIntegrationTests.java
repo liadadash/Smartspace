@@ -22,7 +22,7 @@ import smartspace.data.util.EntityFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.profiles.active=default" })
+@TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class MoreElementDaoIntegrationTests {
 
 	private EnhancedElementDao<ElementKey> elementDao;
@@ -42,9 +42,19 @@ public class MoreElementDaoIntegrationTests {
 	public void teardown() {
 		this.elementDao.deleteAll();
 	}
-
+	
 	@Test
 	public void testReadAllWithPaginationOfEmptyDB() throws Exception {
+		// GIVEN the database is empty
+
+		// WHEN I read 10 elements after skipping first 10 elements
+		List<ElementEntity> result = this.elementDao.readAllWithPaging(10, 0);
+		// THEN I receive no results
+		assertThat(result).hasSize(0).isEmpty();
+	}
+
+	@Test
+	public void testReadAllWithPaginationOfEmptyDB2() throws Exception {
 		// GIVEN the database is empty
 
 		// WHEN I read 10 elements after skipping first 10 elements

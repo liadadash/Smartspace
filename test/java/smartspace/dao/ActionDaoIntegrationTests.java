@@ -19,7 +19,7 @@ import smartspace.data.util.EntityFactoryImpl;
 // Amit 22/3
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.profiles.active=default" })
+@TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class ActionDaoIntegrationTests {
 
 	private ActionDao dao;

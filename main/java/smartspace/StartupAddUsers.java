@@ -3,7 +3,7 @@ package smartspace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.UserDao;
@@ -13,7 +13,7 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 
 @Component
-// @Profile("production")
+@Profile("!test")
 public class StartupAddUsers implements CommandLineRunner {
 	private UserDao<UserKey> dao;
 
