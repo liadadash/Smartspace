@@ -25,6 +25,8 @@ public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 	 */
 	public List<UserEntity> readAllWithPaging(int size, int page);
 	
+	public List<UserEntity> readAllWithPaging(String sortBy,int size, int page);
+	
 
 	/**
 	 * Import user.

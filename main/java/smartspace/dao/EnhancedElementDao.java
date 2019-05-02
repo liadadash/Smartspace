@@ -24,7 +24,6 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 	 */
 	public List<ElementEntity> readAllWithPaging(int size, int page);
 
-
 	/**
 	 * Import element.
 	 *
@@ -32,5 +31,7 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 	 * @return the element entity
 	 */
 	public ElementEntity importElement(ElementEntity element);
+
+	List<ElementEntity> readAllWithPaging(String sortBy, int size, int page);
 
 }

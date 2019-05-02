@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,6 +104,13 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 		return this.userCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<UserEntity> readAllWithPaging(String sortBy, int size, int page) {
+		return this.userCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
+
+	}
+
 	/**
 	 * Import user.
 	 *
@@ -112,7 +120,10 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	@Override
 	@Transactional
 	public UserEntity importUser(UserEntity user) {
-		return this.userCrud.save(user);
+		if (user.getKey() != null) {
+			return this.userCrud.save(user);
+		}
+		return null;
 	}
 
 	@Override
