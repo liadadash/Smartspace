@@ -119,7 +119,10 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	@Override
 	@Transactional
 	public UserEntity importUser(UserEntity user) {
-		return this.userCrud.save(user);
+		if (user.getKey() != null) {
+			return this.userCrud.save(user);
+		}
+		return null;
 	}
 
 	@Override

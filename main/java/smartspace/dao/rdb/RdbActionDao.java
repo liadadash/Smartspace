@@ -78,8 +78,8 @@ public class RdbActionDao implements EnhancedActionDao {
 	}
 
 	@Override
-	public List<ActionEntity> readAllWithPaging(String sortBy,int size, int page) {
-		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();		
+	public List<ActionEntity> readAllWithPaging(String sortBy, int size, int page) {
+		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
 
 	/**
@@ -91,7 +91,9 @@ public class RdbActionDao implements EnhancedActionDao {
 	@Override
 	@Transactional
 	public ActionEntity importAction(ActionEntity action) {
-		return this.actionCrud.save(action);
+		if (action.getKey() != null) {
+			return this.actionCrud.save(action);
+		}
+		return null;
 	}
-
 }

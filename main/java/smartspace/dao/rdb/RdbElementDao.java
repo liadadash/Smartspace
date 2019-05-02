@@ -135,15 +135,17 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @return the element entity
 	 */
 	@Override
-	public List<ElementEntity> readAllWithPaging(String sortBy,int size, int page) {
+	public List<ElementEntity> readAllWithPaging(String sortBy, int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
 
-	
 	@Override
 	@Transactional
 	public ElementEntity importElement(ElementEntity element) {
-		return this.elementCrud.save(element);
+		if (element.getKey() != null) {
+			return this.elementCrud.save(element);
+		}
+		return null;
 	}
 
 }
