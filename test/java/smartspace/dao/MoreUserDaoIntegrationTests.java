@@ -24,7 +24,7 @@ import smartspace.data.util.EntityFactory;
 //nofar
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties= {"spring.profiles.active=default"})
+@TestPropertySource(properties= {"spring.profiles.active=default, test"})
 public class MoreUserDaoIntegrationTests {
 	
 	private UserDao<UserKey> dao;

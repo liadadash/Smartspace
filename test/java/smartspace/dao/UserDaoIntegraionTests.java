@@ -20,7 +20,7 @@ import smartspace.data.util.EntityFactory;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.profiles.active=default" })
+@TestPropertySource(properties = { "spring.profiles.active=default, test" })
 
 //aviel
 public class UserDaoIntegraionTests {
