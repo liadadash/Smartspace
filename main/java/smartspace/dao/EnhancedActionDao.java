@@ -23,7 +23,6 @@ public interface EnhancedActionDao extends ActionDao {
 	 */
 	public List<ActionEntity> readAllWithPaging(int size, int page);
 
-
 	/**
 	 * Import action.
 	 *
@@ -31,5 +30,7 @@ public interface EnhancedActionDao extends ActionDao {
 	 * @return the action entity
 	 */
 	public ActionEntity importAction(ActionEntity action);
+
+	List<ActionEntity> readAllWithPaging(String sortBy, int size, int page);
 
 }

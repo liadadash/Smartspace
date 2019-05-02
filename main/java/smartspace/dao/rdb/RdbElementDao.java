@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -133,6 +134,12 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @param element the element
 	 * @return the element entity
 	 */
+	@Override
+	public List<ElementEntity> readAllWithPaging(String sortBy,int size, int page) {
+		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
+	}
+
+	
 	@Override
 	@Transactional
 	public ElementEntity importElement(ElementEntity element) {

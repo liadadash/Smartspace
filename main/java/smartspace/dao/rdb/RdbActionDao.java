@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ActionKey;
+import org.springframework.data.domain.Sort.Direction;
 
 @Repository
 public class RdbActionDao implements EnhancedActionDao {
@@ -74,6 +75,11 @@ public class RdbActionDao implements EnhancedActionDao {
 	@Override
 	public List<ActionEntity> readAllWithPaging(int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent();
+	}
+
+	@Override
+	public List<ActionEntity> readAllWithPaging(String sortBy,int size, int page) {
+		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();		
 	}
 
 	/**
