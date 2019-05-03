@@ -145,7 +145,7 @@ public class ActionControllerIntegrationTests {
 		this.restTemplate.postForObject(this.baseUrl, action, ActionBoundary[].class, admin.getUserSmartspace(),
 				admin.getUserEmail());
 
-		// THEN the database contains a single action
+		// THEN the database contains no actions (there was an exception)
 		assertThat(this.actionDao.readAll()).hasSize(0);
 
 	}
@@ -162,19 +162,39 @@ public class ActionControllerIntegrationTests {
 		ElementBoundary[] elementsNotInDB = this.faker.boundary().elementArray(1);
 
 		// WHEN i post new action that not match element in DB
-
 		ActionBoundary[] action = this.faker.boundary().actionArray(elementsNotInDB, 1);
 		this.restTemplate.postForObject(this.baseUrl, action, ActionBoundary[].class, admin.getUserSmartspace(),
 				admin.getUserEmail());
 
-		// THEN the database contains a single action
+		// THEN the database contains no actions (there was an exception)
 		assertThat(this.actionDao.readAll()).hasSize(0);
+	}
+
+	@Test
+	public void testPostNewActionWhenNoElementsInDBTryCatch() throws Exception {
+		// GIVEN the database contain admin
+
+		UserEntity admin = this.faker.entity().user();
+		admin.setRole(UserRole.ADMIN);
+		this.userDao.create(admin);
+
+		// element not in id DB
+		ElementBoundary[] elementsNotInDB = this.faker.boundary().elementArray(1);
+
+		// when I create an action on an element that is not in the database and post it
+		try {
+			ActionBoundary[] action = this.faker.boundary().actionArray(elementsNotInDB, 1);
+			this.restTemplate.postForObject(this.baseUrl, action, ActionBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+		} catch (Exception e) {
+			// THEN there is an exception and the database contains no actions
+			assertThat(this.actionDao.readAll()).hasSize(0);
+		}
 
 	}
 
 	@Test(expected = Exception.class)
 	public void testPostNewActionWithPlayerRole() throws Exception {
-		// GIVEN the database contain admin and element
+		// GIVEN the database contain admin, player user and element
 
 		UserEntity admin = this.faker.entity().user();
 		admin.setRole(UserRole.ADMIN);
@@ -188,13 +208,12 @@ public class ActionControllerIntegrationTests {
 		this.restTemplate.postForObject(this.elementUrl, elements, ElementBoundary[].class, admin.getUserSmartspace(),
 				admin.getUserEmail());
 
-		// WHEN i post new action that not match element in DB
-
+		// WHEN I post new action via the non-admin user
 		ActionBoundary[] action = this.faker.boundary().actionArray(elements, 1);
 		this.restTemplate.postForObject(this.baseUrl, action, ActionBoundary[].class, player.getUserSmartspace(),
 				player.getUserEmail());
 
-		// THEN the database contains a single action
+		// THEN the database contains no actions (there was an exception)
 		assertThat(this.actionDao.readAll()).hasSize(0);
 
 	}
@@ -215,13 +234,13 @@ public class ActionControllerIntegrationTests {
 		this.restTemplate.postForObject(this.elementUrl, elements, ElementBoundary[].class, admin.getUserSmartspace(),
 				admin.getUserEmail());
 
-		// WHEN i post new action that not match element in DB
+		// WHEN I post new action via the manager user
 
 		ActionBoundary[] action = this.faker.boundary().actionArray(elements, 1);
 		this.restTemplate.postForObject(this.baseUrl, action, ActionBoundary[].class, manager.getUserSmartspace(),
 				manager.getUserEmail());
 
-		// THEN the database contains a single action
+		// THEN the database contains no actions (there was an exception)
 		assertThat(this.actionDao.readAll()).hasSize(0);
 
 	}
