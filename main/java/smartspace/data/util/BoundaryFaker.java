@@ -53,7 +53,7 @@ public class BoundaryFaker {
 	}
 
 	public UserBoundary[] userArray(int size) {
-		return elementList(size).toArray(new UserBoundary[0]);
+		return userList(size).toArray(new UserBoundary[0]);
 	}
 	
 	// actions are always performed on elements
@@ -84,13 +84,23 @@ public class BoundaryFaker {
 				.mapToObj(i -> action( elements[random.nextInt(elements.length)] ))
 				.collect(Collectors.toList());
 	}
+	
+	public List<ActionBoundary> actionList(ElementBoundary[] elements, int size) {
+		return IntStream.range(0, size)
+				.mapToObj(i -> action( elements[random.nextInt(elements.length)] ))
+				.collect(Collectors.toList());
+	}
 
-	public ActionEntity[] actionArray(List<ElementEntity> elements, int size) {
-		return actionList(elements, size).toArray(new ActionEntity[0]);
+	public ActionBoundary[] actionArray(List<ElementEntity> elements, int size) {
+		return actionList(elements, size).toArray(new ActionBoundary[0]);
 	}
 	
-	public ActionEntity[] actionArray(ElementEntity[] elements, int size) {
-		return actionList(elements, size).toArray(new ActionEntity[0]);
+	public ActionBoundary[] actionArray(ElementEntity[] elements, int size) {
+		return actionList(elements, size).toArray(new ActionBoundary[0]);
+	}
+	
+	public ActionBoundary[] actionArray(ElementBoundary[] elements, int size) {
+		return actionList(elements, size).toArray(new ActionBoundary[0]);
 	}
 
 }

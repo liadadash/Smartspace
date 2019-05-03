@@ -45,7 +45,6 @@ public class ActionController {
 			path="/smartspace/admin/actions/{adminSmartspace}/{adminEmail}",
 			method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	
 	public ActionBoundary[] getUsingPagination(
 			@PathVariable("adminSmartspace") String adminSmartspace,
 			@PathVariable("adminEmail") String adminEmail,
