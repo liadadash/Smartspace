@@ -69,6 +69,7 @@ public class ActionControllerIntegrationTests {
 	public void setActionService(ActionService actionService) {
 		this.actionService = actionService;
 	}
+
 	@Autowired
 	public void setElementService(ElementService elementService) {
 		this.elementService = elementService;
@@ -352,7 +353,7 @@ public class ActionControllerIntegrationTests {
 				manager.getUserSmartspace(), manager.getUserEmail(), 10, 0);
 
 	}
-	
+
 	@Test
 	public void testGetAllActionsUsingPaginationOfSecondNonExistingPageWithService() throws Exception {
 		// GIVEN the database contains 10 actions and admin
@@ -362,10 +363,10 @@ public class ActionControllerIntegrationTests {
 		this.userDao.create(admin);
 
 		int size = 10;
-		
+
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
-		
+
 		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
 		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
 
@@ -386,10 +387,10 @@ public class ActionControllerIntegrationTests {
 		this.userDao.create(admin);
 
 		int size = 7;
-		
+
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
-		
+
 		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
 		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
 
@@ -397,8 +398,8 @@ public class ActionControllerIntegrationTests {
 		ActionBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
 				ActionBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail(), 10, 0);
 
-		// THEN I receive response in empty
+		// THEN I receive response has size of 7
 		assertThat(response).hasSize(size);
 	}
-	
+
 }
