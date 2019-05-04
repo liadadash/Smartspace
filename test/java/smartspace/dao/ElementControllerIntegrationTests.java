@@ -26,6 +26,7 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 import smartspace.data.util.Faker;
 import smartspace.infra.ElementService;
+import smartspace.layout.ActionBoundary;
 import smartspace.layout.ElementBoundary;
 
 
@@ -242,6 +243,25 @@ public class ElementControllerIntegrationTests {
 		assertThat(result)
 			.isEmpty();
 		
+	}
+	
+	@Test
+	public void testPostInvalidElementsWithValidElements() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
+		
+		// WHEN I post valid elements together with invalid elements
+		ElementBoundary[] elements = faker.boundary().elementArray(5);
+		elements[3].setKey(null);
+		elements[3].setName(null);
+		
+		// THEN there is an exception and the database should be empty (@Transactional behavior working as intended)
+		try {
+			this.restTemplate.postForObject(this.baseUrl, elements, ElementBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+			throw new RuntimeException("some elements are invalid but there was no exception"); // will only get to this line if there was no exception
+		} catch (Exception e) {
+			assertThat(this.elementDao.readAll()).isEmpty();
+		}
 	}
 	
 }

@@ -42,7 +42,7 @@ public class UserKey implements Comparable<UserKey>, Serializable {
 	 */
 	public UserKey(String userSmartspace, String userEmail) {
 		this.userSmartspace = userSmartspace;
-		this.userEmail = userEmail;
+		this.userEmail = userEmail.toLowerCase();
 	}
 
 	/**

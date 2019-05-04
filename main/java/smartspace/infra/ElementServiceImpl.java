@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
@@ -28,22 +29,14 @@ public class ElementServiceImpl implements ElementService {
 	}
 
 	@Override
+	@Transactional
 	public List<ElementEntity> importElements(List<ElementEntity> entities, String adminSmartspace, String adminEmail) {
-
 		// check that the user has ADMIN privileges (code is okay)
 		if (!userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("this user is not allowed to import elements");
 		}
 
-		// check that all elements are valid
-		boolean allValid = entities.stream().allMatch(this::valiadate);
-
-		// if all valid save to database
-		if (allValid) {
-			return entities.stream().map(this.elementDao::importElement).collect(Collectors.toList());
-		} else {
-			throw new RuntimeException("one or more of the given elements are invalid");
-		}
+		return entities.stream().map(this::validate).map(this.elementDao::importElement).collect(Collectors.toList());
 	}
 
 	@Override
@@ -57,7 +50,15 @@ public class ElementServiceImpl implements ElementService {
 		return this.elementDao.readAllWithPaging(size, page);
 	}
 
-	private boolean valiadate(ElementEntity entity) {
+	private ElementEntity validate(ElementEntity entity) {
+		if (!isValid(entity)) {
+			throw new RuntimeException("one or more of the given elements are invalid");
+		}
+		
+		return entity;
+	}
+
+	private boolean isValid(ElementEntity entity) {
 		return entity.getElementSmartspace() != null && !entity.getElementSmartspace().equals(appSmartspace) 
 				&& entity.getCreationTimestamp() != null && notEmpty(entity.getCreatorEmail()) 
 				&& notEmpty(entity.getElementId()) && notEmpty(entity.getElementSmartspace()) 
