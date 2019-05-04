@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
+import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 import smartspace.data.UserKey;
 
@@ -32,22 +34,14 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
+	@Transactional
 	public List<ActionEntity> importActions(List<ActionEntity> entities, String adminSmartspace, String adminEmail) {
 		// check that the user has ADMIN privileges (code is okay)
 		if (!this.userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("this user is not allowed to import actions");
 		}
 
-		// check that all elements are valid
-		boolean allValid = entities.stream().allMatch(this::valiadate);
-
-		// if all valid save to database
-		if (allValid) {
-			return entities.stream().map(this.actionDao::importAction).collect(Collectors.toList());
-		} else {
-			throw new RuntimeException("one or more of the given Actions are invalid");
-		}
-
+		return entities.stream().map(this::validate).map(this.actionDao::importAction).collect(Collectors.toList());
 	}
 
 	@Override
@@ -59,8 +53,16 @@ public class ActionServiceImpl implements ActionService {
 		}
 		return this.actionDao.readAllWithPaging(size, page);
 	}
+	
+	private ActionEntity validate(ActionEntity action) {
+		if (!isValid(action)) {
+			throw new RuntimeException("one or more of the given actions are invalid");
+		}
+		
+		return action;
+	}
 
-	private boolean valiadate(ActionEntity entity) {
+	private boolean isValid(ActionEntity entity) {
 		boolean actionIsValid = (entity.getActionSmartspace() != null
 				&& !entity.getActionSmartspace().equals(appSmartspace) && notEmpty(entity.getActionId())
 				&& entity.getCreationTimestamp() != null && notEmpty(entity.getElementId())

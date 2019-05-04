@@ -77,6 +77,19 @@ public class EntityFaker {
 		user.setKey(key);
 		return user;
 	}
+	
+	public UserEntity user(UserRole role) {
+		UserEntity user = this.user();
+		user.setRole(role);
+		return user;
+	}
+	
+	public UserEntity user(UserKey key, UserRole role) {
+		UserEntity user = this.user();
+		user.setKey(key);
+		user.setRole(role);
+		return user;
+	}
 
 	public List<UserEntity> userList(int size) {
 		return IntStream.range(0, size).mapToObj(i -> user()).collect(Collectors.toList());

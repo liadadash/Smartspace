@@ -26,6 +26,7 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 import smartspace.data.util.Faker;
 import smartspace.infra.UserService;
+import smartspace.layout.ElementBoundary;
 import smartspace.layout.UserBoundary;
 
 @RunWith(SpringRunner.class)
@@ -242,6 +243,39 @@ public class UserControllerIntegrationTests {
 		assertThat(result)
 			.isEmpty();
 		
+	}
+	
+	@Test
+	public void testPostInvalidUsersWithValidUsers() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
+		
+		// WHEN I post valid elements together with invalid elements
+		UserBoundary[] users = faker.boundary().userArray(5);
+		users[3].setUsername(null);
+		users[3].setAvatar(null);
+		
+		// THEN there is an exception and the database should only contain the admin user (@Transactional behavior working as intended)
+		try {
+			this.restTemplate.postForObject(this.baseUrl, users, UserBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+			throw new RuntimeException("some users are invalid but there was no exception"); // will only get to this line if there was no exception
+		} catch (Exception e) {
+			assertThat(this.userDao.readAll()).usingElementComparatorOnFields("key").containsExactly(admin);
+		}
+	}
+	
+	@Test
+	public void testAdminCheckIsCaseInsensitive() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(new UserKey("smartspace", "Test@gmail.com"), UserRole.ADMIN));
+		
+		// WHEN I post 3 users using different spellings
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "test@gmail.com");
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "TEST@gmail.com");
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "tESt@gMaIl.cOm");
+		
+		// THEN there should be 3 users in the database + 1 admins
+		assertThat(this.userDao.readAll()).hasSize(4);
 	}
 
 }

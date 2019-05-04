@@ -5,7 +5,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import smartspace.dao.EnhancedUserDao;
+import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
@@ -22,23 +25,14 @@ public class UserServicelmpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public List<UserEntity> importUsers(List<UserEntity> entities, String adminSmartspace, String adminEmail) {
 		// check if user is ADMIN
 		if (!userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("This user is not allowed to import users");
 		}
 		
-		// check that all users are valid
-		boolean isAllUsersValid = entities.stream().allMatch(this::valiadate);
-		
-		// if valid save users to database
-		if(isAllUsersValid) {
-			return entities.stream().map(this.userDao::importUser).collect(Collectors.toList());
-		}
-		else {
-			throw new RuntimeException("One or more users are invalid");
-		}
-		
+		return entities.stream().map(this::validate).map(this.userDao::importUser).collect(Collectors.toList());
 	}
 
 	@Override
@@ -50,8 +44,16 @@ public class UserServicelmpl implements UserService {
 
 		return this.userDao.readAllWithPaging(size, page);
 	}
+	
+	private UserEntity validate(UserEntity user) {
+		if (!isValid(user)) {
+			throw new RuntimeException("one or more of the given users are invalid");
+		}
+		
+		return user;
+	}
 
-	private boolean valiadate(UserEntity user) {
+	private boolean isValid(UserEntity user) {
 		return 	user.getUserSmartspace()!= null && !user.getUserSmartspace().equals(appSmartspace) 
 				&& user.getUsername() != null && !user.getUsername().trim().isEmpty() 
 				&& user.getAvatar() != null && !user.getAvatar().trim().isEmpty()
