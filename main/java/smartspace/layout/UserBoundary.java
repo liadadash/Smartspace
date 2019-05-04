@@ -9,7 +9,7 @@ import smartspace.data.UserRole;
 
 public class UserBoundary {
 	private Map<String, String> key;
-	private String role;
+	private UserRole role;
 	private String username;
 	private String avatar;
 	private Long points;
@@ -23,7 +23,7 @@ public class UserBoundary {
 		this.key.put("smartspace", entity.getUserSmartspace());
 		this.key.put("email", entity.getUserEmail());
 
-		this.role = entity.getRole().toString();
+		this.role = entity.getRole();
 		this.username = entity.getUsername();
 		this.avatar = entity.getAvatar();
 		this.points = entity.getPoints();
@@ -37,11 +37,11 @@ public class UserBoundary {
 		this.key = key;
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 
@@ -77,7 +77,7 @@ public class UserBoundary {
 			entity.setKey(new UserKey(this.key.get("smartspace"), this.key.get("email")));
 		}
 
-		entity.setRole(UserRole.valueOf(this.role));
+		entity.setRole(this.role);
 		entity.setUsername(this.username);
 		entity.setAvatar(this.avatar);
 
