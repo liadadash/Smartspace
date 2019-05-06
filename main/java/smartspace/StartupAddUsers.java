@@ -35,6 +35,10 @@ public class StartupAddUsers implements CommandLineRunner {
 
 		for (String email : emails) {
 			dao.create(new UserEntity(email, appSmartspace, email, "image.png", UserRole.ADMIN, 50));
+		}
+
+		// delayed print to show after trace logs
+		for (String email : emails) {
 			System.err.println("added admin with email: " + email);
 		}
 	}
