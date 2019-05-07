@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -20,9 +20,11 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedActionDao;
+import smartspace.dao.EnhancedElementDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
@@ -387,8 +389,8 @@ public class ActionControllerIntegrationTests {
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
 
-		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
-		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
+		this.actionService.importActions(admin.getUserSmartspace(), admin.getUserEmail(), actions);
 
 		// WHEN I GET actions of size 10 and page 1
 		ActionBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
@@ -411,8 +413,8 @@ public class ActionControllerIntegrationTests {
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
 
-		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
-		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
+		this.actionService.importActions(admin.getUserSmartspace(), admin.getUserEmail(), actions);
 
 		// WHEN I GET actions of size 10 and page 0
 		ActionBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
@@ -428,7 +430,7 @@ public class ActionControllerIntegrationTests {
 		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
 		
 		List<ElementEntity> elements = faker.entity().elementList(3);
-		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
 		
 		// WHEN I post valid actions together with invalid actions
 		ActionBoundary[] actions = faker.boundary().actionArray(elements, 5);

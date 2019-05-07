@@ -37,7 +37,7 @@ public class UserController {
 		List<UserEntity> entities = Stream.of(boundaryUsers).map(UserBoundary::convertToEntity).collect(Collectors.toList());
 		
 		// import the Users, converts response back to Boundary Array.
-		return this.userService.importUsers(entities, adminSmartspace, adminEmail).stream()
+		return this.userService.importUsers(adminSmartspace, adminEmail, entities).stream()
 				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 	}
 
@@ -53,7 +53,7 @@ public class UserController {
 			@RequestParam(name="page", required=false, defaultValue="0") int page) {
 		
 		// convert the Entity List to Boundary Array
-		return this.userService.getUsingPagination(size, page, adminSmartspace, adminEmail).stream()
+		return this.userService.getUsingPagination(adminSmartspace, adminEmail, size, page).stream()
 				.map(UserBoundary::new).collect(Collectors.toList()).toArray(new UserBoundary[0]);
 	}
 }
