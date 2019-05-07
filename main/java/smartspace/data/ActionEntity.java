@@ -19,7 +19,9 @@ import smartspace.dao.rdb.MapToJsonConverter;
 @Table(name = "ACTIONS")
 public class ActionEntity implements SmartspaceEntity<ActionKey> {
 
+	@Column(nullable = false)
 	private String actionSmartspace;
+	@Column(nullable = false)
 	private String actionId;
 	private String elementSmartspace;
 	private String elementId;

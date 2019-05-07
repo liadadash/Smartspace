@@ -20,7 +20,9 @@ import smartspace.dao.rdb.MapToJsonConverter;
 @Table(name = "ELEMENTS")
 public class ElementEntity implements SmartspaceEntity<ElementKey> {
 
+	@Column(nullable = false)
 	private String elementSmartspace;
+	@Column(nullable = false)
 	private String elementId;
 	private Location location;
 	private String name;

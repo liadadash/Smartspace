@@ -12,8 +12,11 @@ import javax.persistence.Transient;
 @Table(name="USERS")
 public class UserEntity implements SmartspaceEntity<UserKey> {
 
+	@Column(nullable = false)
 	private String userSmartspace;
+	@Column(nullable = false)
 	private String userEmail;
+	
 	private String username;
 	private String avatar;
 	private UserRole role;
