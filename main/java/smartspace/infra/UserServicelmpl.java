@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import smartspace.aop.AdminOnly;
 import smartspace.dao.EnhancedUserDao;
-import smartspace.data.ElementEntity;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
@@ -26,22 +26,14 @@ public class UserServicelmpl implements UserService {
 
 	@Override
 	@Transactional
-	public List<UserEntity> importUsers(List<UserEntity> entities, String adminSmartspace, String adminEmail) {
-		// check if user is ADMIN
-		if (!userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
-			throw new RuntimeException("This user is not allowed to import users");
-		}
-		
+	@AdminOnly
+	public List<UserEntity> importUsers(String adminSmartspace, String adminEmail, List<UserEntity> entities) {
 		return entities.stream().map(this::validate).map(this.userDao::importUser).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<UserEntity> getUsingPagination(int size, int page, String adminSmartspace, String adminEmail) {
-		// check if user is ADMIN
-		if (!userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
-			throw new RuntimeException("This user not allowed to export users");
-		}
-
+	@AdminOnly
+	public List<UserEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.userDao.readAllWithPaging("key", size, page);
 	}
 	

@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +19,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedElementDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 import smartspace.data.UserEntity;
@@ -26,7 +28,6 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 import smartspace.data.util.Faker;
 import smartspace.infra.ElementService;
-import smartspace.layout.ActionBoundary;
 import smartspace.layout.ElementBoundary;
 
 
@@ -170,7 +171,7 @@ public class ElementControllerIntegrationTests {
 		int size = 2;
 		List<ElementEntity> elemntsEntity = faker.entity().elementList(size);
 		List<ElementBoundary> elementsBoundary=
-				this.elementService.importElements(elemntsEntity, newAdmin.getUserSmartspace(), newAdmin.getUserEmail())
+				this.elementService.importElements(newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), elemntsEntity)
 				.stream().map(ElementBoundary::new).collect(Collectors.toList());
 		
 		// WHEN I GET elements of size 10 and page 0

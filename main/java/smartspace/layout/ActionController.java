@@ -36,7 +36,7 @@ public class ActionController {
 		List<ActionEntity> entities = Stream.of(boundaryActions).map(ActionBoundary::convertToEntity).collect(Collectors.toList());
 		
 		// import the actions, converts response back to Boundary Array.
-		return this.actionService.importActions(entities, adminSmartspace, adminEmail).stream()
+		return this.actionService.importActions(adminSmartspace, adminEmail, entities).stream()
 				.map(ActionBoundary::new).collect(Collectors.toList()).toArray(new ActionBoundary[0]);
 			
 	}
@@ -53,7 +53,7 @@ public class ActionController {
 			@RequestParam(name = "page" , required = false ,defaultValue ="0") int page) {
 		
 		// convert the Entity List to Boundary Array
-		return this.actionService.getUsingPagination(size, page, adminSmartspace, adminEmail)
+		return this.actionService.getUsingPagination(adminSmartspace, adminEmail, size, page)
 				.stream().map(ActionBoundary::new).collect(Collectors.toList()).toArray(new ActionBoundary[0]);
 		
 	}

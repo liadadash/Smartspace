@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,12 +21,12 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 import smartspace.data.util.Faker;
 import smartspace.infra.UserService;
-import smartspace.layout.ElementBoundary;
 import smartspace.layout.UserBoundary;
 
 @RunWith(SpringRunner.class)
@@ -165,8 +165,8 @@ public class UserControllerIntegrationTests {
 		int size = 2;
 		List<UserEntity> usersEntity = faker.entity().userList(size);
 			
-		List<UserBoundary> usersBoundary=
-				this.userService.importUsers(usersEntity,newAdmin.getUserSmartspace(),newAdmin.getUserEmail())
+		List<UserBoundary> usersBoundary =
+				this.userService.importUsers(newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), usersEntity)
 				.stream().map(UserBoundary::new).collect(Collectors.toList());
 		usersBoundary.add(0, new UserBoundary(newAdmin));
 		
