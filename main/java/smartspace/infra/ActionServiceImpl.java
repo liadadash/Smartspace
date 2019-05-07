@@ -51,7 +51,7 @@ public class ActionServiceImpl implements ActionService {
 		if (!this.userDao.userIsAdmin(new UserKey(adminSmartspace, adminEmail))) {
 			throw new RuntimeException("this user is not allowed to import actions");
 		}
-		return this.actionDao.readAllWithPaging(size, page);
+		return this.actionDao.readAllWithPaging("key", size, page);
 	}
 	
 	private ActionEntity validate(ActionEntity action) {

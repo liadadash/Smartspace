@@ -47,7 +47,7 @@ public class ElementServiceImpl implements ElementService {
 			throw new RuntimeException("this user is not allowed to import elements");
 		}
 
-		return this.elementDao.readAllWithPaging(size, page);
+		return this.elementDao.readAllWithPaging("key", size, page);
 	}
 
 	private ElementEntity validate(ElementEntity entity) {

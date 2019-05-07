@@ -42,7 +42,7 @@ public class UserServicelmpl implements UserService {
 			throw new RuntimeException("This user not allowed to export users");
 		}
 
-		return this.userDao.readAllWithPaging(size, page);
+		return this.userDao.readAllWithPaging("key", size, page);
 	}
 	
 	private UserEntity validate(UserEntity user) {

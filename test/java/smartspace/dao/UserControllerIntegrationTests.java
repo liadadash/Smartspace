@@ -146,7 +146,8 @@ public class UserControllerIntegrationTests {
 		UserBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
 				UserBoundary[].class, newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), 10, 0);
 
-		// THEN I receive the exact 3 users written to the database
+		// THEN I receive the exact 3 users written to the database sorted by key
+		usersBoundary.sort((u1, u2)->u1.convertToEntity().getKey().compareTo(u2.convertToEntity().getKey()));
 		assertThat(response).usingElementComparatorOnFields("key").containsExactlyElementsOf(usersBoundary);
 	}
 
@@ -173,10 +174,8 @@ public class UserControllerIntegrationTests {
 		UserBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
 				UserBoundary[].class, newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), 10, 0);
 		
-		
-		
-		
-		// THEN I receive the exact users written to the database
+		// THEN I receive the exact users written to the database sorted by key
+		usersBoundary.sort((u1, u2)->u1.convertToEntity().getKey().compareTo(u2.convertToEntity().getKey()));
 		assertThat(response).usingElementComparatorOnFields("key","role","username","avatar","points")
 		.containsExactlyElementsOf(usersBoundary);
 	}
@@ -197,6 +196,7 @@ public class UserControllerIntegrationTests {
 		this.userDao.create(newAdmin);
 		usersEntity.add(newAdmin);
 		//------------------------------------find the last user---------------------------
+		usersEntity.sort((u1, u2)->u1.getKey().compareTo(u2.getKey()));
 		UserBoundary lastUser = usersEntity.stream()
 				.skip(10).limit(1)
 				.map(UserBoundary::new).findFirst()
