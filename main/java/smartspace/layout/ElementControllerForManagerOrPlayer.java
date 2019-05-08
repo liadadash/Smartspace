@@ -3,15 +3,18 @@
  */
 package smartspace.layout;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.infra.ElementServiceForManagerOrPlayerImpl;
 
@@ -56,18 +59,20 @@ public class ElementControllerForManagerOrPlayer {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "value", required = false) String value) {
-
-		if (search == null || value == null)
+		
+		// search by value if search argument is one of these keys
+		String[] searchKeysByValue = {"name", "type"};
+		
+		if (search == null || value == null) {
 			return this.elementService.getElementsUsingPagination(null, size, page).stream().map(ElementBoundary::new)
 					.collect(Collectors.toList()).toArray(new ElementBoundary[0]);
-
-		switch (search) {
-		case "name":
-		case "type":
+		}
+		else if (Arrays.asList(searchKeysByValue).contains(search)) {
 			return this.elementService.getElementsSearchByValueUsingPagination(null, search, value, size, page).stream()
 					.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
-		default:
-			throw new RuntimeException("Page not found");
+		}
+		else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page not found with this search option: " + value);
 		}
 	}
 }
