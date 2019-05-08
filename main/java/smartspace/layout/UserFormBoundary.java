@@ -9,6 +9,14 @@ public class UserFormBoundary {
 	private String username;
 	private String avatar;
 
+	// convert UserEntity to UserFormBoundary
+	public UserFormBoundary(UserEntity entity) {
+		this.email = entity.getUserEmail();
+		this.role = entity.getRole();
+		this.username = entity.getUsername();
+		this.avatar = entity.getAvatar();
+	}
+
 	public UserFormBoundary() {
 	}
 
