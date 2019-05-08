@@ -178,13 +178,11 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value,
-			int size, int page) {
+	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value, int size, int page) {
 		PageRequest p = PageRequest.of(page, size, Direction.ASC, "elementId");
 
 		switch (searchBy) {
 		case "name":
-			System.err.println("***********lalal");
 			if (showExpired)
 				return elementCrud.findAllByName(value, p);
 			else

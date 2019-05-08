@@ -3,10 +3,13 @@
  */
 package smartspace.infra;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
@@ -59,16 +62,16 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 */
 	// TODO:Need to add only manager or player annotation to change role
 	@Override
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String searchBy, String value,
-			int size, int page) {
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String searchBy, String value, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 
-		switch (searchBy) {
-		case "name":
-		case "type":
+		// search by value if search argument is one of these keys
+		String[] searchKeysByValue = {"name", "type"};
+		
+		if (Arrays.asList(searchKeysByValue).contains(searchBy)) {
 			return elementDao.readAllWithSameValuesUsingPaging(showExpired, searchBy, value, size, page);
-		default:
-			throw new RuntimeException("Seach by this value is not valid " + searchBy);
+		} else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seach by this value is not valid: " + searchBy);
 		}
 	}
 }
