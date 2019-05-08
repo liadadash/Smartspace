@@ -34,4 +34,27 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 
 	List<ElementEntity> readAllWithPaging(String sortBy, int size, int page);
 
+	
+	/**
+	 * Read all using paging.
+	 *
+	 * @param showExpired the show expired
+	 * @param size the size
+	 * @param page the page
+	 * @return the list
+	 */
+	public List<ElementEntity> readAllUsingPaging(boolean showExpired, int size, int page);
+
+	/**
+	 * Read all with same values using paging.
+	 *
+	 * @param showExpired the show expired
+	 * @param searchBy the search by
+	 * @param value the value
+	 * @param size the size
+	 * @param page the page
+	 * @return the list
+	 */
+	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value, int size, int page);
+
 }

@@ -25,6 +25,15 @@ public class LoggerServiceAspect {
 	/** The logger. */
 	private Log logger = LogFactory.getLog(LoggerServiceAspect.class);
 
+	/**
+	 * Import data.
+	 *
+	 * @param pjp             the pjp
+	 * @param adminSmartspace the admin smartspace
+	 * @param adminEmail      the admin email
+	 * @return the list
+	 * @throws Throwable the throwable
+	 */
 	@Around("execution(* smartspace.infra.*Servicelmpl.import*(..)) && args(adminSmartspace,adminEmail,..)")
 	public List<?> importData(ProceedingJoinPoint pjp, String adminSmartspace, String adminEmail) throws Throwable {
 
@@ -49,6 +58,15 @@ public class LoggerServiceAspect {
 		}
 	}
 
+	/**
+	 * Gets the data.
+	 *
+	 * @param pjp             the pjp
+	 * @param adminSmartspace the admin smartspace
+	 * @param adminEmail      the admin email
+	 * @return the data
+	 * @throws Throwable the throwable
+	 */
 	@Around("execution(* smartspace.infra.*Servicelmpl.get*(..)) && args(adminSmartspace,adminEmail,..)")
 	public List<?> getData(ProceedingJoinPoint pjp, String adminSmartspace, String adminEmail) throws Throwable {
 

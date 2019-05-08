@@ -148,4 +148,58 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		return null;
 	}
 
+	/**
+	 * Read all using paging.
+	 *
+	 * @param showExpired the show expired
+	 * @param size        the size
+	 * @param page        the page
+	 * @return the list
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<ElementEntity> readAllUsingPaging(boolean showExpired, int size, int page) {
+		PageRequest p = PageRequest.of(page, size, Direction.ASC, "elementId");
+		if (showExpired)
+			return elementCrud.findAll(p).getContent();
+		else
+			return elementCrud.findAllByExpired(showExpired, PageRequest.of(page, size, Direction.ASC, "elementId"));
+	}
+
+	/**
+	 * Read all with same values using paging.
+	 *
+	 * @param showExpired the show expired
+	 * @param searchBy    the search by
+	 * @param value       the value
+	 * @param size        the size
+	 * @param page        the page
+	 * @return the list
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value,
+			int size, int page) {
+		PageRequest p = PageRequest.of(page, size, Direction.ASC, "elementId");
+
+		switch (searchBy) {
+		case "name":
+			System.err.println("***********lalal");
+			if (showExpired)
+				return elementCrud.findAllByName(value, p);
+			else
+				return elementCrud.findAllByNameAndExpired(value, showExpired, p);
+
+		case "type":
+			if (showExpired)
+				return elementCrud.findAllByType(value, p);
+			else
+				return elementCrud.findAllByTypeAndExpired(value, showExpired, p);
+
+		default:
+			break;
+		}
+		return null;
+	}
+
 }
