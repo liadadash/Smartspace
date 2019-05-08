@@ -52,8 +52,8 @@ public class UserServicelmpl implements UserService {
 				&& user.getUsername() != null && !user.getUsername().trim().isEmpty() && user.getAvatar() != null
 				&& !user.getAvatar().trim().isEmpty() && user.getRole() != null && user.getKey() != null
 				&& user.getUserEmail() != null && !user.getUserEmail().trim().isEmpty()
-				&& user.getUserSmartspace() != null && !user.getUserSmartspace().isEmpty()
-				&& user.getKey().getUserEmail() != null && !user.getKey().getUserEmail().isEmpty()
-				&& user.getKey().getUserSmartspace() != null && !user.getKey().getUserSmartspace().isEmpty();
+				&& user.getUserSmartspace() != null && !user.getUserSmartspace().trim().isEmpty()
+				&& user.getKey().getUserEmail() != null && !user.getKey().getUserEmail().trim().isEmpty()
+				&& user.getKey().getUserSmartspace() != null && !user.getKey().getUserSmartspace().trim().isEmpty();
 	}
 }
