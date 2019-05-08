@@ -2,17 +2,20 @@ package smartspace.infra;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.aop.AdminOnly;
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 @Service
+@LoggerService
 public class UserServicelmpl implements UserService {
 
 	private EnhancedUserDao<UserKey> userDao;
@@ -36,20 +39,18 @@ public class UserServicelmpl implements UserService {
 	public List<UserEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.userDao.readAllWithPaging("key", size, page);
 	}
-	
+
 	private UserEntity validate(UserEntity user) {
 		if (!isValid(user)) {
 			throw new RuntimeException("one or more of the given users are invalid");
 		}
-		
 		return user;
 	}
 
 	private boolean isValid(UserEntity user) {
-		return 	user.getUserSmartspace()!= null && !user.getUserSmartspace().equals(appSmartspace) 
-				&& user.getUsername() != null && !user.getUsername().trim().isEmpty() 
-				&& user.getAvatar() != null && !user.getAvatar().trim().isEmpty()
-				&& user.getRole() != null && user.getKey() != null
+		return user.getUserSmartspace() != null && !user.getUserSmartspace().equals(appSmartspace)
+				&& user.getUsername() != null && !user.getUsername().trim().isEmpty() && user.getAvatar() != null
+				&& !user.getAvatar().trim().isEmpty() && user.getRole() != null && user.getKey() != null
 				&& user.getUserEmail() != null && !user.getUserEmail().trim().isEmpty()
 				&& user.getUserSmartspace() != null && !user.getUserSmartspace().isEmpty()
 				&& user.getKey().getUserEmail() != null && !user.getKey().getUserEmail().isEmpty()

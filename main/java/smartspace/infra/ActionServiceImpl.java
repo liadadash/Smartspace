@@ -9,13 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.aop.AdminOnly;
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementKey;
 
 @Service
+@LoggerService
 public class ActionServiceImpl implements ActionService {
+
 	private EnhancedActionDao actionDao;
 	private EnhancedElementDao<ElementKey> elementDao; // used to check that action's element was imported before action
 
@@ -40,12 +43,11 @@ public class ActionServiceImpl implements ActionService {
 	public List<ActionEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.actionDao.readAllWithPaging("key", size, page);
 	}
-	
+
 	private ActionEntity validate(ActionEntity action) {
 		if (!isValid(action)) {
 			throw new RuntimeException("one or more of the given actions are invalid");
 		}
-		
 		return action;
 	}
 

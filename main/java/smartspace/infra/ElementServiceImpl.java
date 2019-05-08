@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.aop.AdminOnly;
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Service
+@LoggerService
 public class ElementServiceImpl implements ElementService {
+
 	private EnhancedElementDao<ElementKey> elementDao; // used for element saving and reading
-	
+
 	@Value("${smartspace.name}")
 	private String appSmartspace;
 
@@ -42,19 +45,18 @@ public class ElementServiceImpl implements ElementService {
 		if (!isValid(entity)) {
 			throw new RuntimeException("one or more of the given elements are invalid");
 		}
-		
 		return entity;
 	}
 
 	private boolean isValid(ElementEntity entity) {
-		return entity.getElementSmartspace() != null && !entity.getElementSmartspace().equals(appSmartspace) 
-				&& entity.getCreationTimestamp() != null && notEmpty(entity.getCreatorEmail()) 
-				&& notEmpty(entity.getElementId()) && notEmpty(entity.getElementSmartspace()) 
-				&& notEmpty(entity.getName()) && notEmpty(entity.getType()) 
-				&& entity.getKey() != null && notEmpty(entity.getKey().getElementSmartspace()) 
-				&& entity.getLocation() != null && entity.getMoreAttributes() != null;
+		return entity.getElementSmartspace() != null && !entity.getElementSmartspace().equals(appSmartspace)
+				&& entity.getCreationTimestamp() != null && notEmpty(entity.getCreatorEmail())
+				&& notEmpty(entity.getElementId()) && notEmpty(entity.getElementSmartspace())
+				&& notEmpty(entity.getName()) && notEmpty(entity.getType()) && entity.getKey() != null
+				&& notEmpty(entity.getKey().getElementSmartspace()) && entity.getLocation() != null
+				&& entity.getMoreAttributes() != null;
 	}
-	
+
 	private boolean notEmpty(String str) {
 		return (str != null && !str.trim().isEmpty());
 	}
