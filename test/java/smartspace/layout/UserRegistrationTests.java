@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -30,6 +31,10 @@ import smartspace.layout.UserBoundary;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class UserRegistrationTests {
+	
+	@Value("${smartspace.name}")
+	private String appSmartspace;
+	
 	private String baseUrl;
 	private int port;
 	private RestTemplate restTemplate;
@@ -66,8 +71,9 @@ public class UserRegistrationTests {
 		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user()); // fake valid details
 		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
 		
-		// THEN the database contains a single user
+		// THEN the database contains a single user with key of smartspace + email
 		assertThat(this.userDao.readAll()).hasSize(1);
+		assertThat(this.userDao.readById(new UserKey(this.appSmartspace, newUser.getEmail()))).isNotEmpty();
 	}
 	
 	@Test

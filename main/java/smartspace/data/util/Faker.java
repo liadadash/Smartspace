@@ -40,7 +40,7 @@ public class Faker {
 			emailDomain = emailDomain + domains[random.nextInt(domains.length)];
 		}
 		
-		return generateName(6) + generateNumber(10, 100) + "@" + emailDomain;
+		return generateName(6) + generateNumber(10, 100) + "." + generateId() + "@" + emailDomain;
 	}
 
 	public String generateName(int maxLength) {
