@@ -3,25 +3,21 @@ package smartspace.infra;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sun.istack.internal.NotNull;
-
 import smartspace.aop.AdminOnly;
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementKey;
 
 @Service
+@LoggerService
 public class ActionServiceImpl implements ActionService {
-
-	Log logger = LogFactory.getLog(ActionServiceImpl.class);
 
 	private EnhancedActionDao actionDao;
 	private EnhancedElementDao<ElementKey> elementDao; // used to check that action's element was imported before action
@@ -38,27 +34,20 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	@Transactional
 	@AdminOnly
-	public List<ActionEntity> importActions(String adminSmartspace, String adminEmail,
-			@NotNull List<ActionEntity> entities) {
-		logger.info("Try to import " + entities.size() + " actions by: " + adminSmartspace + "#" + adminEmail);
+	public List<ActionEntity> importActions(String adminSmartspace, String adminEmail, List<ActionEntity> entities) {
 		return entities.stream().map(this::validate).map(this.actionDao::importAction).collect(Collectors.toList());
 	}
 
 	@Override
 	@AdminOnly
 	public List<ActionEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
-		logger.info("Get actions using pagination by: " + adminSmartspace + "#" + adminEmail + " size: " + size
-				+ ", page: " + page);
 		return this.actionDao.readAllWithPaging("key", size, page);
 	}
 
 	private ActionEntity validate(ActionEntity action) {
-		logger.debug("Check if action is valid");
 		if (!isValid(action)) {
-			logger.debug("Action isn't valid");
 			throw new RuntimeException("one or more of the given actions are invalid");
 		}
-		logger.debug("Action is valid");
 		return action;
 	}
 
