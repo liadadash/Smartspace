@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
@@ -20,6 +21,7 @@ import smartspace.data.UserRole;
  * The Class ElementServiceForManagerOrPlayerImpl.
  */
 @Service
+@LoggerService
 public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForManagerOrPlayer {
 
 	/** The element dao. */

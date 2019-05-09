@@ -16,14 +16,14 @@ import smartspace.data.UserKey;
 
 @Service
 @LoggerService
-public class UserServicelmpl implements UserService {
+public class UserServiceImpl implements UserService {
 
 	private EnhancedUserDao<UserKey> userDao;
 	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
-	public UserServicelmpl(EnhancedUserDao<UserKey> userDao) {
+	public UserServiceImpl(EnhancedUserDao<UserKey> userDao) {
 		this.userDao = userDao;
 	}
 
