@@ -7,15 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 @Service
+@LoggerService
 public class UserRegisterServiceImpl implements UserRegisterService {
 
 	private EnhancedUserDao<UserKey> userDao;
-	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+	public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+			Pattern.CASE_INSENSITIVE);
 
 	@Autowired
 	public UserRegisterServiceImpl(EnhancedUserDao<UserKey> userDao) {
@@ -38,7 +41,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email must not be empty");
 		}
 		if (!VALID_EMAIL_ADDRESS_REGEX.matcher(user.getUserEmail()).find()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email"); 
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid email");
 		}
 		if (user.getRole() == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Must have a valid user role");
