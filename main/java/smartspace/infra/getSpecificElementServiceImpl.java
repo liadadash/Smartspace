@@ -14,7 +14,6 @@ import smartspace.data.ElementKey;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
-import smartspace.layout.ElementBoundary;
 
 @Service
 @LoggerService
@@ -40,19 +39,13 @@ public class getSpecificElementServiceImpl implements getSpecificElementService 
 		ElementEntity element = elementDao.readById(new ElementKey(elementSmartspace, Long.parseLong(elementId))).orElseThrow(
 				()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not in DB"));
 		
-		ElementEntity rv = null;
 		
-		if(user.getRole() == UserRole.MANAGER) {
-			rv = element;
+		if(user.getRole() == UserRole.MANAGER || (user.getRole()== UserRole.PLAYER && !element.getExpired())) {
+			return element;
 		}
-		else if(user.getRole() == UserRole.PLAYER){ 
-			//checking expired
-			if(element.getExpired())
-				new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
-			else
-				rv = element;
-		}
-		return rv;
+		else 
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
+
 	}
 
 }
