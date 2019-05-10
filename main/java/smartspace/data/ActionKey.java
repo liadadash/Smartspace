@@ -1,3 +1,6 @@
+/*
+ * @author liadkh
+ */
 
 package smartspace.data;
 
@@ -7,16 +10,12 @@ import javax.persistence.Embeddable;
 
 /**
  * The Class ActionKey.
- *
- * @author liadk
  */
 
 @Embeddable
 public class ActionKey implements Comparable<ActionKey>, Serializable {
 
-	/**
-	 * 
-	 */
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8226215253488114082L;
 
 	/** The action smartspace. */
@@ -27,8 +26,6 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 
 	/**
 	 * Instantiates a new action key.
-	 *
-	 * @author liadk
 	 */
 	public ActionKey() {
 
@@ -37,7 +34,6 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	/**
 	 * Instantiates a new action key.
 	 *
-	 * @author liadk
 	 * @param actionSmartspace the action smartspace
 	 * @param id the id
 	 */
@@ -50,8 +46,7 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	/**
 	 * Gets the action smartspace.
 	 *
-	 * @author liadk
-	 * @return the actionSmartspace
+	 * @return the action smartspace
 	 */
 
 	public String getActionSmartspace() {
@@ -61,8 +56,7 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	/**
 	 * Sets the action smartspace.
 	 *
-	 * @author liadk
-	 * @param actionSmartspace the actionSmartspace to set
+	 * @param actionSmartspace the new action smartspace
 	 */
 	public void setActionSmartspace(String actionSmartspace) {
 		this.actionSmartspace = actionSmartspace;
@@ -71,7 +65,6 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	/**
 	 * Gets the id.
 	 *
-	 * @author liadk
 	 * @return the id
 	 */
 	public long getId() {
@@ -81,13 +74,17 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 	/**
 	 * Sets the id.
 	 *
-	 * @author liadk
-	 * @param id the id to set
+	 * @param id the new id
 	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	/*
 	 * @author liadk
 	 *
@@ -103,6 +100,12 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 		return result;
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	/*
 	 * @author liadk
 	 *
@@ -121,7 +124,12 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 		return this.actionSmartspace.equals(ActionKey.actionSmartspace) && this.id == ActionKey.id;
 	}
 
-	/* (non-Javadoc)
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
+	/* 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -129,9 +137,13 @@ public class ActionKey implements Comparable<ActionKey>, Serializable {
 		return this.actionSmartspace + "#" + this.getClass().getSimpleName() + "#" + this.id;
 	}
 
+	/**
+	 * Compare to.
+	 *
+	 * @param o the o
+	 * @return the int
+	 */
 	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
