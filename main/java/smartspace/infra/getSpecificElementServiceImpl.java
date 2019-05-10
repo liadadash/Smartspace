@@ -31,7 +31,7 @@ public class getSpecificElementServiceImpl implements getSpecificElementService 
 
 	@Override
 	@ManagerOrPlayerOnly
-	public ElementBoundary getElement(String userSmartspace, String userEmail, String elementSmartspace,
+	public ElementEntity getElement(String userSmartspace, String userEmail, String elementSmartspace,
 			String elementId) {
 
 		UserEntity user = this.userDao.readById(new UserKey(userSmartspace, userEmail))
@@ -40,19 +40,18 @@ public class getSpecificElementServiceImpl implements getSpecificElementService 
 		ElementEntity element = elementDao.readById(new ElementKey(elementSmartspace, Long.parseLong(elementId))).orElseThrow(
 				()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not in DB"));
 		
-		ElementBoundary rv = null;
+		ElementEntity rv = null;
 		
 		if(user.getRole() == UserRole.MANAGER) {
-			rv = new ElementBoundary(element);
+			rv = element;
 		}
 		else if(user.getRole() == UserRole.PLAYER){ 
 			//checking expired
 			if(element.getExpired())
 				new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
 			else
-				rv = new ElementBoundary(element);
+				rv = element;
 		}
-		
 		return rv;
 	}
 

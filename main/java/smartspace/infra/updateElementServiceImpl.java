@@ -32,7 +32,7 @@ public class updateElementServiceImpl implements updateElementService {
 	//@managerOnly
 	public void updateElement(String managerSmartspace, String managerEmail, ElementEntity elementEntity) {
 		if(checkIfUserIsManager(managerSmartspace,managerEmail)) {
-			this.elementDao.update(elementEntity);
+			this.elementDao.update(elementEntity); // if the elementEntity not in DB elementDao.update() throw runTimeExepcion
 		}
 		else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This action for Manager only");
