@@ -60,9 +60,8 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 		ActionEntity rv = validate(actionEntity);
 
 		if (rv.getActionType().equals(ActionTypes.ECHO.name()))
-			return this.actionDao.create(rv);
-
-		throw new RuntimeException("No such action type");
+			rv = this.actionDao.create(rv);
+		return rv;
 	}
 
 	/**
@@ -127,6 +126,6 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 				return true;
 			}
 		}
-		return false;
+		throw new RuntimeException("No such action type");
 	}
 }
