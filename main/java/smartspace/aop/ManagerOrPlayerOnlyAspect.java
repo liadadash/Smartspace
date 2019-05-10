@@ -36,7 +36,7 @@ public class ManagerOrPlayerOnlyAspect {
 		UserEntity user = this.userDao.readById(new UserKey(smartspace, email))
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User Not in DB"));
 
-		if (user.getRole() != UserRole.MANAGER && user.getRole() != UserRole.PLAYER) {
+		if (!(user.getRole() == UserRole.MANAGER || user.getRole() == UserRole.PLAYER)) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User must be a manager or a player to access this resource");
 		}
 
