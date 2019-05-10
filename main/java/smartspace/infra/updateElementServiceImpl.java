@@ -15,7 +15,7 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 
 @Service
-@LoggerService
+// @LoggerService
 public class updateElementServiceImpl implements updateElementService {
 
 	private EnhancedElementDao<ElementKey> elementDao;

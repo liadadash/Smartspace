@@ -32,9 +32,11 @@ public class AdminOnlyAspect {
 		String fullyQualifiedClassName = jp.getTarget().getClass().getName();
 		logger.debug(fullyQualifiedClassName + "." + method + "() - " + " using AdminOnly check");
 				
+		this.userDao.readById(new UserKey(smartspace, email)).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The given user doesn't exist"));
+		
 		// check that the user has ADMIN privileges 
 		if (!userDao.userIsAdmin(new UserKey(smartspace, email))) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admins are allowed to import actions");
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admins are allowed access this resource");
 		}
 	}
 }

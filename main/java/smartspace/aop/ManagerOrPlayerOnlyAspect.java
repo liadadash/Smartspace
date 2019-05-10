@@ -3,9 +3,11 @@ package smartspace.aop;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.dao.EnhancedUserDao;
@@ -13,6 +15,8 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 
+@Component
+@Aspect
 public class ManagerOrPlayerOnlyAspect {
 
 	private EnhancedUserDao<UserKey> userDao;
@@ -32,8 +36,8 @@ public class ManagerOrPlayerOnlyAspect {
 		UserEntity user = this.userDao.readById(new UserKey(smartspace, email))
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User Not in DB"));
 
-		if (!(user.getRole() == UserRole.MANAGER || user.getRole() == UserRole.PLAYER)) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admins are allowed to import actions");
+		if (user.getRole() != UserRole.MANAGER && user.getRole() != UserRole.PLAYER) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User must be a manager or a player to access this resource");
 		}
 
 	}
