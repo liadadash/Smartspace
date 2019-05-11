@@ -15,7 +15,6 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 @Service
-@LoggerService
 public class UserServiceImpl implements UserService {
 
 	private EnhancedUserDao<UserKey> userDao;
@@ -30,12 +29,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	@AdminOnly
+	@LoggerService
 	public List<UserEntity> importUsers(String adminSmartspace, String adminEmail, List<UserEntity> entities) {
 		return entities.stream().map(this::validate).map(this.userDao::importUser).collect(Collectors.toList());
 	}
 
 	@Override
 	@AdminOnly
+	@LoggerService
 	public List<UserEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.userDao.readAllWithPaging("key", size, page);
 	}

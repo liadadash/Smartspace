@@ -31,13 +31,13 @@ public class LoggerServiceAspect {
 	/**
 	 * Import data.
 	 *
-	 * @param pjp             the pjp
+	 * @param pjp the pjp
 	 * @param adminSmartspace the admin smartspace
-	 * @param adminEmail      the admin email
+	 * @param adminEmail the admin email
 	 * @return the list
 	 * @throws Throwable the throwable
 	 */
-	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra.*ServiceImpl.import*(..)) && args(adminSmartspace,adminEmail,..)")
+	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra..import*(..)) && args(adminSmartspace,adminEmail,..)")
 	public List<?> importData(ProceedingJoinPoint pjp, String adminSmartspace, String adminEmail) throws Throwable {
 
 		String method = pjp.getSignature().getName();
@@ -64,13 +64,13 @@ public class LoggerServiceAspect {
 	/**
 	 * Export data.
 	 *
-	 * @param pjp             the pjp
+	 * @param pjp the pjp
 	 * @param adminSmartspace the admin smartspace
-	 * @param adminEmail      the admin email
+	 * @param adminEmail the admin email
 	 * @return the list
 	 * @throws Throwable the throwable
 	 */
-	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra.*ServiceImpl.get*(..)) && args(adminSmartspace,adminEmail,..)")
+	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra..get*(..)) && args(adminSmartspace,adminEmail,..)")
 	public List<?> exportData(ProceedingJoinPoint pjp, String adminSmartspace, String adminEmail) throws Throwable {
 
 		String method = pjp.getSignature().getName();
@@ -97,12 +97,12 @@ public class LoggerServiceAspect {
 	/**
 	 * Gets the data.
 	 *
-	 * @param pjp  the pjp
+	 * @param pjp the pjp
 	 * @param role the role
 	 * @return the data
 	 * @throws Throwable the throwable
 	 */
-	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra.*Service*Impl.get*(..)) && args(role,..)")
+	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra..get*(..)) && args(role,..)")
 	public List<?> getData(ProceedingJoinPoint pjp, UserRole role) throws Throwable {
 
 		String method = pjp.getSignature().getName();
@@ -133,7 +133,7 @@ public class LoggerServiceAspect {
 	 * @return the object
 	 * @throws Throwable the throwable
 	 */
-	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra.*Register*Service*Impl.register*(..))")
+	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra..register*(..))")
 	public Object register(ProceedingJoinPoint pjp) throws Throwable {
 
 		String method = pjp.getSignature().getName();
@@ -153,6 +153,35 @@ public class LoggerServiceAspect {
 			throw e;
 		} finally {
 			logger.debug("*** Register " + (success ? "success" : "failed") + " " + fullMessage);
+		}
+	}
+
+	/**
+	 * Invoke.
+	 *
+	 * @param pjp the pjp
+	 * @return the object
+	 * @throws Throwable the throwable
+	 */
+	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra..invoke*(..))")
+	public Object invoke(ProceedingJoinPoint pjp) throws Throwable {
+
+		String method = pjp.getSignature().getName();
+		String fullyQualifiedClassName = pjp.getTarget().getClass().getName();
+
+		String fullMessage = fullyQualifiedClassName + "." + method + "()";
+		logger.debug("*** Try to invoke: " + fullMessage);
+
+		Object rv;
+		boolean success = true;
+		try {
+			rv = pjp.proceed();
+			return rv;
+		} catch (Exception e) {
+			success = false;
+			throw e;
+		} finally {
+			logger.debug("*** Invoke " + (success ? "success" : "failed") + " " + fullMessage);
 		}
 	}
 }

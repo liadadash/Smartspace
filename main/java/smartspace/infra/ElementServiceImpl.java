@@ -15,7 +15,6 @@ import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Service
-@LoggerService
 public class ElementServiceImpl implements ElementService {
 
 	private EnhancedElementDao<ElementKey> elementDao; // used for element saving and reading
@@ -31,12 +30,14 @@ public class ElementServiceImpl implements ElementService {
 	@Override
 	@Transactional
 	@AdminOnly
+	@LoggerService
 	public List<ElementEntity> importElements(String adminSmartspace, String adminEmail, List<ElementEntity> entities) {
 		return entities.stream().map(this::validate).map(this.elementDao::importElement).collect(Collectors.toList());
 	}
 
 	@Override
 	@AdminOnly
+	@LoggerService
 	public List<ElementEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.elementDao.readAllWithPaging("key", size, page);
 	}

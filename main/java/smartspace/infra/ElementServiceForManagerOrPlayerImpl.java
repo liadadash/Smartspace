@@ -22,7 +22,6 @@ import smartspace.data.UserRole;
  * The Class ElementServiceForManagerOrPlayerImpl.
  */
 @Service
-@LoggerService
 public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForManagerOrPlayer {
 
 	/** The element dao. */
@@ -50,6 +49,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 */
 	@PlayerOrManagerGetRole
 	@Override
+	@LoggerService
 	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail,
 			int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
@@ -70,6 +70,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 */
 	@PlayerOrManagerGetRole
 	@Override
+	@LoggerService
 	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
 			String userEmail, String searchBy, String value, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
