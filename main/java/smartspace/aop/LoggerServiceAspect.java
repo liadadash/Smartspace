@@ -1,3 +1,6 @@
+/*
+ * @author liadkh
+ */
 package smartspace.aop;
 
 /**
@@ -28,9 +31,9 @@ public class LoggerServiceAspect {
 	/**
 	 * Import data.
 	 *
-	 * @param pjp the pjp
+	 * @param pjp             the pjp
 	 * @param adminSmartspace the admin smartspace
-	 * @param adminEmail the admin email
+	 * @param adminEmail      the admin email
 	 * @return the list
 	 * @throws Throwable the throwable
 	 */
@@ -61,9 +64,9 @@ public class LoggerServiceAspect {
 	/**
 	 * Export data.
 	 *
-	 * @param pjp the pjp
+	 * @param pjp             the pjp
 	 * @param adminSmartspace the admin smartspace
-	 * @param adminEmail the admin email
+	 * @param adminEmail      the admin email
 	 * @return the list
 	 * @throws Throwable the throwable
 	 */
@@ -94,7 +97,7 @@ public class LoggerServiceAspect {
 	/**
 	 * Gets the data.
 	 *
-	 * @param pjp the pjp
+	 * @param pjp  the pjp
 	 * @param role the role
 	 * @return the data
 	 * @throws Throwable the throwable
@@ -127,7 +130,7 @@ public class LoggerServiceAspect {
 	 * Register.
 	 *
 	 * @param pjp the pjp
-	 * @return the list
+	 * @return the object
 	 * @throws Throwable the throwable
 	 */
 	@Around("@annotation(smartspace.aop.LoggerService) && execution(* smartspace.infra.*Register*Service*Impl.register*(..))")
