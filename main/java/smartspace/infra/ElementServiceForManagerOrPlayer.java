@@ -23,7 +23,7 @@ public interface ElementServiceForManagerOrPlayer {
 	 * @param page           the page
 	 * @return the elements using pagination
 	 */
-	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail,
+	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail,
 			int size, int page);
 
 	/**

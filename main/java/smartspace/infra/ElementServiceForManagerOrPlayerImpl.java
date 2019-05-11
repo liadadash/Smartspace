@@ -47,11 +47,15 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 * @param page           the page
 	 * @return the elements using pagination
 	 */
-	@PlayerOrManagerGetRole
+	
 	@Override
+	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail, int size, int page) {
+		return this.getElementsUsingPagination(null, userSmartspace, userEmail, size, page);
+	}
+	
+	@PlayerOrManagerGetRole
 	@LoggerService
-	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail,
-			int size, int page) {
+	private List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 		return elementDao.readAllUsingPaging(showExpired, size, page);
 	}
@@ -71,8 +75,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	@PlayerOrManagerGetRole
 	@Override
 	@LoggerService
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
-			String userEmail, String searchBy, String value, int size, int page) {
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace, String userEmail, String searchBy, String value, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 		// search by value if search argument is one of these keys
 		String[] searchKeysByValue = { "name", "type" };
