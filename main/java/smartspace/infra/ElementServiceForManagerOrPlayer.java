@@ -23,7 +23,7 @@ public interface ElementServiceForManagerOrPlayer {
 	 * @param page           the page
 	 * @return the elements using pagination
 	 */
-	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail,
+	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail,
 			int size, int page);
 
 	/**
@@ -38,6 +38,6 @@ public interface ElementServiceForManagerOrPlayer {
 	 * @param page           the page
 	 * @return the elements search by value using pagination
 	 */
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(String userSmartspace,
 			String userEmail, String searchBy, String value, int size, int page);
 }

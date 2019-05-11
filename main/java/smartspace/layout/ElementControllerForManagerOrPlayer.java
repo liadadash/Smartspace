@@ -64,11 +64,10 @@ public class ElementControllerForManagerOrPlayer {
 		String[] searchKeysByValue = { "name", "type" };
 
 		if (search == null || value == null) {
-			return this.elementService.getElementsUsingPagination(null, userSmartspace, userEmail, size, page).stream()
-					.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
+			return this.elementService.getElementsUsingPagination(userSmartspace, userEmail, size, page).stream().map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 		} else if (Arrays.asList(searchKeysByValue).contains(search)) {
 			return this.elementService
-					.getElementsSearchByValueUsingPagination(null, userSmartspace, userEmail, search, value, size, page)
+					.getElementsSearchByValueUsingPagination(userSmartspace, userEmail, search, value, size, page)
 					.stream().map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page not found with this search option: " + value);
