@@ -13,7 +13,6 @@ import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 
 @Service
-@LoggerService
 public class UserRegisterServiceImpl implements UserRegisterService {
 
 	private EnhancedUserDao<UserKey> userDao;
@@ -26,6 +25,7 @@ public class UserRegisterServiceImpl implements UserRegisterService {
 	}
 
 	@Override
+	@LoggerService
 	public UserEntity registerNewUser(UserEntity newUser) {
 		return this.userDao.create(validate(newUser)); // create() will throw exception if user already exists
 	}

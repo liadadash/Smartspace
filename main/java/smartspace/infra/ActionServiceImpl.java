@@ -16,7 +16,6 @@ import smartspace.data.ActionEntity;
 import smartspace.data.ElementKey;
 
 @Service
-@LoggerService
 public class ActionServiceImpl implements ActionService {
 
 	private EnhancedActionDao actionDao;
@@ -34,12 +33,14 @@ public class ActionServiceImpl implements ActionService {
 	@Override
 	@Transactional
 	@AdminOnly
+	@LoggerService
 	public List<ActionEntity> importActions(String adminSmartspace, String adminEmail, List<ActionEntity> entities) {
 		return entities.stream().map(this::validate).map(this.actionDao::importAction).collect(Collectors.toList());
 	}
 
 	@Override
 	@AdminOnly
+	@LoggerService
 	public List<ActionEntity> getUsingPagination(String adminSmartspace, String adminEmail, int size, int page) {
 		return this.actionDao.readAllWithPaging("key", size, page);
 	}

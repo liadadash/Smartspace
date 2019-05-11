@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.aop.LoggerService;
+import smartspace.aop.PlayerOrManagerGetRole;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
@@ -21,7 +22,6 @@ import smartspace.data.UserRole;
  * The Class ElementServiceForManagerOrPlayerImpl.
  */
 @Service
-@LoggerService
 public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForManagerOrPlayer {
 
 	/** The element dao. */
@@ -40,14 +40,18 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	/**
 	 * Gets the elements using pagination.
 	 *
-	 * @param role the role
-	 * @param size the size
-	 * @param page the page
+	 * @param role           the role
+	 * @param userSmartspace the user smartspace
+	 * @param userEmail      the user email
+	 * @param size           the size
+	 * @param page           the page
 	 * @return the elements using pagination
 	 */
-	// TODO:Need to add only manager or player annotation to change role
+	@PlayerOrManagerGetRole
 	@Override
-	public List<ElementEntity> getElementsUsingPagination(UserRole role, int size, int page) {
+	@LoggerService
+	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail,
+			int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 		return elementDao.readAllUsingPaging(showExpired, size, page);
 	}
@@ -55,21 +59,24 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	/**
 	 * Gets the elements search by value using pagination.
 	 *
-	 * @param role     the role
-	 * @param searchBy the search by
-	 * @param value    the value
-	 * @param size     the size
-	 * @param page     the page
+	 * @param role           the role
+	 * @param userSmartspace the user smartspace
+	 * @param userEmail      the user email
+	 * @param searchBy       the search by
+	 * @param value          the value
+	 * @param size           the size
+	 * @param page           the page
 	 * @return the elements search by value using pagination
 	 */
-	// TODO:Need to add only manager or player annotation to change role
+	@PlayerOrManagerGetRole
 	@Override
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String searchBy, String value, int size, int page) {
+	@LoggerService
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
+			String userEmail, String searchBy, String value, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
-
 		// search by value if search argument is one of these keys
-		String[] searchKeysByValue = {"name", "type"};
-		
+		String[] searchKeysByValue = { "name", "type" };
+
 		if (Arrays.asList(searchKeysByValue).contains(searchBy)) {
 			return elementDao.readAllWithSameValuesUsingPaging(showExpired, searchBy, value, size, page);
 		} else {
