@@ -38,6 +38,6 @@ public interface ElementServiceForManagerOrPlayer {
 	 * @param page           the page
 	 * @return the elements search by value using pagination
 	 */
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(String userSmartspace,
 			String userEmail, String searchBy, String value, int size, int page);
 }

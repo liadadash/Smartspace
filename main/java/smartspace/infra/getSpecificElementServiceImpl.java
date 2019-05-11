@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.aop.LoggerService;
-import smartspace.aop.ManagerOrPlayerOnly;
+import smartspace.aop.PlayerOrManagerGetRole;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
@@ -29,18 +29,18 @@ public class getSpecificElementServiceImpl implements getSpecificElementService 
 	}
 
 	@Override
-	@ManagerOrPlayerOnly
-	public ElementEntity getElement(String userSmartspace, String userEmail, String elementSmartspace,
-			String elementId) {
-
-		UserEntity user = this.userDao.readById(new UserKey(userSmartspace, userEmail))
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not in DB"));
+	@PlayerOrManagerGetRole
+	public ElementEntity getElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId) {
+		return this.getElement(null, userSmartspace, userEmail, elementSmartspace, elementId);
+	}
+	
+	@PlayerOrManagerGetRole
+	private ElementEntity getElement(UserRole role, String userSmartspace, String userEmail, String elementSmartspace, String elementId) {
 		
 		ElementEntity element = elementDao.readById(new ElementKey(elementSmartspace, Long.parseLong(elementId))).orElseThrow(
 				()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not in DB"));
 		
-		
-		if(user.getRole() == UserRole.MANAGER || (user.getRole()== UserRole.PLAYER && !element.getExpired())) {
+		if(role == UserRole.MANAGER || (role == UserRole.PLAYER && !element.getExpired())) {
 			return element;
 		}
 		else 
