@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,6 +22,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedActionDao;
+import smartspace.dao.EnhancedElementDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
@@ -36,7 +39,7 @@ import smartspace.layout.ElementBoundary;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = { "spring.profiles.active=default" })
+@TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class ActionControllerIntegrationTests {
 
 	private String baseUrl;
@@ -386,8 +389,8 @@ public class ActionControllerIntegrationTests {
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
 
-		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
-		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
+		this.actionService.importActions(admin.getUserSmartspace(), admin.getUserEmail(), actions);
 
 		// WHEN I GET actions of size 10 and page 1
 		ActionBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
@@ -410,8 +413,8 @@ public class ActionControllerIntegrationTests {
 		List<ElementEntity> elements = this.faker.entity().elementList(size);
 		List<ActionEntity> actions = this.faker.entity().actionList(elements, size);
 
-		this.elementService.importElements(elements, admin.getUserSmartspace(), admin.getUserEmail());
-		this.actionService.importActions(actions, admin.getUserSmartspace(), admin.getUserEmail());
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
+		this.actionService.importActions(admin.getUserSmartspace(), admin.getUserEmail(), actions);
 
 		// WHEN I GET actions of size 10 and page 0
 		ActionBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
@@ -419,6 +422,28 @@ public class ActionControllerIntegrationTests {
 
 		// THEN I receive response has size of 7
 		assertThat(response).hasSize(size);
+	}
+	
+	@Test
+	public void testPostInvalidActionsWithValidActions() throws Exception {
+		// GIVEN the database contains an admin user and some valid elements
+		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
+		
+		List<ElementEntity> elements = faker.entity().elementList(3);
+		this.elementService.importElements(admin.getUserSmartspace(), admin.getUserEmail(), elements);
+		
+		// WHEN I post valid actions together with invalid actions
+		ActionBoundary[] actions = faker.boundary().actionArray(elements, 5);
+		actions[3].setActionKey(null);
+		actions[3].setType(null);
+		
+		// THEN there is an exception and the database should be empty (@Transactional behavior working as intended)
+		try {
+			this.restTemplate.postForObject(this.baseUrl, actions, ActionBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+			throw new RuntimeException("some actions are invalid but there was no exception"); // will only get to this line if there was no exception
+		} catch (Exception e) {
+			assertThat(this.actionDao.readAll()).isEmpty();
+		}
 	}
 
 }

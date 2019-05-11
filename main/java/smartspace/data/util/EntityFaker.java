@@ -16,9 +16,10 @@ import smartspace.data.UserKey;
 import smartspace.data.UserRole;
 
 public class EntityFaker {
-	
-	private static String[] elementTypes = {"list", "item", "category"};
-	private static String[] actionTypes = {"add_item", "remove_item", "update", "move_item", "rename", "restore_item"};
+
+	private static String[] elementTypes = { "list", "item", "category" };
+	private static String[] actionTypes = { "add_item", "remove_item", "update", "move_item", "rename",
+			"restore_item" };
 
 	private Random random;
 	private Faker faker;
@@ -30,7 +31,7 @@ public class EntityFaker {
 
 	public ElementEntity element() {
 		ElementEntity entity = new ElementEntity();
-		
+
 		entity.setCreationTimestamp(new Date());
 		entity.setCreatorEmail(faker.generateEmail());
 		entity.setCreatorSmartspace(faker.appSmartspace);
@@ -58,23 +59,36 @@ public class EntityFaker {
 	public ElementEntity[] elementArray(int size) {
 		return elementList(size).toArray(new ElementEntity[0]);
 	}
-	
+
 	public UserEntity user() {
 		UserEntity user = new UserEntity();
-		
+
 		user.setAvatar("https://images.com/" + faker.generateName(100) + ".jpg");
 		user.setPoints(faker.generateNumber(0, 100));
 		user.setRole(faker.randomEnum(UserRole.class));
 		user.setUserEmail(faker.generateEmail());
 		user.setUsername(faker.generateName(7) + faker.generateNumber(10, 100));
 		user.setUserSmartspace(faker.appSmartspace);
-		
+
 		return user;
 	}
-	
+
 	public UserEntity user(UserKey key) {
 		UserEntity user = this.user();
 		user.setKey(key);
+		return user;
+	}
+
+	public UserEntity user(UserRole role) {
+		UserEntity user = this.user();
+		user.setRole(role);
+		return user;
+	}
+
+	public UserEntity user(UserKey key, UserRole role) {
+		UserEntity user = this.user();
+		user.setKey(key);
+		user.setRole(role);
 		return user;
 	}
 
@@ -85,11 +99,11 @@ public class EntityFaker {
 	public UserEntity[] userArray(int size) {
 		return userList(size).toArray(new UserEntity[0]);
 	}
-	
+
 	// actions are always performed on elements
 	public ActionEntity action(ElementEntity elementEntity) {
 		ActionEntity actionEntity = new ActionEntity();
-		
+
 		actionEntity.setActionId(faker.generateId().toString());
 		actionEntity.setActionSmartspace(faker.appSmartspace);
 		actionEntity.setActionType(actionTypes[random.nextInt(actionTypes.length)]);
@@ -97,14 +111,14 @@ public class EntityFaker {
 		actionEntity.setMoreAttributes(faker.generateMap(true));
 		actionEntity.setPlayerEmail(faker.generateEmail());
 		actionEntity.setPlayerSmartspace(faker.appSmartspace);
-		
+
 		// important make sure related element is in database or import will fail
 		actionEntity.setElementId(elementEntity.getElementId());
 		actionEntity.setElementSmartspace(elementEntity.getElementSmartspace());
-		
+
 		return actionEntity;
 	}
-	
+
 	public ActionEntity action(ElementEntity elementEntity, ActionKey key) {
 		ActionEntity entity = this.action(elementEntity);
 		entity.setKey(key);
@@ -112,21 +126,19 @@ public class EntityFaker {
 	}
 
 	public List<ActionEntity> actionList(List<ElementEntity> elements, int size) {
-		return IntStream.range(0, size)
-				.mapToObj(i -> action( elements.get(random.nextInt(elements.size())) ))
+		return IntStream.range(0, size).mapToObj(i -> action(elements.get(random.nextInt(elements.size()))))
 				.collect(Collectors.toList());
 	}
-	
+
 	public List<ActionEntity> actionList(ElementEntity[] elements, int size) {
-		return IntStream.range(0, size)
-				.mapToObj(i -> action( elements[random.nextInt(elements.length)] ))
+		return IntStream.range(0, size).mapToObj(i -> action(elements[random.nextInt(elements.length)]))
 				.collect(Collectors.toList());
 	}
 
 	public ActionEntity[] actionArray(List<ElementEntity> elements, int size) {
 		return actionList(elements, size).toArray(new ActionEntity[0]);
 	}
-	
+
 	public ActionEntity[] actionArray(ElementEntity[] elements, int size) {
 		return actionList(elements, size).toArray(new ActionEntity[0]);
 	}

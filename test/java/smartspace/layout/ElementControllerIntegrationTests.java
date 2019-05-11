@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +19,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedElementDao;
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 import smartspace.data.UserEntity;
@@ -169,7 +171,7 @@ public class ElementControllerIntegrationTests {
 		int size = 2;
 		List<ElementEntity> elemntsEntity = faker.entity().elementList(size);
 		List<ElementBoundary> elementsBoundary=
-				this.elementService.importElements(elemntsEntity, newAdmin.getUserSmartspace(), newAdmin.getUserEmail())
+				this.elementService.importElements(newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), elemntsEntity)
 				.stream().map(ElementBoundary::new).collect(Collectors.toList());
 		
 		// WHEN I GET elements of size 10 and page 0
@@ -242,6 +244,25 @@ public class ElementControllerIntegrationTests {
 		assertThat(result)
 			.isEmpty();
 		
+	}
+	
+	@Test
+	public void testPostInvalidElementsWithValidElements() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
+		
+		// WHEN I post valid elements together with invalid elements
+		ElementBoundary[] elements = faker.boundary().elementArray(5);
+		elements[3].setKey(null);
+		elements[3].setName(null);
+		
+		// THEN there is an exception and the database should be empty (@Transactional behavior working as intended)
+		try {
+			this.restTemplate.postForObject(this.baseUrl, elements, ElementBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+			throw new RuntimeException("some elements are invalid but there was no exception"); // will only get to this line if there was no exception
+		} catch (Exception e) {
+			assertThat(this.elementDao.readAll()).isEmpty();
+		}
 	}
 	
 }

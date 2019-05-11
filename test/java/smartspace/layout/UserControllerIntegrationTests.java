@@ -1,4 +1,4 @@
-package smartspace.dao;
+package smartspace.layout;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +21,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 
+import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
@@ -145,7 +146,8 @@ public class UserControllerIntegrationTests {
 		UserBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
 				UserBoundary[].class, newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), 10, 0);
 
-		// THEN I receive the exact 3 users written to the database
+		// THEN I receive the exact 3 users written to the database sorted by key
+		usersBoundary.sort((u1, u2)->u1.convertToEntity().getKey().compareTo(u2.convertToEntity().getKey()));
 		assertThat(response).usingElementComparatorOnFields("key").containsExactlyElementsOf(usersBoundary);
 	}
 
@@ -163,8 +165,8 @@ public class UserControllerIntegrationTests {
 		int size = 2;
 		List<UserEntity> usersEntity = faker.entity().userList(size);
 			
-		List<UserBoundary> usersBoundary=
-				this.userService.importUsers(usersEntity,newAdmin.getUserSmartspace(),newAdmin.getUserEmail())
+		List<UserBoundary> usersBoundary =
+				this.userService.importUsers(newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), usersEntity)
 				.stream().map(UserBoundary::new).collect(Collectors.toList());
 		usersBoundary.add(0, new UserBoundary(newAdmin));
 		
@@ -172,10 +174,8 @@ public class UserControllerIntegrationTests {
 		UserBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "?size={size}&page={page}",
 				UserBoundary[].class, newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), 10, 0);
 		
-		
-		
-		
-		// THEN I receive the exact users written to the database
+		// THEN I receive the exact users written to the database sorted by key
+		usersBoundary.sort((u1, u2)->u1.convertToEntity().getKey().compareTo(u2.convertToEntity().getKey()));
 		assertThat(response).usingElementComparatorOnFields("key","role","username","avatar","points")
 		.containsExactlyElementsOf(usersBoundary);
 	}
@@ -196,6 +196,7 @@ public class UserControllerIntegrationTests {
 		this.userDao.create(newAdmin);
 		usersEntity.add(newAdmin);
 		//------------------------------------find the last user---------------------------
+		usersEntity.sort((u1, u2)->u1.getKey().compareTo(u2.getKey()));
 		UserBoundary lastUser = usersEntity.stream()
 				.skip(10).limit(1)
 				.map(UserBoundary::new).findFirst()
@@ -242,6 +243,39 @@ public class UserControllerIntegrationTests {
 		assertThat(result)
 			.isEmpty();
 		
+	}
+	
+	@Test
+	public void testPostInvalidUsersWithValidUsers() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(UserRole.ADMIN));
+		
+		// WHEN I post valid elements together with invalid elements
+		UserBoundary[] users = faker.boundary().userArray(5);
+		users[3].setUsername(null);
+		users[3].setAvatar(null);
+		
+		// THEN there is an exception and the database should only contain the admin user (@Transactional behavior working as intended)
+		try {
+			this.restTemplate.postForObject(this.baseUrl, users, UserBoundary[].class, admin.getUserSmartspace(), admin.getUserEmail());
+			throw new RuntimeException("some users are invalid but there was no exception"); // will only get to this line if there was no exception
+		} catch (Exception e) {
+			assertThat(this.userDao.readAll()).usingElementComparatorOnFields("key").containsExactly(admin);
+		}
+	}
+	
+	@Test
+	public void testAdminCheckIsCaseInsensitive() throws Exception {
+		// GIVEN the database contains an admin user
+		UserEntity admin = this.userDao.create(faker.entity().user(new UserKey("smartspace", "Test@gmail.com"), UserRole.ADMIN));
+		
+		// WHEN I post 3 users using different spellings
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "test@gmail.com");
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "TEST@gmail.com");
+		this.restTemplate.postForObject(this.baseUrl, faker.boundary().userArray(1), UserBoundary[].class, admin.getUserSmartspace(), "tESt@gMaIl.cOm");
+		
+		// THEN there should be 3 users in the database + 1 admins
+		assertThat(this.userDao.readAll()).hasSize(4);
 	}
 
 }

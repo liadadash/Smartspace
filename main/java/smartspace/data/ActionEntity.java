@@ -19,11 +19,17 @@ import smartspace.dao.rdb.MapToJsonConverter;
 @Table(name = "ACTIONS")
 public class ActionEntity implements SmartspaceEntity<ActionKey> {
 
+	@Column(nullable = false)
 	private String actionSmartspace;
+	@Column(nullable = false)
 	private String actionId;
+	@Column(nullable = false)
 	private String elementSmartspace;
+	@Column(nullable = false)
 	private String elementId;
+	@Column(nullable = false)
 	private String playerSmartspace;
+	@Column(nullable = false)
 	private String playerEmail;
 	private String actionType;
 	private Date creationTimestamp;
@@ -130,11 +136,11 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	}
 
 	/*
-	* @author liadk
-	*
-	* @see smartspace.data.SmartspaceEntity#getKey()
-	* 
-	*/
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#getKey()
+	 * 
+	 */
 	@Override
 	@EmbeddedId
 	@Column(name = "ID")
@@ -151,15 +157,20 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	}
 
 	/*
-	* @author liadk
-	*
-	* @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
-	* 
-	*/
+	 * @author liadk
+	 *
+	 * @see smartspace.data.SmartspaceEntity#setKey(java.lang.Object)
+	 * 
+	 */
 	@Override
 	public void setKey(ActionKey k) {
-		this.setActionSmartspace(k.getActionSmartspace());
-		this.actionId = String.valueOf(k.getId());
+		if (k != null) {
+			this.setActionSmartspace(k.getActionSmartspace());
+			this.actionId = String.valueOf(k.getId());
+		} else {
+			this.setActionSmartspace(null);
+			this.actionId = null;
+		}
 	}
 
 }

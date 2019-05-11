@@ -134,8 +134,6 @@ public class ElementBoundary {
 			entity.setLocation(new Location(this.latlng.get("lat"), this.latlng.get("lng")));
 		}
 
-		// default value
-		entity.setMoreAttributes(new TreeMap<String, Object>());
 		if (this.elementProperties != null) {
 			entity.setMoreAttributes(this.elementProperties);
 		}
