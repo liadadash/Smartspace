@@ -29,12 +29,8 @@ public class GetSpecificElementServiceImpl implements GetSpecificElementService 
 	}
 
 	@Override
-	public ElementEntity getElement(String userSmartspace, String userEmail, String elementSmartspace, String elementId) {
-		return this.getElement(null, userSmartspace, userEmail, elementSmartspace, elementId);
-	}
-	
 	@PlayerOrManagerGetRole
-	private ElementEntity getElement(UserRole role, String userSmartspace, String userEmail, String elementSmartspace, String elementId) {
+	public ElementEntity getElement(UserRole role, String userSmartspace, String userEmail, String elementSmartspace, String elementId) {
 		
 		ElementEntity element = elementDao.readById(new ElementKey(elementSmartspace, Long.parseLong(elementId))).orElseThrow(
 				()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not in DB"));
@@ -43,7 +39,7 @@ public class GetSpecificElementServiceImpl implements GetSpecificElementService 
 			return element;
 		}
 		else 
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Element not found" + role);
 
 	}
 

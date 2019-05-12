@@ -47,15 +47,11 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 * @param page           the page
 	 * @return the elements using pagination
 	 */
-
+	
 	@Override
-	public List<ElementEntity> getElementsUsingPagination(String userSmartspace, String userEmail, int size, int page) {
-		return this.getElementsUsingPagination(null, userSmartspace, userEmail, size, page);
-	}
-
 	@PlayerOrManagerGetRole
 	@LoggerService
-	private List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail, int size, int page) {
+	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 		return elementDao.readAllUsingPaging(showExpired, size, page);
 	}
@@ -74,13 +70,9 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	 */
 
 	@Override
-	public List<ElementEntity> getElementsSearchByValueUsingPagination(String userSmartspace, String userEmail, String searchBy, String value, int size, int page) {
-		return this.getElementsSearchByValueUsingPagination(null, userSmartspace, userEmail, searchBy, value, size, page);
-	}
-
 	@PlayerOrManagerGetRole
 	@LoggerService
-	private List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace, String userEmail, String searchBy, String value, int size, int page) {
+	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace, String userEmail, String searchBy, String value, int size, int page) {
 		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
 		// search by value if search argument is one of these keys
 		String[] searchKeysByValue = { "name", "type" };

@@ -54,9 +54,8 @@ public class PlayerOrManagerGetRoleAspect {
 	 * @return the list
 	 * @throws Throwable the throwable
 	 */
-	@Around("@annotation(smartspace.aop.PlayerOrManagerGetRole) && execution(* smartspace.infra.*Service*Impl.*(..)) && args(role,userSmartspace,userEmail,..)")
-	public List<?> checkIfUserIsPlayerOrManager(ProceedingJoinPoint pjp, UserRole role, String userSmartspace,
-			String userEmail) throws Throwable {
+	@Around("@annotation(smartspace.aop.PlayerOrManagerGetRole) && args(role,userSmartspace,userEmail,..)")
+	public Object checkIfUserIsPlayerOrManager(ProceedingJoinPoint pjp, UserRole role, String userSmartspace, String userEmail) throws Throwable {
 
 		String method = pjp.getSignature().getName();
 		String fullyQualifiedClassName = pjp.getTarget().getClass().getName();
@@ -88,7 +87,7 @@ public class PlayerOrManagerGetRoleAspect {
 			if (args[i] == null)
 				args[i] = role;
 		}
-		return (List<?>) pjp.proceed(args);
+		return pjp.proceed(args);
 	}
 
 }

@@ -31,7 +31,7 @@ public class GetSpecificElementServiceController {
 			@PathVariable("elementSmartspace") String elementSmartspace,
 			@PathVariable("elementId") String elementId ){
 		
-	return new ElementBoundary(elementService.getElement(userSmartspace, userEmail,elementSmartspace,elementId));
+	return new ElementBoundary(elementService.getElement(null, userSmartspace, userEmail,elementSmartspace,elementId));
 		
 	}
 	
