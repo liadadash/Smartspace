@@ -22,10 +22,27 @@ public class UpdateUserServiceImpl implements UpdateUserService {
 	// User can update only: Avatar, Username,Role
 	@Override
 	public void updateUser(String userEmail, String userSmartspace, UserEntity userEntity) {
-		if (userSmartspace != userEntity.getUserSmartspace() || userEmail != userEntity.getUserEmail()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-					"User cannot update his userSmartspace or his email");
-		}
-		this.userDao.update(userEntity); // if the userEntity not in DB userDao.update() throw runTimeExepcion
+		// Check with Eyal if we need it:
+		/*
+		 * if (userSmartspace != userEntity.getUserSmartspace() || userEmail !=
+		 * userEntity.getUserEmail()) { throw new
+		 * ResponseStatusException(HttpStatus.BAD_REQUEST,
+		 * "User cannot update his userSmartspace or his email"); }
+		 */
+		this.userDao.update(validate(userEntity));
 	}
+
+	private UserEntity validate(UserEntity user) {
+		if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username must not be empty");
+		}
+		if (user.getAvatar() == null || user.getAvatar().trim().isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Avatar must not be empty");
+		}
+		if (user.getRole() == null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Must have a valid user role");
+		}
+		return user;
+	}
+
 }
