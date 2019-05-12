@@ -13,12 +13,12 @@ import smartspace.data.ElementKey;
 import smartspace.infra.UpdateElementService;
 
 @RestController
-public class updateElementController {
+public class UpdateElementController {
 
 	private UpdateElementService elementService;
 	
 	@Autowired
-	public updateElementController(UpdateElementService updateElementService) {
+	public UpdateElementController(UpdateElementService updateElementService) {
 		this.elementService = updateElementService;
 	}
 	
