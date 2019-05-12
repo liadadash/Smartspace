@@ -17,13 +17,13 @@ import smartspace.data.UserRole;
 
 @Service
 // @LoggerService
-public class getSpecificElementServiceImpl implements getSpecificElementService {
+public class GetSpecificElementServiceImpl implements GetSpecificElementService {
 
 	private EnhancedElementDao<ElementKey> elementDao;
 	private EnhancedUserDao<UserKey> userDao;
 
 	@Autowired
-	public getSpecificElementServiceImpl(EnhancedElementDao<ElementKey> elementDao, EnhancedUserDao<UserKey> userDao) {
+	public GetSpecificElementServiceImpl(EnhancedElementDao<ElementKey> elementDao, EnhancedUserDao<UserKey> userDao) {
 		this.elementDao = elementDao;
 		this.userDao = userDao;
 	}
