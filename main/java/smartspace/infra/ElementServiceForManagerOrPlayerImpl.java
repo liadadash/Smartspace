@@ -88,7 +88,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 		if (Arrays.asList(searchKeysByValue).contains(searchBy)) {
 			return elementDao.readAllWithSameValuesUsingPaging(showExpired, searchBy, value, size, page);
 		} else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Seach by this value is not valid: " + searchBy);
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Search by this value is not valid: " + searchBy);
 		}
 	}
 }

@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import smartspace.infra.getSpecificElementService;
+import smartspace.infra.GetSpecificElementService;
 
 @RestController
 public class getSpecificElementServiceController {
 	
-	private getSpecificElementService elementService;
+	private GetSpecificElementService elementService;
 	
 	@Autowired
-	public getSpecificElementServiceController(getSpecificElementService elementService) {
+	public getSpecificElementServiceController(GetSpecificElementService elementService) {
 		this.elementService = elementService;
 	}
 	
