@@ -1,3 +1,6 @@
+/**
+ * @author liadkh	11-05-2019
+ */
 package smartspace.aop;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -7,12 +10,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * The Interface LoggerService.
+ * The Interface PlayerOrManagerGetRole.
  * 
  * @author liadkh
  */
 @Retention(RUNTIME)
 @Target(ElementType.METHOD)
-public @interface LoggerService {
+public @interface PlayerOrManagerGetRole {
 
 }

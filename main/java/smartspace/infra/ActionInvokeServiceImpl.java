@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
@@ -22,7 +23,6 @@ import smartspace.data.UserRole;
  * The Class ActionInvokeServiceImpl.
  */
 @Service
-//@LoggerService
 public class ActionInvokeServiceImpl implements ActionInvokeService {
 
 	/** The action dao. */
@@ -56,6 +56,7 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	 * @return the action entity
 	 */
 	@Override
+	@LoggerService
 	public ActionEntity invokeAction(ActionEntity actionEntity) {
 		ActionEntity rv = validate(actionEntity);
 

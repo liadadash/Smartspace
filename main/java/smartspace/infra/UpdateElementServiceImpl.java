@@ -16,14 +16,14 @@ import smartspace.data.UserRole;
 
 @Service
 // @LoggerService
-public class updateElementServiceImpl implements updateElementService {
+public class UpdateElementServiceImpl implements UpdateElementService {
 
 	private EnhancedElementDao<ElementKey> elementDao;
 	//remove this after using @managaerOnly annotation
 	private EnhancedUserDao<UserKey> userDao;
 	
 	@Autowired
-	public updateElementServiceImpl(EnhancedElementDao<ElementKey> elementDao,EnhancedUserDao<UserKey> userDao) {
+	public UpdateElementServiceImpl(EnhancedElementDao<ElementKey> elementDao,EnhancedUserDao<UserKey> userDao) {
 		this.elementDao = elementDao;
 		this.userDao = userDao;
 	}

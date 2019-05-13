@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
-import smartspace.infra.updateElementService;
+import smartspace.infra.UpdateElementService;
 
 @RestController
-public class updateElementController {
+public class UpdateElementController {
 
-	private updateElementService elementService;
+	private UpdateElementService elementService;
 	
 	@Autowired
-	public updateElementController(updateElementService updateElementService) {
+	public UpdateElementController(UpdateElementService updateElementService) {
 		this.elementService = updateElementService;
 	}
 	

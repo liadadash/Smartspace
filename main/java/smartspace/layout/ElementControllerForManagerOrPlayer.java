@@ -41,15 +41,15 @@ public class ElementControllerForManagerOrPlayer {
 	}
 
 	/**
-	 * Gets the elements by name.
+	 * Gets the all elements by value.
 	 *
 	 * @param userSmartspace the user smartspace
-	 * @param userEmail      the user email
-	 * @param size           the size
-	 * @param page           the page
-	 * @param search         the search
-	 * @param value          the value
-	 * @return the elements by name
+	 * @param userEmail the user email
+	 * @param size the size
+	 * @param page the page
+	 * @param search the search
+	 * @param value the value
+	 * @return the all elements by value
 	 */
 	@RequestMapping(path = BASE_PATH
 			+ "/{userSmartspace}/{userEmail}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,19 +59,17 @@ public class ElementControllerForManagerOrPlayer {
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
 			@RequestParam(name = "search", required = false) String search,
 			@RequestParam(name = "value", required = false) String value) {
-		
+
 		// search by value if search argument is one of these keys
-		String[] searchKeysByValue = {"name", "type"};
-		
+		String[] searchKeysByValue = { "name", "type" };
+
 		if (search == null || value == null) {
-			return this.elementService.getElementsUsingPagination(null, size, page).stream().map(ElementBoundary::new)
-					.collect(Collectors.toList()).toArray(new ElementBoundary[0]);
-		}
-		else if (Arrays.asList(searchKeysByValue).contains(search)) {
-			return this.elementService.getElementsSearchByValueUsingPagination(null, search, value, size, page).stream()
-					.map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
-		}
-		else {
+			return this.elementService.getElementsUsingPagination(null, userSmartspace, userEmail, size, page).stream().map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
+		} else if (Arrays.asList(searchKeysByValue).contains(search)) {
+			return this.elementService
+					.getElementsSearchByValueUsingPagination(null, userSmartspace, userEmail, search, value, size, page)
+					.stream().map(ElementBoundary::new).collect(Collectors.toList()).toArray(new ElementBoundary[0]);
+		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Page not found with this search option: " + value);
 		}
 	}
