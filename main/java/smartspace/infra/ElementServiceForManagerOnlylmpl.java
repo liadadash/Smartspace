@@ -13,7 +13,6 @@ import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Service
-@LoggerService
 public class ElementServiceForManagerOnlylmpl implements ElementServiceForManagerOnly {
 
 	private EnhancedElementDao<ElementKey> elementDao;
