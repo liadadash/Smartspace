@@ -14,6 +14,7 @@ import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
 import smartspace.data.ActionTypes;
+import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
@@ -101,8 +102,11 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 		Optional<UserEntity> userOp = userDao
 				.readById(new UserKey(entity.getPlayerSmartspace(), entity.getPlayerEmail()));
 
-		return userOp.isPresent() && userOp.get().getRole() == UserRole.PLAYER
-				&& elementDao.readById(new ElementKey(entity.getElementSmartspace(), elementId)).isPresent();
+		Optional<ElementEntity> elememtOp = elementDao
+				.readById(new ElementKey(entity.getElementSmartspace(), elementId));
+
+		return userOp.isPresent() && userOp.get().getRole() == UserRole.PLAYER && elememtOp.isPresent()
+				&& !elememtOp.get().getExpired();
 	}
 
 	/**
