@@ -35,7 +35,4 @@ public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 	 * @return the user entity
 	 */
 	public UserEntity importUser(UserEntity user);
-	
-	// check if user is admin
-	public boolean userIsAdmin(UserKey userKey);
 }

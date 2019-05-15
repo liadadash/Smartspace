@@ -1,5 +1,7 @@
 package smartspace.aop;
 
+import java.util.Optional;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
@@ -9,10 +11,13 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.dao.EnhancedUserDao;
+import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
+import smartspace.data.UserRole;
 
 @Component
 @Aspect
@@ -38,5 +43,14 @@ public class AdminOnlyAspect {
 		if (!userDao.userIsAdmin(new UserKey(smartspace, email))) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admins are allowed access this resource");
 		}
+	}
+	
+	public boolean userIsAdmin(UserKey userKey) {
+		Optional<UserEntity> userData = this.userDao.readById(userKey);
+		if (userData.isPresent()) {
+			return (userData.get().getRole() == UserRole.ADMIN);
+		}
+		
+		return false;
 	}
 }

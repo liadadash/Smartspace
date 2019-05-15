@@ -3,21 +3,21 @@ package smartspace.layout;
 import smartspace.data.UserEntity;
 import smartspace.data.UserRole;
 
-public class UserFormBoundary {
+public class NewUserForm {
 	private String email;
 	private UserRole role;
 	private String username;
 	private String avatar;
 
-	// convert UserEntity to UserFormBoundary
-	public UserFormBoundary(UserEntity entity) {
+	// convert UserEntity to NewUserForm
+	public NewUserForm(UserEntity entity) {
 		this.email = entity.getUserEmail();
 		this.role = entity.getRole();
 		this.username = entity.getUsername();
 		this.avatar = entity.getAvatar();
 	}
 
-	public UserFormBoundary() {
+	public NewUserForm() {
 	}
 
 	public String getEmail() {

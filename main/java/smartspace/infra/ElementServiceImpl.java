@@ -18,13 +18,16 @@ import smartspace.data.ElementKey;
 public class ElementServiceImpl implements ElementService {
 
 	private EnhancedElementDao<ElementKey> elementDao; // used for element saving and reading
-
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
 	public ElementServiceImpl(EnhancedElementDao<ElementKey> elementDao) {
 		this.elementDao = elementDao;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override

@@ -20,14 +20,17 @@ public class ActionServiceImpl implements ActionService {
 
 	private EnhancedActionDao actionDao;
 	private EnhancedElementDao<ElementKey> elementDao; // used to check that action's element was imported before action
-
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
 	public ActionServiceImpl(EnhancedActionDao actionDao, EnhancedElementDao<ElementKey> elementDao) {
 		this.actionDao = actionDao;
 		this.elementDao = elementDao;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override

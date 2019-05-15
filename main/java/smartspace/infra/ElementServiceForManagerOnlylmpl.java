@@ -35,13 +35,14 @@ public class ElementServiceForManagerOnlylmpl implements ElementServiceForManage
 	public ElementEntity isValidElement(ElementEntity newElement) {
 
 		if (newElement.getType() == null || newElement.getType().trim().isEmpty())
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Type must not be empty");
-		if (newElement.getName() == null && newElement.getName().trim().isEmpty())
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username must not be empty");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Element type must not be empty");
+		if (newElement.getName() == null || newElement.getName().trim().isEmpty())
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Element name must not be empty");
 		if (newElement.getLocation() == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Location must not be empty");
 		if (newElement.getMoreAttributes() == null)
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Attributes must not be empty");
+		
 		return newElement;
 
 	}
