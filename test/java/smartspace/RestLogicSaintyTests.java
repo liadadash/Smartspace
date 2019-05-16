@@ -219,7 +219,7 @@ public class RestLogicSaintyTests {
 			List<ElementEntity> mustInclude = elements.stream().filter(e -> (e.getLocation().distance(xStart, yStart) <= maxDistance)).collect(Collectors.toList());
 			List<ElementEntity> mustNotInclude = elements.stream().filter(e -> (e.getLocation().distance(xStart, yStart) > maxDistance)).collect(Collectors.toList());
 
-			// WHEN I search for elements with the same name
+			// WHEN I search for elements by location
 			ElementBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "elements/{userSmartspace}/{userEmail}/?search=location&x={x}&y={y}&distance={distance}&page=0&size={size}", ElementBoundary[].class, user.getUserSmartspace(), user.getUserEmail(), xStart, yStart, maxDistance, size);
 			
 			// THEN all the distances are less than maxDistance
@@ -253,7 +253,7 @@ public class RestLogicSaintyTests {
 			List<ElementEntity> mustInclude = elements.stream().filter(e -> (isInSqaure(e.getLocation(), xStart, yStart, maxDistance))).collect(Collectors.toList());
 			List<ElementEntity> mustNotInclude = elements.stream().filter(e -> (!isInSqaure(e.getLocation(), xStart, yStart, maxDistance))).collect(Collectors.toList());
 
-			// WHEN I search for elements with the same name
+			// WHEN I search for elements by location
 			ElementBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "elements/{userSmartspace}/{userEmail}/?search=location&x={x}&y={y}&distance={distance}&page=0&size={size}", ElementBoundary[].class, user.getUserSmartspace(), user.getUserEmail(), xStart, yStart, maxDistance, size);
 			
 			// THEN all the distances are less than maxDistance
@@ -261,9 +261,11 @@ public class RestLogicSaintyTests {
 			
 			assertThat(responseList).hasSize(mustInclude.size());
 			
+			// includes all elements in square
 			if (mustInclude.size() > 0) {
 				assertThat(responseList).usingElementComparatorOnFields("key").containsExactlyInAnyOrderElementsOf(mustInclude);
 			}
+			// doesn't include elements outside of sqaure
 			if (mustNotInclude.size() > 0) {
 				assertThat(responseList).usingElementComparatorOnFields("key").doesNotContainAnyElementsOf(mustNotInclude); 
 			}
