@@ -68,7 +68,7 @@ public class UpdateUserIntegrationTests {
 		UserBoundary updatedUser = new UserBoundary(user);
 		updatedUser.setUsername(lastUserName + " the second");
 
-		this.restTemplate.put(baseUrl, updatedUser, UserBoundary.class, user.getUserSmartspace(), user.getUserEmail());
+		this.restTemplate.put(baseUrl, updatedUser, user.getUserSmartspace(), user.getUserEmail());
 
 		// THEN the database contains a user with the updated userName
 		assertThat(
@@ -87,7 +87,7 @@ public class UpdateUserIntegrationTests {
 		UserBoundary updatedUser = new UserBoundary(user);
 		updatedUser.setUsername(null);
 
-		this.restTemplate.put(baseUrl, updatedUser, UserBoundary.class, user.getUserSmartspace(), user.getUserEmail());
+		this.restTemplate.put(baseUrl, updatedUser, user.getUserSmartspace(), user.getUserEmail());
 
 		// THEN the database contains a user with SAME userName like before(cannot
 		// update to NULL)
@@ -106,7 +106,7 @@ public class UpdateUserIntegrationTests {
 		UserBoundary updatedUser = new UserBoundary(user);
 		updatedUser.setPoints(user.getPoints() + 100);
 
-		this.restTemplate.put(baseUrl, updatedUser, UserBoundary.class, user.getUserSmartspace(), user.getUserEmail());
+		this.restTemplate.put(baseUrl, updatedUser, user.getUserSmartspace(), user.getUserEmail());
 
 		// THEN the database contains a user with SAME points like before(cannot update
 		// points)
