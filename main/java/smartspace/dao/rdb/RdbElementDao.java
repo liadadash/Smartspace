@@ -83,6 +83,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		if (update.getLocation() != null)
 			existing.setLocation(update.getLocation());
 
+			existing.setExpired(update.getExpired());
 		// Eyal said to not update key attributes
 //		if (update.getElementSmartspace() != null)
 //			existing.setElementSmartspace(update.getElementSmartspace());
