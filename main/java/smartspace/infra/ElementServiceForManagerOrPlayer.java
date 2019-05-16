@@ -40,4 +40,7 @@ public interface ElementServiceForManagerOrPlayer {
 	 */
 	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace,
 			String userEmail, String searchBy, String value, int size, int page);
+
+	// search = location
+	List<ElementEntity> getElementsByLocation(UserRole role, String userSmartspace, String userEmail, Double x, Double y, Double distance, int size, int page);
 }

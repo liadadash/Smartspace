@@ -57,4 +57,7 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 	 */
 	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value, int size, int page);
 
+	// search by location
+	List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page);
+
 }

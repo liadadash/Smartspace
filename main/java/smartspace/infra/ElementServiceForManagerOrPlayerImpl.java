@@ -52,7 +52,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	@PlayerOrManagerGetRole
 	@LoggerService
 	public List<ElementEntity> getElementsUsingPagination(UserRole role, String userSmartspace, String userEmail, int size, int page) {
-		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
+		boolean showExpired = (role == UserRole.MANAGER);
 		return elementDao.readAllUsingPaging(showExpired, size, page);
 	}
 
@@ -73,7 +73,7 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 	@PlayerOrManagerGetRole
 	@LoggerService
 	public List<ElementEntity> getElementsSearchByValueUsingPagination(UserRole role, String userSmartspace, String userEmail, String searchBy, String value, int size, int page) {
-		boolean showExpired = (role == UserRole.MANAGER) ? true : false;
+		boolean showExpired = (role == UserRole.MANAGER);
 		// search by value if search argument is one of these keys
 		String[] searchKeysByValue = { "name", "type" };
 
@@ -82,5 +82,13 @@ public class ElementServiceForManagerOrPlayerImpl implements ElementServiceForMa
 		} else {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Search by this value is not valid: " + searchBy);
 		}
+	}
+	
+	@Override
+	@PlayerOrManagerGetRole
+	@LoggerService
+	public List<ElementEntity> getElementsByLocation(UserRole role, String userSmartspace, String userEmail, Double x, Double y, Double distance, int size, int page) {
+		boolean includeExpired = (role == UserRole.MANAGER);
+		return this.elementDao.searchByLocation(includeExpired, x, y, distance, size, page);
 	}
 }

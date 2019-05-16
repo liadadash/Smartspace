@@ -2,6 +2,7 @@ package smartspace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
+import smartspace.data.Location;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
@@ -198,7 +200,79 @@ public class RestLogicSaintyTests {
 	}
 	
 	// # ---------------- GET: /smartspace/elements/{userSmartspace}/{userEmail}/?search=location ---------------- # 
+	
+		// disabled for now TODO: enable after radius check
+		public void testSearchByLocationAsRadiusCheck() throws Exception {
+			// GIVEN that there are some elements and a player user in the database
+			UserEntity user = this.userDao.create(faker.entity().user(UserRole.PLAYER));
+			
+			// create size elements
+			int size = faker.generateNumber(10, 11);
+			double xStart = faker.generateDouble(0, 100);
+			double yStart = faker.generateDouble(0, 100);
+			double maxDistance = faker.generateDouble(0, 100);
+			
+			// create some elements
+			List<ElementEntity> elements = faker.entity().elementList(size).stream().map(this.elementDao::create).collect(Collectors.toList());
+			
+			// filter elements with distance <= maxDistance
+			List<ElementEntity> mustInclude = elements.stream().filter(e -> (e.getLocation().distance(xStart, yStart) <= maxDistance)).collect(Collectors.toList());
+			List<ElementEntity> mustNotInclude = elements.stream().filter(e -> (e.getLocation().distance(xStart, yStart) > maxDistance)).collect(Collectors.toList());
 
+			// WHEN I search for elements with the same name
+			ElementBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "elements/{userSmartspace}/{userEmail}/?search=location&x={x}&y={y}&distance={distance}&page=0&size={size}", ElementBoundary[].class, user.getUserSmartspace(), user.getUserEmail(), xStart, yStart, maxDistance, size);
+			
+			// THEN all the distances are less than maxDistance
+			List<ElementEntity> responseList = Arrays.stream(response).map(ElementBoundary::convertToEntity).collect(Collectors.toList());
+			
+			assertThat(responseList).hasSize(mustInclude.size());
+			
+			if (mustInclude.size() > 0) {
+				assertThat(responseList).usingElementComparatorOnFields("key").containsExactlyInAnyOrderElementsOf(mustInclude);
+			}
+			if (mustNotInclude.size() > 0) {
+				assertThat(responseList).usingElementComparatorOnFields("key").doesNotContainAnyElementsOf(mustNotInclude); 
+			}
+		}
+		
+		@Test
+		public void testSearchByLocationLinear() throws Exception {
+			// GIVEN that there are some elements and a player user in the database
+			UserEntity user = this.userDao.create(faker.entity().user(UserRole.PLAYER));
+			
+			// create size elements
+			int size = faker.generateNumber(10, 11);
+			double xStart = faker.generateDouble(0, 100);
+			double yStart = faker.generateDouble(0, 100);
+			double maxDistance = faker.generateDouble(0, 100);
+			
+			// create some elements
+			List<ElementEntity> elements = faker.entity().elementList(size).stream().map(this.elementDao::create).collect(Collectors.toList());
+			
+			// filter elements with distance <= maxDistance
+			List<ElementEntity> mustInclude = elements.stream().filter(e -> (isInSqaure(e.getLocation(), xStart, yStart, maxDistance))).collect(Collectors.toList());
+			List<ElementEntity> mustNotInclude = elements.stream().filter(e -> (!isInSqaure(e.getLocation(), xStart, yStart, maxDistance))).collect(Collectors.toList());
+
+			// WHEN I search for elements with the same name
+			ElementBoundary[] response = this.restTemplate.getForObject(this.baseUrl + "elements/{userSmartspace}/{userEmail}/?search=location&x={x}&y={y}&distance={distance}&page=0&size={size}", ElementBoundary[].class, user.getUserSmartspace(), user.getUserEmail(), xStart, yStart, maxDistance, size);
+			
+			// THEN all the distances are less than maxDistance
+			List<ElementEntity> responseList = Arrays.stream(response).map(ElementBoundary::convertToEntity).collect(Collectors.toList());
+			
+			assertThat(responseList).hasSize(mustInclude.size());
+			
+			if (mustInclude.size() > 0) {
+				assertThat(responseList).usingElementComparatorOnFields("key").containsExactlyInAnyOrderElementsOf(mustInclude);
+			}
+			if (mustNotInclude.size() > 0) {
+				assertThat(responseList).usingElementComparatorOnFields("key").doesNotContainAnyElementsOf(mustNotInclude); 
+			}
+		}
+		
+		private boolean isInSqaure(Location point, double xStart, double yStart, double distance) {
+			return (point.getX() >= xStart - distance && point.getX() <= xStart + distance && point.getY() >= yStart - distance && point.getY() <= yStart + distance);
+		}
+		
 	// # ---------------- GET: /smartspace/elements/{userSmartspace}/{userEmail}/?search=name ---------------- # 
 	
 	@Test

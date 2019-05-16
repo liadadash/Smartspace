@@ -208,5 +208,24 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		}
 		return null;
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "key");
+		
+		// linear search
+		// TODO: change to radius search
+		Double xMin = x - distance;
+		Double xMax = x + distance;
+		Double yMin = y - distance;
+		Double yMax = y + distance;
+		
+		if (includeExpired) {
+			return this.elementCrud.findAllByLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
+		} 
+		
+		return this.elementCrud.findAllByExpiredFalseAndLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
+	}
 
 }

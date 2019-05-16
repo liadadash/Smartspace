@@ -32,9 +32,8 @@ public class Location {
 		this.y = y;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("(%s, %s)", this.x, this.y);
+	public Double distance(Double x, Double y) {
+		return Math.sqrt((this.x - x) * (this.x - x) + (this.y - y) * (this.y - y));
 	}
 
 	@Override
@@ -65,6 +64,8 @@ public class Location {
 		return true;
 	}
 	
-	
-
+	@Override
+	public String toString() {
+		return String.format("(%s, %s)", this.x, this.y);
+	}
 }
