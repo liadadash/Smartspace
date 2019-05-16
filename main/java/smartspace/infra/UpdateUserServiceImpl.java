@@ -22,6 +22,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
 	// User can update only: Avatar, Username, Role
 	@Override
 	public void updateUser(String userEmail, String userSmartspace, UserEntity userEntity) {
+		userEntity.setKey(new UserKey(userSmartspace, userEmail));
 		this.userDao.update(validate(userEntity));
 	}
 

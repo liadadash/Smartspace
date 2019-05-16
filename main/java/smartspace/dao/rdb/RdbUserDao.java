@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
-import smartspace.data.UserRole;
 
 @Repository
 public class RdbUserDao implements EnhancedUserDao<UserKey> {
