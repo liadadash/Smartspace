@@ -62,5 +62,15 @@ public interface ElementCrud extends
 	 * @return the list
 	 */
 	public List<ElementEntity> findAllByTypeAndExpired(String type, boolean expired, Pageable pageable);
+	
+	// TODO: change to radius search
+	// search by location manager - include expired
+	public List<ElementEntity> findAllByLocation_XBetweenAndLocation_YBetween(Double xMin, Double xMax, Double yMin, Double yMax, Pageable pageable);
+
+	// TODO: change to radius search
+	// search by location player - only expired = false
+	public List<ElementEntity> findAllByExpiredFalseAndLocation_XBetweenAndLocation_YBetween(Double xMin, Double xMax, Double yMin, Double yMax, Pageable pageable);
+
+
 
 }
