@@ -11,7 +11,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.dao.EnhancedUserDao;
@@ -40,7 +39,7 @@ public class AdminOnlyAspect {
 		this.userDao.readById(new UserKey(smartspace, email)).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The given user doesn't exist"));
 		
 		// check that the user has ADMIN privileges 
-		if (!userDao.userIsAdmin(new UserKey(smartspace, email))) {
+		if (!userIsAdmin(new UserKey(smartspace, email))) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admins are allowed access this resource");
 		}
 	}

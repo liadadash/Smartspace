@@ -11,14 +11,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedElementDao;
-import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	private ElementCrud elementCrud;
-	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
+	private GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud;
 
 	private String appSmartspace;
 
@@ -29,7 +28,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @param elementCrud            the element crud
 	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
-	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
+	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud) {
 		super();
 		this.elementCrud = elementCrud;
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
@@ -99,6 +98,8 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		// this can not update (attributes of user key)
 //		if (update.getCreatorEmail() != null)
 //			existing.setCreatorEmail(update.getCreatorEmail());
+		
+		existing.setExpired(update.getExpired());
 
 		this.elementCrud.save(existing);
 	}

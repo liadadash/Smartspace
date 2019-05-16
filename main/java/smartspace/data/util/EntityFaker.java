@@ -18,8 +18,7 @@ import smartspace.data.UserRole;
 public class EntityFaker {
 
 	private static String[] elementTypes = { "list", "item", "category" };
-	private static String[] actionTypes = { "add_item", "remove_item", "update", "move_item", "rename",
-			"restore_item" };
+	private static String[] actionTypes = { "ECHO"};
 
 	private Random random;
 	private Faker faker;
@@ -49,6 +48,12 @@ public class EntityFaker {
 	public ElementEntity element(ElementKey key) {
 		ElementEntity entity = this.element();
 		entity.setKey(key);
+		return entity;
+	}
+	
+	public ElementEntity element(boolean expired) {
+		ElementEntity entity = this.element();
+		entity.setExpired(expired);
 		return entity;
 	}
 
@@ -117,6 +122,20 @@ public class EntityFaker {
 		actionEntity.setElementSmartspace(elementEntity.getElementSmartspace());
 
 		return actionEntity;
+	}
+	
+	public ActionEntity action(ElementEntity elementEntity, UserKey userKey) {
+		ActionEntity entity = this.action(elementEntity);
+		entity.setPlayerSmartspace(userKey.getUserSmartspace());
+		entity.setPlayerEmail(userKey.getUserEmail());
+		return entity;
+	}
+	
+	public ActionEntity action(ElementEntity elementEntity, UserEntity user) {
+		ActionEntity entity = this.action(elementEntity);
+		entity.setPlayerSmartspace(user.getUserSmartspace());
+		entity.setPlayerEmail(user.getUserEmail());
+		return entity;
 	}
 
 	public ActionEntity action(ElementEntity elementEntity, ActionKey key) {
