@@ -85,8 +85,7 @@ public class UserControllerIntegrationTests {
 			.readAll())
 			.hasSize(2);
 	}
-	
-	
+		
 	@Test(expected=Exception.class)
 	public void testPostNewUserWithBadAdmin() throws Exception{
 		// GIVEN the database contain admin
