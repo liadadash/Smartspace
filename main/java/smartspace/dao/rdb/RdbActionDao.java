@@ -19,7 +19,6 @@ public class RdbActionDao implements EnhancedActionDao {
 	private ActionCrud actionCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	/**
@@ -32,6 +31,11 @@ public class RdbActionDao implements EnhancedActionDao {
 		super();
 		this.actionCrud = actionCrud;
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override
@@ -73,11 +77,13 @@ public class RdbActionDao implements EnhancedActionDao {
 	 * @return the list
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ActionEntity> readAllWithPaging(int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ActionEntity> readAllWithPaging(String sortBy, int size, int page) {
 		return this.actionCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}

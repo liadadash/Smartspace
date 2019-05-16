@@ -18,7 +18,7 @@ public class UserRegisterController {
 	}
 
 	@RequestMapping(path = "/smartspace/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserBoundary newUser(@RequestBody UserFormBoundary newUser) {
+	public UserBoundary newUser(@RequestBody NewUserForm newUser) {
 		return new UserBoundary(this.userService.registerNewUser(newUser.convertToEntity()));
 	}
 }

@@ -32,7 +32,6 @@ import smartspace.layout.UserBoundary;
 @TestPropertySource(properties = { "spring.profiles.active=default, test" })
 public class UserRegistrationTests {
 	
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 	
 	private String baseUrl;
@@ -51,6 +50,11 @@ public class UserRegistrationTests {
 		this.port = port;
 		this.restTemplate = new RestTemplate();
 	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
+	}
 
 	@PostConstruct
 	public void init() {
@@ -68,8 +72,8 @@ public class UserRegistrationTests {
 		// GIVEN that the database is empty
 		
 		// WHEN a new user registers
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user()); // fake valid details
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		NewUserForm newUser = new NewUserForm(faker.entity().user()); // fake valid details
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		
 		// THEN the database contains a single user with key of smartspace + email
 		assertThat(this.userDao.readAll()).hasSize(1);
@@ -82,9 +86,9 @@ public class UserRegistrationTests {
 		
 		// WHEN x users register
 		int usersAmount = faker.generateNumber(1, 100);		
-		List<UserFormBoundary> users2 = faker.entity().userList(usersAmount).stream()
-				.map(UserFormBoundary::new)
-				.map(user->this.restTemplate.postForObject(baseUrl, user, UserFormBoundary.class))
+		List<NewUserForm> users2 = faker.entity().userList(usersAmount).stream()
+				.map(NewUserForm::new)
+				.map(user->this.restTemplate.postForObject(baseUrl, user, NewUserForm.class))
 				.collect(Collectors.toList());
 		
 		// THEN the database contains all added users
@@ -97,14 +101,14 @@ public class UserRegistrationTests {
 		// GIVEN that the database is empty
 		
 		// WHEN I add 3 users with different roles
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user(UserRole.PLAYER)); // fake valid details
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		NewUserForm newUser = new NewUserForm(faker.entity().user(UserRole.PLAYER)); // fake valid details
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		
-		newUser = new UserFormBoundary(faker.entity().user(UserRole.MANAGER)); // fake valid details
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		newUser = new NewUserForm(faker.entity().user(UserRole.MANAGER)); // fake valid details
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		
-		newUser = new UserFormBoundary(faker.entity().user(UserRole.ADMIN)); // fake valid details
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		newUser = new NewUserForm(faker.entity().user(UserRole.ADMIN)); // fake valid details
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		
 		// THEN the database contains 3 users
 		assertThat(this.userDao.readAll()).hasSize(3);
@@ -126,10 +130,10 @@ public class UserRegistrationTests {
 		this.userDao.create(someUser);
 		
 		// WHEN a new user registers with the same email
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setEmail(someUser.getUserEmail());
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		
 		// THEN there is an exception
 	}
@@ -137,60 +141,60 @@ public class UserRegistrationTests {
 	@Test(expected=Exception.class)
 	public void testUsernameValidation() throws Exception {
 		// WHEN a new user registers with empty username
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setUsername(null);
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 	
 	@Test(expected=Exception.class)
 	public void testUsernameValidation2() throws Exception {
 		// WHEN a new user registers with empty username
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setUsername("     ");
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 	
 	@Test(expected=Exception.class)
 	public void testAvatarValidation() throws Exception {
 		// WHEN a new user registers with bad avatar
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setAvatar("");
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 	
 	@Test(expected=Exception.class)
 	public void testEmailValidation1() throws Exception {
 		// WHEN a new user registers with bad email
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setEmail("john7");
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 	
 	@Test(expected=Exception.class)
 	public void testEmailValidation2() throws Exception {
 		// WHEN a new user registers with bad email
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setEmail("john34@gmail");
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 	
 	@Test(expected=Exception.class)
 	public void testEmailValidation3() throws Exception {
 		// WHEN a new user registers with bad email
-		UserFormBoundary newUser = new UserFormBoundary(faker.entity().user());
+		NewUserForm newUser = new NewUserForm(faker.entity().user());
 		newUser.setEmail("johngmail.com");
 		
-		this.restTemplate.postForObject(baseUrl, newUser, UserFormBoundary.class);
+		this.restTemplate.postForObject(baseUrl, newUser, NewUserForm.class);
 		// THEN there is an exception
 	}
 

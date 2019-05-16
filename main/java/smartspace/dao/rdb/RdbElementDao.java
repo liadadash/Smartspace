@@ -20,7 +20,6 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	private ElementCrud elementCrud;
 	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
 
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	/**
@@ -34,6 +33,11 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		super();
 		this.elementCrud = elementCrud;
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll() {
 		List<ElementEntity> rv = new ArrayList<>();
 
@@ -124,6 +129,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @return the list
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAllWithPaging(int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
@@ -135,6 +141,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @return the element entity
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAllWithPaging(String sortBy, int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
