@@ -18,12 +18,16 @@ import smartspace.data.UserKey;
 public class UserServiceImpl implements UserService {
 
 	private EnhancedUserDao<UserKey> userDao;
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
 	public UserServiceImpl(EnhancedUserDao<UserKey> userDao) {
 		this.userDao = userDao;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override

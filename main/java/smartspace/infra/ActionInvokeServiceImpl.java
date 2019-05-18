@@ -3,10 +3,13 @@
  */
 package smartspace.infra;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedActionDao;
@@ -60,6 +63,7 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	@LoggerService
 	public ActionEntity invokeAction(ActionEntity actionEntity) {
 		ActionEntity rv = validate(actionEntity);
+		rv.setCreationTimestamp(new Date());
 
 		if (rv.getActionType().equals(ActionTypes.ECHO.name()))
 			rv = this.actionDao.create(rv);
@@ -72,51 +76,59 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	 * @param action the action
 	 * @return the action entity
 	 */
-	private ActionEntity validate(ActionEntity action) {
-		if (!isValid(action)) {
-			throw new RuntimeException("one or more of the given actions are invalid");
+	private ActionEntity validate(ActionEntity entity) {
+			
+		if (isEmpty(entity.getActionSmartspace())) {
+			throw new RuntimeException("Action smartspace must not be empty");
+		} 
+		else if (entity.getActionId() == null) {
+			throw new RuntimeException("Action id must not be empty");
 		}
-		return action;
-	}
+		else if (isEmpty(entity.getActionType())) {
+			throw new RuntimeException("Action type must not be empty");
+		}
+		else if (isEmpty(entity.getElementId())) {
+			throw new RuntimeException("Element id must not be empty");
+		}
+		else if (isEmpty(entity.getElementSmartspace())) {
+			throw new RuntimeException("Element smartspace must not be empty");
+		}
+		else if (isEmpty(entity.getPlayerSmartspace())) {
+			throw new RuntimeException("Player smartspace must not be empty");
+		}
+		else if (isEmpty(entity.getPlayerEmail())) {
+			throw new RuntimeException("Player email must not be empty");
+		}
+		else if (entity.getMoreAttributes() == null) {
+			throw new RuntimeException("Attributes must be defined");
+		}
 
-	/**
-	 * Checks if is valid.
-	 *
-	 * @param entity the entity
-	 * @return true, if is valid
-	 */
-	private boolean isValid(ActionEntity entity) {
-		boolean actionIsValid = (entity.getActionSmartspace() == null && entity.getActionId() == null
-				&& notEmpty(entity.getActionType()) && entity.getCreationTimestamp() != null
-				&& notEmpty(entity.getElementId()) && notEmpty(entity.getElementSmartspace())
-				&& notEmpty(entity.getPlayerSmartspace()) && notEmpty(entity.getPlayerEmail())
-				&& notEmpty(entity.getActionType()) && entity.getMoreAttributes() != null);
+		if (!checkActionType(entity.getActionType())) {
+			throw new RuntimeException("Action type is not supported: " + entity.getActionType());
+		}
 
-		if (!actionIsValid)
-			return false;
-
-		if (!checkActionType(entity.getActionType()))
-			return false;
-
+		Optional<UserEntity> userOp = userDao.readById(new UserKey(entity.getPlayerSmartspace(), entity.getPlayerEmail()));
+		if (!userOp.isPresent()) {
+			throw new RuntimeException("User not found");
+		}
+		else if (userOp.get().getRole() != UserRole.PLAYER) {
+			throw new RuntimeException("Only players can invoke actions");
+		}
+		
 		Long elementId = Long.parseLong(entity.getElementId());
-		Optional<UserEntity> userOp = userDao
-				.readById(new UserKey(entity.getPlayerSmartspace(), entity.getPlayerEmail()));
-
-		Optional<ElementEntity> elememtOp = elementDao
-				.readById(new ElementKey(entity.getElementSmartspace(), elementId));
-
-		return userOp.isPresent() && userOp.get().getRole() == UserRole.PLAYER && elememtOp.isPresent()
-				&& !elememtOp.get().getExpired();
+		Optional<ElementEntity> elememtOp = elementDao.readById(new ElementKey(entity.getElementSmartspace(), elementId));
+		if (!elememtOp.isPresent()) {
+			throw new RuntimeException("the action is invoked on a non existing element");
+		}
+		else if (elememtOp.get().getExpired()) {
+			throw new RuntimeException("element is expired");
+		}
+		
+		return entity;
 	}
-
-	/**
-	 * Not empty.
-	 *
-	 * @param str the str
-	 * @return true, if successful
-	 */
-	private boolean notEmpty(String str) {
-		return (str != null && !str.trim().isEmpty());
+	
+	private boolean isEmpty(String str) {
+		return (str == null || str.trim().isEmpty());
 	}
 
 	/**
@@ -131,6 +143,6 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 				return true;
 			}
 		}
-		throw new RuntimeException("No such action type");
+		return false;
 	}
 }

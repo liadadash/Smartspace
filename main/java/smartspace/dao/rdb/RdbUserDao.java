@@ -14,19 +14,22 @@ import org.springframework.transaction.annotation.Transactional;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
-import smartspace.data.UserRole;
 
 @Repository
 public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	private UserCrud userCrud;
 
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	@Autowired
 	public RdbUserDao(UserCrud userCrud) {
 		super();
 		this.userCrud = userCrud;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override
@@ -80,7 +83,7 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 		if (update.getRole() != null) {
 			existing.setRole(update.getRole());
 		}
-		existing.setPoints(update.getPoints());
+		//existing.setPoints(update.getPoints()); the only way to get points is to do actions
 
 		this.userCrud.save(existing);
 	}
@@ -124,16 +127,6 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 			return this.userCrud.save(user);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean userIsAdmin(UserKey userKey) {
-		Optional<UserEntity> userData = this.readById(userKey);
-		if (userData.isPresent()) {
-			return (userData.get().getRole() == UserRole.ADMIN);
-		}
-		
-		return false;
 	}
 
 }

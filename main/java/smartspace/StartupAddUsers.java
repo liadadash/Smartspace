@@ -24,7 +24,6 @@ public class StartupAddUsers implements CommandLineRunner {
 	private UserDao<UserKey> dao;
 	private ElementDao<ElementKey> elementDao;
 
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	public StartupAddUsers() {
@@ -34,6 +33,11 @@ public class StartupAddUsers implements CommandLineRunner {
 	public StartupAddUsers(UserDao<UserKey> dao, ElementDao<ElementKey> elementDao) {
 		this.dao = dao;
 		this.elementDao = elementDao;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override

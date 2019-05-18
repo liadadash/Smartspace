@@ -138,7 +138,7 @@ public class ActionInvokeTests {
 		element = elementDao.importElement(element);
 
 		// WHEN player user invoke action on element that exits in db with known type
-		ActionBoundary actionBoundary = faker.boundary().action(element, null);
+		ActionBoundary actionBoundary = faker.boundary().action(element);
 		Map<String, String> player = new TreeMap<String, String>();
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());
@@ -172,7 +172,7 @@ public class ActionInvokeTests {
 		element = elementDao.importElement(element);
 
 		// WHEN player user invoke action on element that exits in db with no known type
-		ActionBoundary actionBoundary = faker.boundary().action(element, null);
+		ActionBoundary actionBoundary = faker.boundary().action(element);
 		Map<String, String> player = new TreeMap<String, String>();
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());
@@ -201,7 +201,7 @@ public class ActionInvokeTests {
 		element = elementDao.importElement(element);
 
 		// WHEN player user invoke action on element that exits in db with no known type
-		ActionBoundary actionBoundary = faker.boundary().action(element, null);
+		ActionBoundary actionBoundary = faker.boundary().action(element);
 		Map<String, String> player = new TreeMap<String, String>();
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());

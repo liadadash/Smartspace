@@ -11,16 +11,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import smartspace.dao.EnhancedElementDao;
-import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	private ElementCrud elementCrud;
-	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
+	private GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud;
 
-	@Value("${smartspace.name}")
 	private String appSmartspace;
 
 	/**
@@ -30,10 +28,15 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @param elementCrud            the element crud
 	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
-	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
+	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud) {
 		super();
 		this.elementCrud = elementCrud;
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+	}
+	
+	@Value("${smartspace.name}") 
+	public void setAppSmartspace(String appSmartspace) {
+		this.appSmartspace = appSmartspace;
 	}
 
 	@Override
@@ -58,6 +61,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAll() {
 		List<ElementEntity> rv = new ArrayList<>();
 
@@ -83,6 +87,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		if (update.getLocation() != null)
 			existing.setLocation(update.getLocation());
 
+			existing.setExpired(update.getExpired());
 		// Eyal said to not update key attributes
 //		if (update.getElementSmartspace() != null)
 //			existing.setElementSmartspace(update.getElementSmartspace());
@@ -94,6 +99,8 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		// this can not update (attributes of user key)
 //		if (update.getCreatorEmail() != null)
 //			existing.setCreatorEmail(update.getCreatorEmail());
+		
+		existing.setExpired(update.getExpired());
 
 		this.elementCrud.save(existing);
 	}
@@ -124,6 +131,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @return the list
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAllWithPaging(int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size)).getContent();
 	}
@@ -135,6 +143,7 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @return the element entity
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<ElementEntity> readAllWithPaging(String sortBy, int size, int page) {
 		return this.elementCrud.findAll(PageRequest.of(page, size, Direction.ASC, sortBy)).getContent();
 	}
@@ -198,6 +207,25 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 			break;
 		}
 		return null;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "key");
+		
+		// linear search
+		// TODO: change to radius search
+		Double xMin = x - distance;
+		Double xMax = x + distance;
+		Double yMin = y - distance;
+		Double yMax = y + distance;
+		
+		if (includeExpired) {
+			return this.elementCrud.findAllByLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
+		} 
+		
+		return this.elementCrud.findAllByExpiredFalseAndLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
 	}
 
 }

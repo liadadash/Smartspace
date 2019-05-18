@@ -5,9 +5,11 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import smartspace.data.ActionEntity;
 import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
+import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.layout.ActionBoundary;
 import smartspace.layout.ElementBoundary;
@@ -60,12 +62,28 @@ public class BoundaryFaker {
 		return new ActionBoundary(faker.entity().action(elementBoundary.convertToEntity()));
 	}
 	
+	public ActionBoundary action(ElementBoundary elementBoundary, UserEntity user) {
+		return new ActionBoundary(faker.entity().action(elementBoundary.convertToEntity(), user));
+	}
+	
+	public ActionBoundary action(ElementBoundary elementBoundary, UserKey userKey) {
+		return new ActionBoundary(faker.entity().action(elementBoundary.convertToEntity(), userKey));
+	}
+	
 	public ActionBoundary action(ElementBoundary elementBoundary, ActionKey key) {
 		return new ActionBoundary(faker.entity().action(elementBoundary.convertToEntity(), key));
 	}
 	
 	public ActionBoundary action(ElementEntity elementEntity) {
 		return new ActionBoundary(faker.entity().action(elementEntity));
+	}
+	
+	public ActionBoundary action(ElementEntity elementEntity, UserEntity user) {
+		return new ActionBoundary(faker.entity().action(elementEntity, user));
+	}
+	
+	public ActionBoundary action(ElementEntity elementEntity, UserKey userKey) {
+		return new ActionBoundary(faker.entity().action(elementEntity, userKey));
 	}
 	
 	public ActionBoundary action(ElementEntity elementEntity, ActionKey key) {
