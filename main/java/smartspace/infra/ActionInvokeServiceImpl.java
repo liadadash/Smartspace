@@ -7,21 +7,20 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.aop.LoggerService;
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
 import smartspace.dao.EnhancedUserDao;
 import smartspace.data.ActionEntity;
-import smartspace.data.ActionTypes;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;
 import smartspace.data.UserEntity;
 import smartspace.data.UserKey;
 import smartspace.data.UserRole;
+import smartspace.plugin.Plugin;
 
 /**
  * The Class ActionInvokeServiceImpl.
@@ -37,6 +36,9 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 
 	/** The element dao. */
 	private EnhancedElementDao<ElementKey> elementDao; // used to check that action's element was imported before action
+	
+	/** app context. */
+	private ApplicationContext ctx;
 
 	/**
 	 * Instantiates a new action invoke service impl.
@@ -46,11 +48,11 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	 * @param userDao    the user dao
 	 */
 	@Autowired
-	public ActionInvokeServiceImpl(EnhancedActionDao actionDao, EnhancedElementDao<ElementKey> elementDao,
-			EnhancedUserDao<UserKey> userDao) {
+	public ActionInvokeServiceImpl(EnhancedActionDao actionDao, EnhancedElementDao<ElementKey> elementDao, EnhancedUserDao<UserKey> userDao, ApplicationContext ctx) {
 		this.actionDao = actionDao;
 		this.elementDao = elementDao;
 		this.userDao = userDao;
+		this.ctx = ctx;
 	}
 
 	/**
@@ -62,12 +64,26 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	@Override
 	@LoggerService
 	public ActionEntity invokeAction(ActionEntity actionEntity) {
-		ActionEntity rv = validate(actionEntity);
-		rv.setCreationTimestamp(new Date());
+		// validate action details
+		actionEntity = validate(actionEntity);
+		actionEntity.setCreationTimestamp(new Date());
+		
+		// for searching by type and for same plugin name
+		actionEntity.setActionType(actionEntity.getActionType().toLowerCase());
 
-		if (rv.getActionType().equals(ActionTypes.ECHO.name()))
-			rv = this.actionDao.create(rv);
-		return rv;
+		try {
+			// "echo" --> smartspace.plugin.EchoActionPlugin
+			String className = getPluginName(actionEntity.getActionType());
+
+			Class<?> theClass = Class.forName(className);
+			Plugin plugin = (Plugin) this.ctx.getBean(theClass);
+
+			// process action and return it after insert to database
+			actionEntity = plugin.process(actionEntity);
+			return this.actionDao.create(actionEntity);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -77,14 +93,7 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	 * @return the action entity
 	 */
 	private ActionEntity validate(ActionEntity entity) {
-			
-		if (isEmpty(entity.getActionSmartspace())) {
-			throw new RuntimeException("Action smartspace must not be empty");
-		} 
-		else if (entity.getActionId() == null) {
-			throw new RuntimeException("Action id must not be empty");
-		}
-		else if (isEmpty(entity.getActionType())) {
+		if (isEmpty(entity.getActionType())) {
 			throw new RuntimeException("Action type must not be empty");
 		}
 		else if (isEmpty(entity.getElementId())) {
@@ -104,7 +113,7 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 		}
 
 		if (!checkActionType(entity.getActionType())) {
-			throw new RuntimeException("Action type is not supported: " + entity.getActionType());
+			throw new RuntimeException("Action type is not supported: " + entity.getActionType() + " - plugin class not found [" + getPluginName(entity.getActionType()) + "]");
 		}
 
 		Optional<UserEntity> userOp = userDao.readById(new UserKey(entity.getPlayerSmartspace(), entity.getPlayerEmail()));
@@ -138,11 +147,19 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	 * @return true, if successful
 	 */
 	private boolean checkActionType(String checkType) {
-		for (ActionTypes type : ActionTypes.values()) {
-			if (type.name().equals(checkType)) {
-				return true;
-			}
+		try {
+			Class.forName(getPluginName(checkType));
+		} catch (ClassNotFoundException e) {
+			return false;
 		}
-		return false;
+		
+		return true;
+	}
+	
+	private String getPluginName(String actionType) {
+		String name = actionType.toLowerCase(); // just to make sure
+		String className = "smartspace.plugin." + name.toUpperCase().charAt(0) + name.substring(1, name.length()) + "ActionPlugin";
+		
+		return className;
 	}
 }

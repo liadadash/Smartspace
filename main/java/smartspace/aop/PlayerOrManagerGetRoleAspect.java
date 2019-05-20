@@ -3,7 +3,6 @@
  */
 package smartspace.aop;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.logging.Log;
