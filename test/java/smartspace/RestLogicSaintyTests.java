@@ -19,9 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 import smartspace.dao.EnhancedActionDao;
 import smartspace.dao.EnhancedElementDao;
@@ -482,6 +480,9 @@ public class RestLogicSaintyTests {
 		
 		// WHEN a new action is posted
 		ActionBoundary action = faker.boundary().action(element, player);
+		action.setActionKey(null); // should work with null key, will ignore if not null
+		action.setCreated(null);
+		
 		this.restTemplate.postForObject(baseUrl + "actions", action, ActionBoundary.class);
 		
 		// THEN the database contains 1 action

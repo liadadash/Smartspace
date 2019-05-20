@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import smartspace.data.ActionEntity;
 import smartspace.data.ActionKey;
 import smartspace.data.ElementEntity;
 import smartspace.data.ElementKey;

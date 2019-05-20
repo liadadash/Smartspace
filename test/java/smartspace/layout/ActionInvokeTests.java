@@ -139,6 +139,8 @@ public class ActionInvokeTests {
 
 		// WHEN player user invoke action on element that exits in db with known type
 		ActionBoundary actionBoundary = faker.boundary().action(element);
+		actionBoundary.setActionKey(null); // should work with null key, will ignore if not null
+		
 		Map<String, String> player = new TreeMap<String, String>();
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());
