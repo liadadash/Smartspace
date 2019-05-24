@@ -38,7 +38,7 @@ import smartspace.layout.UserBoundary;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = { "spring.profiles.active=default, test" })
+@TestPropertySource(properties= {"spring.profiles.active=default, test"})
 public class RestLogicSaintyTests {
 	
 	private String appSmartspace;

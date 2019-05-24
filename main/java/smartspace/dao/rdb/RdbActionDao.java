@@ -2,6 +2,7 @@ package smartspace.dao.rdb;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,21 +17,23 @@ import org.springframework.data.domain.Sort.Direction;
 
 @Repository
 public class RdbActionDao implements EnhancedActionDao {
+	public static final String SEQUENCE_NAME = "actions_sequence";
+	
 	private ActionCrud actionCrud;
-	private GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud;
-
+	private RdbSequenceDao sequenceGenerator;
+	
 	private String appSmartspace;
-
+	
 	/**
 	 * @author liadkh
 	 * @param actionCrud
-	 * @param genericIdGeneratorCrud
+	 * @param sequenceGenerator
 	 */
 	@Autowired
-	public RdbActionDao(ActionCrud actionCrud, GenericIdGeneratorCrud<ActionKey> genericIdGeneratorCrud) {
+	public RdbActionDao(ActionCrud actionCrud, RdbSequenceDao sequenceGenerator) {
 		super();
 		this.actionCrud = actionCrud;
-		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+		this.sequenceGenerator = sequenceGenerator;
 	}
 	
 	@Value("${smartspace.name}") 
@@ -41,10 +44,8 @@ public class RdbActionDao implements EnhancedActionDao {
 	@Override
 	@Transactional
 	public ActionEntity create(ActionEntity actionEntity) {
-		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		actionEntity.setActionSmartspace(appSmartspace);
-		actionEntity.setKey(new ActionKey(actionEntity.getActionSmartspace(), nextId.getId()));
-		this.genericIdGeneratorCrud.delete(nextId);
+		actionEntity.setKey(new ActionKey(actionEntity.getActionSmartspace(), sequenceGenerator.generateNextId(SEQUENCE_NAME)));
 
 		if (!this.actionCrud.existsById(actionEntity.getKey())) {
 			ActionEntity rv = this.actionCrud.save(actionEntity);
