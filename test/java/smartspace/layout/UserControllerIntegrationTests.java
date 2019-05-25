@@ -175,7 +175,7 @@ public class UserControllerIntegrationTests {
 		
 		// THEN I receive the exact users written to the database sorted by key
 		assertThat(response).usingElementComparatorOnFields("key","role","username","avatar","points")
-		.containsExactlyElementsOf(usersBoundary);
+		.containsExactlyInAnyOrderElementsOf(usersBoundary);
 	}
 
 	@Test
