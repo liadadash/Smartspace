@@ -16,8 +16,10 @@ import smartspace.data.ElementKey;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
+	public static final String SEQUENCE_NAME = "elements_sequence";
+	
 	private ElementCrud elementCrud;
-	private GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud;
+	private RdbSequenceDao sequenceGenerator;
 
 	private String appSmartspace;
 
@@ -28,10 +30,10 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @param elementCrud            the element crud
 	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
-	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud) {
+	public RdbElementDao(ElementCrud elementCrud, RdbSequenceDao sequenceGenerator) {
 		super();
 		this.elementCrud = elementCrud;
-		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+		this.sequenceGenerator = sequenceGenerator;
 	}
 	
 	@Value("${smartspace.name}") 
@@ -42,10 +44,8 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	@Override
 	@Transactional
 	public ElementEntity create(ElementEntity elementEntity) {
-		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		elementEntity.setElementSmartspace(appSmartspace);
-		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getId()));
-		this.genericIdGeneratorCrud.delete(nextId);
+		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), sequenceGenerator.generateNextId(SEQUENCE_NAME)));
 
 		if (!this.elementCrud.existsById(elementEntity.getKey())) {
 			ElementEntity rv = this.elementCrud.save(elementEntity);

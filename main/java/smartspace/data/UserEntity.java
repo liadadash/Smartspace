@@ -1,26 +1,19 @@
 package smartspace.data;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name="USERS")
+@Document(collection="USERS")
 public class UserEntity implements SmartspaceEntity<UserKey> {
 
-	@Column(nullable = false)
 	private String userSmartspace;
-	@Column(nullable = false)
 	private String userEmail;
-	
 	private String username;
 	private String avatar;
 	private UserRole role;
 	private long points;
+	private UserKey key;
 
 	// default constructor
 	public UserEntity() {
@@ -36,7 +29,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.points = points;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public String getUserSmartspace() {
 		return userSmartspace;
 	}
@@ -45,7 +38,7 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.userSmartspace = userSmartspace;
 	}
 	
-	@Transient
+	@JsonIgnore
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -70,7 +63,6 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 		this.avatar = avatar;
 	}
 	
-	@Enumerated(EnumType.STRING)
 	public UserRole getRole() {
 		return role;
 	}
@@ -88,10 +80,10 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	}
 
 	@Override
-	@EmbeddedId
-	@Column(name="ID")
+	@Id
 	public UserKey getKey() {
-		return new UserKey(userSmartspace, userEmail);
+		this.key = new UserKey(this.userSmartspace, this.userEmail);
+		return this.key;
 	}
 
 
@@ -99,6 +91,8 @@ public class UserEntity implements SmartspaceEntity<UserKey> {
 	public void setKey(UserKey k) {
 		this.setUserSmartspace(k.getUserSmartspace());
 		this.setUserEmail(k.getUserEmail());
+		
+		this.key = new UserKey(k.getUserSmartspace(), k.getUserEmail());
 	}
 	
 	@Override

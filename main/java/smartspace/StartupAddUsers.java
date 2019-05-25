@@ -50,23 +50,30 @@ public class StartupAddUsers implements CommandLineRunner {
 				"https://trello-avatars.s3.amazonaws.com/c970bdec1f2f00417b7975b1b7a2f21b/original.png",
 				"https://trello-avatars.s3.amazonaws.com/f6eeed5381304734fa78d9366232aea7/original.png" };
 
-		for (int i = 0; i < emails.length; i++) {
-			dao.create(new UserEntity(emails[i], appSmartspace, emails[i], avatars[i], UserRole.ADMIN, 50));
+		try {
+			for (int i = 0; i < emails.length; i++) {
+				dao.create(new UserEntity(emails[i], appSmartspace, emails[i], avatars[i], UserRole.ADMIN, 50));
+			}
+			dao.create(new UserEntity("player@gmail.com", appSmartspace, "player",
+					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2jFuytvPYnjo7SSMVT07soJOHX4B6rn1-F-EETluQD9SS_s0R",
+					UserRole.PLAYER, 50));
+			dao.create(new UserEntity("manager@gmail.com", appSmartspace, "manager",
+					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG2vPtKI81KhQFOiB4gzaCL6oGMoEEcEllj8U3dFbjRzRV0m3l",
+					UserRole.MANAGER, 50));
+			dao.create(new UserEntity("admin@gmail.com", appSmartspace, "admin",
+					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbbZqYr4sdvAnK9Yx-fWKsHmcpHS-ilyfSdhYgq28nTF-2KEJgJw",
+					UserRole.ADMIN, 50));
+			
+			// delayed print to show after trace logs
+			for (String email : emails) {
+				System.err.println("added ADMIN with email: " + email);
+			}
+			
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
 		}
-		dao.create(new UserEntity("player@gmail.com", appSmartspace, "player",
-				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2jFuytvPYnjo7SSMVT07soJOHX4B6rn1-F-EETluQD9SS_s0R",
-				UserRole.PLAYER, 50));
-		dao.create(new UserEntity("manager@gmail.com", appSmartspace, "manager",
-				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG2vPtKI81KhQFOiB4gzaCL6oGMoEEcEllj8U3dFbjRzRV0m3l",
-				UserRole.MANAGER, 50));
-		dao.create(new UserEntity("admin@gmail.com", appSmartspace, "admin",
-				"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbbZqYr4sdvAnK9Yx-fWKsHmcpHS-ilyfSdhYgq28nTF-2KEJgJw",
-				UserRole.ADMIN, 50));
-
-		// delayed print to show after trace logs
-		for (String email : emails) {
-			System.err.println("added ADMIN with email: " + email);
-		}
+		
+		
 
 		System.err.println("added PLAYER with email: player@gmail.com");
 		System.err.println("added MANAGER with email: manager@gmail.com");
