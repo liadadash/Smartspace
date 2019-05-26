@@ -59,5 +59,11 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 
 	// search by location
 	List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page);
+	
+	// get manager's lists
+	List<ElementEntity> readAllListsByCreator(String creatorSmartspace, String creatorEmail, int size, int page);
+	
+	// get user's lists
+	List<ElementEntity> readAllListsByMember(String userSmartspace, String userEmail, int size, int page);
 
 }

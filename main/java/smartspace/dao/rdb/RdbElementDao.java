@@ -17,6 +17,7 @@ import smartspace.data.ElementKey;
 @Repository
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	public static final String SEQUENCE_NAME = "elements_sequence";
+	public static final String SHOPPING_LIST_TYPE = "ShoppingList";
 	
 	private ElementCrud elementCrud;
 	private RdbSequenceDao sequenceGenerator;
@@ -226,6 +227,19 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		} 
 		
 		return this.elementCrud.findAllByExpiredFalseAndLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
+	}
+
+	@Override
+	public List<ElementEntity> readAllListsByCreator(String creatorSmartspace, String creatorEmail, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		return this.elementCrud.findAllByCreatorSmartspaceAndCreatorEmailAndType(creatorSmartspace, creatorEmail, SHOPPING_LIST_TYPE, pageable);
+	}
+
+	@Override
+	public List<ElementEntity> readAllListsByMember(String userSmartspace, String userEmail, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		
+		return this.elementCrud.findShoppingListsByUser(userSmartspace, userEmail, SHOPPING_LIST_TYPE, pageable);
 	}
 
 }
