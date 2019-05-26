@@ -3,6 +3,7 @@ package smartspace.dao.rdb;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class RdbSequenceDao {
@@ -14,6 +15,7 @@ public class RdbSequenceDao {
 		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
 	}
 
+	@Transactional
 	public long generateNextId(String sequenceName) {
 		GenericIdGenerator sequence = new GenericIdGenerator(sequenceName);
 		Optional<GenericIdGenerator> currentSeq = this.genericIdGeneratorCrud.findById(sequenceName);
