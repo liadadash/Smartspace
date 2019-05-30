@@ -58,12 +58,15 @@ public interface EnhancedElementDao<ElementKey> extends ElementDao<ElementKey> {
 	public List<ElementEntity> readAllWithSameValuesUsingPaging(boolean showExpired, String searchBy, String value, int size, int page);
 
 	// search by location
-	List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page);
+	public List<ElementEntity> searchByLocation(boolean includeExpired, Double x, Double y, Double distance, int size, int page);
 	
 	// get manager's lists
-	List<ElementEntity> readAllListsByCreator(String creatorSmartspace, String creatorEmail, int size, int page);
+	public List<ElementEntity> readAllListsByCreator(String creatorSmartspace, String creatorEmail, int size, int page);
 	
 	// get user's lists
-	List<ElementEntity> readAllListsByMember(String userSmartspace, String userEmail, int size, int page);
+	public List<ElementEntity> readAllListsByMember(String userSmartspace, String userEmail, int size, int page);
+
+	// get list's items
+	public List<ElementEntity> readAllItemsByShoppingList(String smartspcae, String id, int size, int page);
 
 }

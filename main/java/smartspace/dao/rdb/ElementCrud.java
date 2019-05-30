@@ -80,7 +80,12 @@ public interface ElementCrud extends
 			String elementType, Pageable pageable);
 
 	// find all shopping lists where moreAttributes.members contains user with {smartspace, email}
-	@Query("{ 'moreAttributes.members' : {'userSmartspace': ?0, 'userEmail': ?1}, 'type': ?2 }")
+	@Query("{ 'moreAttributes.members': {'userSmartspace': ?0, 'userEmail': ?1}, 'type': ?2 }")
 	public List<ElementEntity> findShoppingListsByUser(String smartspace, String email, String elementType, Pageable pageable);
+	
+	// find all items in list
+	@Query("{ 'moreAttributes.listKey.smartspace': ?0, 'moreAttributes.listKey.id': ?1, 'type': ?2 }")
+	public List<ElementEntity> findItemsByShoppingList(String listSmartspace, String listId, String elementType, Pageable pageable);
+
 
 }

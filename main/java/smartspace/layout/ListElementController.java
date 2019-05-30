@@ -45,7 +45,20 @@ public class ListElementController {
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
 
-		return toBoundary(this.shoppingListService.getShoppingListsUsingPagination(userSmartspace, userEmail, size, page));
+		return toBoundary(
+				this.shoppingListService.getShoppingListsUsingPagination(userSmartspace, userEmail, size, page));
+	}
+
+	@RequestMapping(path = PATH
+			+ "/{shoppingListSmartspace}/{shoppingListId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ElementBoundary[] getAllItemsForList(@PathVariable("userSmartspace") String userSmartspace,
+			@PathVariable("userEmail") String userEmail,
+			@PathVariable("shoppingListSmartspace") String shoppingListSmartspace,
+			@PathVariable("shoppingListId") String shoppingListId,
+			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
+			@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+
+		return toBoundary(this.shoppingListService.getShoppingItemsByList(shoppingListSmartspace, shoppingListId, size, page));
 	}
 
 	private ElementBoundary[] toBoundary(List<ElementEntity> list) {

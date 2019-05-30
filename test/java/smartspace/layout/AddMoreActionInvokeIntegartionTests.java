@@ -90,7 +90,7 @@ public class AddMoreActionInvokeIntegartionTests {
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());
 		actionBoundary.setPlayer(player);
-		actionBoundary.setType(ActionTypes.ECHO.name());
+		actionBoundary.setType(ActionTypes.Echo.name());
 
 	  this.restTemplate.postForObject(baseUrl, actionBoundary, ActionBoundary.class);
 
@@ -115,7 +115,7 @@ public class AddMoreActionInvokeIntegartionTests {
 		player.put("smartspace", element.getCreatorSmartspace());
 		player.put("email", element.getCreatorEmail());
 		actionBoundary.setPlayer(player);
-		actionBoundary.setType(ActionTypes.ECHO.name());
+		actionBoundary.setType(ActionTypes.Echo.name());
 
 	  this.restTemplate.postForObject(baseUrl, actionBoundary, ActionBoundary.class);
 

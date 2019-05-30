@@ -69,7 +69,7 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 		actionEntity.setCreationTimestamp(new Date());
 		
 		// for searching by type and for same plugin name
-		actionEntity.setActionType(actionEntity.getActionType().toLowerCase());
+		actionEntity.setActionType(actionEntity.getActionType());
 
 		try {
 			// "echo" --> smartspace.plugin.EchoActionPlugin
@@ -157,7 +157,9 @@ public class ActionInvokeServiceImpl implements ActionInvokeService {
 	}
 	
 	private String getPluginName(String actionType) {
-		String name = actionType.toLowerCase(); // just to make sure
+		//String name = actionType.toLowerCase(); // just to make sure
+		
+		String name = actionType;
 		String className = "smartspace.plugin." + name.toUpperCase().charAt(0) + name.substring(1, name.length()) + "ActionPlugin";
 		
 		return className;
