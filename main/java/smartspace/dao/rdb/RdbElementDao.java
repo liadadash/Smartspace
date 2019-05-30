@@ -18,6 +18,7 @@ import smartspace.data.ElementKey;
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	public static final String SEQUENCE_NAME = "elements_sequence";
 	public static final String SHOPPING_LIST_TYPE = "ShoppingList";
+	public static final String SHOPPING_ITEM_TYPE = "ShoppingItem";
 	
 	private ElementCrud elementCrud;
 	private RdbSequenceDao sequenceGenerator;
@@ -240,6 +241,14 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
 		
 		return this.elementCrud.findShoppingListsByUser(userSmartspace, userEmail, SHOPPING_LIST_TYPE, pageable);
+	}
+	
+	@Override
+	public List<ElementEntity> readAllItemsByShoppingList(String smartspcae, String id, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		System.err.println(smartspcae);
+		System.err.println(id);
+		return this.elementCrud.findItemsByShoppingList(smartspcae, id, SHOPPING_ITEM_TYPE, pageable);
 	}
 
 }

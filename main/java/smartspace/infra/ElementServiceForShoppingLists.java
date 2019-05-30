@@ -13,5 +13,7 @@ import smartspace.data.ElementEntity;
 public interface ElementServiceForShoppingLists {
 	
 	public List<ElementEntity> getShoppingListsUsingPagination(String userSmartspace, String userEmail, int size, int page);
+
+	public List<ElementEntity> getShoppingItemsByList(String listSmartspace, String listId, int size, int page);
 	
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
 import smartspace.dao.ElementDao;
@@ -23,6 +24,7 @@ import smartspace.data.util.Faker;
 public class StartupAddUsers implements CommandLineRunner {
 	private UserDao<UserKey> dao;
 	private ElementDao<ElementKey> elementDao;
+	private MongoTemplate mongoTemplate;
 
 	private String appSmartspace;
 
@@ -30,9 +32,10 @@ public class StartupAddUsers implements CommandLineRunner {
 	}
 
 	@Autowired
-	public StartupAddUsers(UserDao<UserKey> dao, ElementDao<ElementKey> elementDao) {
+	public StartupAddUsers(UserDao<UserKey> dao, ElementDao<ElementKey> elementDao, MongoTemplate mongoTemplate) {
 		this.dao = dao;
 		this.elementDao = elementDao;
+		this.mongoTemplate = mongoTemplate;
 	}
 
 	@Value("${smartspace.name}")
@@ -42,6 +45,18 @@ public class StartupAddUsers implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		String[] collections = { "USERS", "ELEMENTS", "ACTIONS", "database_sequences" };
+		// IMPORTANT! MongoDB transactions can't create collections!!! couldn't find any other way at the moment.
+		// the problem is when a transaction tried to create something into a collection that doesn't exist
+		// transactions can't create non existing collections so it fails.
+		
+		for (String collectionName : collections) {
+			if (!mongoTemplate.getCollectionNames().contains(collectionName)) {
+				mongoTemplate.createCollection(collectionName);
+			}
+		}
+
+		// add users
 		String[] emails = { "bscpkd@gmail.com", "nofaruliel@gmail.com", "liadkh95@gmail.com", "Aviel2845@gmail.com",
 				"Amitpelerman@gmail.com" };
 		String[] avatars = { "https://trello-avatars.s3.amazonaws.com/df93c8f73ee15659408e3ec6a2e3d277/original.png",
@@ -63,17 +78,15 @@ public class StartupAddUsers implements CommandLineRunner {
 			dao.create(new UserEntity("admin@gmail.com", appSmartspace, "admin",
 					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbbZqYr4sdvAnK9Yx-fWKsHmcpHS-ilyfSdhYgq28nTF-2KEJgJw",
 					UserRole.ADMIN, 50));
-			
+
 			// delayed print to show after trace logs
 			for (String email : emails) {
 				System.err.println("added ADMIN with email: " + email);
 			}
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
-		
-		
 
 		System.err.println("added PLAYER with email: player@gmail.com");
 		System.err.println("added MANAGER with email: manager@gmail.com");

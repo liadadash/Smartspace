@@ -32,6 +32,11 @@ public class ElementServiceForShoppingListsImpl implements ElementServiceForShop
 		
 		return allShoppingLists;
 	}
+	
+	@Override
+	public List<ElementEntity> getShoppingItemsByList(String listSmartspace, String listId, int size, int page) {
+		return this.elementDao.readAllItemsByShoppingList(listSmartspace, listId, size, page);
+	}
 
 	
 }
