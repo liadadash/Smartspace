@@ -3,45 +3,36 @@
  */
 package smartspace.dao.rdb;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-/**
- * The Class GenericIdGenerator.
- *
- * @author liadkh
- */
-@Entity
+@Document(collection = "database_sequences")
 public class GenericIdGenerator {
 
-/** The id. */
-private Long id;
-	
-	/**
-	 * Instantiates a new generic id generator.
-	 */
-	public GenericIdGenerator() {
+	private String sequenceId;
+	private long sequenceValue;
+
+	public GenericIdGenerator(String sequenceId) {
+		this.sequenceId = sequenceId;
 	}
 
-	/**
-	 * Gets the id.
-	 *
-	 * @return the id
-	 */
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	public Long getId() {
-		return id;
+	public String getSequenceId() {
+		return sequenceId;
 	}
 
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(Long id) {
-		this.id = id;
+	public void setSequenceId(String sequenceId) {
+		this.sequenceId = sequenceId;
 	}
+
+	public long getSequenceValue() {
+		return sequenceValue;
+	}
+
+	public void setSequenceValue(long sequenceValue) {
+		this.sequenceValue = sequenceValue;
+	}
+	
+	
+	
 }

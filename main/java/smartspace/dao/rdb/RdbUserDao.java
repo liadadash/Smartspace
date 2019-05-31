@@ -104,7 +104,7 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 	@Override
 	@Transactional(readOnly = true)
 	public List<UserEntity> readAllWithPaging(int size, int page) {
-		return this.userCrud.findAll(PageRequest.of(page, size)).getContent();
+		return this.userCrud.findAll(PageRequest.of(page, size, Direction.ASC, "key")).getContent();
 	}
 
 	@Override

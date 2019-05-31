@@ -174,9 +174,8 @@ public class UserControllerIntegrationTests {
 				UserBoundary[].class, newAdmin.getUserSmartspace(), newAdmin.getUserEmail(), 10, 0);
 		
 		// THEN I receive the exact users written to the database sorted by key
-		usersBoundary.sort((u1, u2)->u1.convertToEntity().getKey().compareTo(u2.convertToEntity().getKey()));
 		assertThat(response).usingElementComparatorOnFields("key","role","username","avatar","points")
-		.containsExactlyElementsOf(usersBoundary);
+		.containsExactlyInAnyOrderElementsOf(usersBoundary);
 	}
 
 	@Test

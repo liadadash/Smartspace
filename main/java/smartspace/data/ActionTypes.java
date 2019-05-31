@@ -8,5 +8,5 @@ package smartspace.data;
  *
  */
 public enum ActionTypes {
-	ECHO
+	Echo
 }

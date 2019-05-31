@@ -18,7 +18,7 @@ import smartspace.data.UserRole;
 public class EntityFaker {
 
 	private static String[] elementTypes = { "list", "item", "category" };
-	private static String[] actionTypes = { "ECHO"};
+	private static String[] actionTypes = { "Echo"};
 
 	private Random random;
 	private Faker faker;

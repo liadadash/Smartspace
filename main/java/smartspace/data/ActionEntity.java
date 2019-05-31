@@ -3,37 +3,23 @@ package smartspace.data;
 import java.util.Date;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import smartspace.dao.rdb.MapToJsonConverter;
-
-@Entity
-@Table(name = "ACTIONS")
+@Document(collection="ACTIONS")
 public class ActionEntity implements SmartspaceEntity<ActionKey> {
 
-	@Column(nullable = false)
 	private String actionSmartspace;
-	@Column(nullable = false)
 	private String actionId;
-	@Column(nullable = false)
 	private String elementSmartspace;
-	@Column(nullable = false)
 	private String elementId;
-	@Column(nullable = false)
 	private String playerSmartspace;
-	@Column(nullable = false)
 	private String playerEmail;
 	private String actionType;
 	private Date creationTimestamp;
 	private Map<String, Object> moreAttributes;
+	private ActionKey key;
 
 	// default constructor
 	public ActionEntity() {
@@ -59,7 +45,7 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.actionId = actionId;
 	}
 
-	@Transient
+	@JsonIgnore
 	public String getActionSmartspace() {
 		return actionSmartspace;
 	}
@@ -108,7 +94,6 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.actionType = actionType;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
 	public Date getCreationTimestamp() {
 		return creationTimestamp;
 	}
@@ -117,8 +102,6 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 		this.creationTimestamp = creationTimestamp;
 	}
 
-	@Lob
-	@Convert(converter = MapToJsonConverter.class)
 	public Map<String, Object> getMoreAttributes() {
 		return moreAttributes;
 	}
@@ -142,18 +125,18 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 	 * 
 	 */
 	@Override
-	@EmbeddedId
-	@Column(name = "ID")
+	@Id
 	public ActionKey getKey() {
-		// added this because otherwise calling getKey before create causes exception.
 		long id = 0;
 
-		try {
-			id = Long.parseLong(this.actionId);
-		} catch (Exception e) {
-			return null;
-		}
-		return new ActionKey(actionSmartspace, id);
+        try {
+            id = Long.parseLong(this.actionId);
+        } catch (Exception e) {
+            return null;
+        }
+        
+        this.key = new ActionKey(this.actionSmartspace, id);
+		return key;
 	}
 
 	/*
@@ -171,6 +154,8 @@ public class ActionEntity implements SmartspaceEntity<ActionKey> {
 			this.setActionSmartspace(null);
 			this.actionId = null;
 		}
+		
+		this.key = new ActionKey(k.getActionSmartspace(), k.getId());
 	}
 
 }

@@ -1,6 +1,5 @@
 package smartspace.data.util;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -71,15 +70,8 @@ public class Faker {
 		if (diceThrow(0.25)) {
 			map.put("lang", "en");
 		}
-		if (diceThrow(0.6)) {
-			map.put("lastUpdate", new Date());
-		}
 		if (diceThrow(0.5)) {
 			map.put("maxItems", generateNumber(1, 100));
-		}
-		if (diceThrow(0.25)) {
-			int[] arr = {generateNumber(1, 100), generateNumber(1, 100), generateNumber(1, 100)};
-			map.put("numbers", arr);
 		}
 		if (diceThrow(0.2)) {
 			map.put("latitude", generateDouble(-60, 60));

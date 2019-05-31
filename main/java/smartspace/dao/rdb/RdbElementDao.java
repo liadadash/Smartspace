@@ -16,8 +16,12 @@ import smartspace.data.ElementKey;
 
 @Repository
 public class RdbElementDao implements EnhancedElementDao<ElementKey> {
+	public static final String SEQUENCE_NAME = "elements_sequence";
+	public static final String SHOPPING_LIST_TYPE = "ShoppingList";
+	public static final String SHOPPING_ITEM_TYPE = "ShoppingItem";
+	
 	private ElementCrud elementCrud;
-	private GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud;
+	private RdbSequenceDao sequenceGenerator;
 
 	private String appSmartspace;
 
@@ -28,10 +32,10 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	 * @param elementCrud            the element crud
 	 * @param genericIdGeneratorCrud the generic id generator crud
 	 */
-	public RdbElementDao(ElementCrud elementCrud, GenericIdGeneratorCrud<ElementKey> genericIdGeneratorCrud) {
+	public RdbElementDao(ElementCrud elementCrud, RdbSequenceDao sequenceGenerator) {
 		super();
 		this.elementCrud = elementCrud;
-		this.genericIdGeneratorCrud = genericIdGeneratorCrud;
+		this.sequenceGenerator = sequenceGenerator;
 	}
 	
 	@Value("${smartspace.name}") 
@@ -42,10 +46,8 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	@Override
 	@Transactional
 	public ElementEntity create(ElementEntity elementEntity) {
-		GenericIdGenerator nextId = this.genericIdGeneratorCrud.save(new GenericIdGenerator());
 		elementEntity.setElementSmartspace(appSmartspace);
-		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), nextId.getId()));
-		this.genericIdGeneratorCrud.delete(nextId);
+		elementEntity.setKey(new ElementKey(elementEntity.getElementSmartspace(), sequenceGenerator.generateNextId(SEQUENCE_NAME)));
 
 		if (!this.elementCrud.existsById(elementEntity.getKey())) {
 			ElementEntity rv = this.elementCrud.save(elementEntity);
@@ -226,6 +228,25 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 		} 
 		
 		return this.elementCrud.findAllByExpiredFalseAndLocation_XBetweenAndLocation_YBetween(xMin, xMax, yMin, yMax, pageable);
+	}
+
+	@Override
+	public List<ElementEntity> readAllListsByCreator(String creatorSmartspace, String creatorEmail, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		return this.elementCrud.findAllByCreatorSmartspaceAndCreatorEmailAndType(creatorSmartspace, creatorEmail, SHOPPING_LIST_TYPE, pageable);
+	}
+
+	@Override
+	public List<ElementEntity> readAllListsByMember(String userSmartspace, String userEmail, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		
+		return this.elementCrud.findShoppingListsByUser(userSmartspace, userEmail, SHOPPING_LIST_TYPE, pageable);
+	}
+	
+	@Override
+	public List<ElementEntity> readAllItemsByShoppingList(String smartspcae, String id, int size, int page) {
+		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
+		return this.elementCrud.findItemsByShoppingList(smartspcae, id, SHOPPING_ITEM_TYPE, pageable);
 	}
 
 }
