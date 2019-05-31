@@ -246,8 +246,6 @@ public class RdbElementDao implements EnhancedElementDao<ElementKey> {
 	@Override
 	public List<ElementEntity> readAllItemsByShoppingList(String smartspcae, String id, int size, int page) {
 		PageRequest pageable = PageRequest.of(page, size, Direction.ASC, "creationTimestamp");
-		System.err.println(smartspcae);
-		System.err.println(id);
 		return this.elementCrud.findItemsByShoppingList(smartspcae, id, SHOPPING_ITEM_TYPE, pageable);
 	}
 

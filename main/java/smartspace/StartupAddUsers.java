@@ -46,10 +46,10 @@ public class StartupAddUsers implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		String[] collections = { "USERS", "ELEMENTS", "ACTIONS", "database_sequences" };
+		
 		// IMPORTANT! MongoDB transactions can't create collections!!! couldn't find any other way at the moment.
 		// the problem is when a transaction tried to create something into a collection that doesn't exist
 		// transactions can't create non existing collections so it fails.
-		
 		for (String collectionName : collections) {
 			if (!mongoTemplate.getCollectionNames().contains(collectionName)) {
 				mongoTemplate.createCollection(collectionName);
@@ -93,9 +93,9 @@ public class StartupAddUsers implements CommandLineRunner {
 		System.err.println("added ADMIN with email: admin@gmail.com");
 
 		// enable for adding elements on startup
-//		 Faker faker = new Faker();F
-//		 List<ElementEntity> elements = faker.entity().elementList(10).stream().map(this.elementDao::create).collect(Collectors.toList());
-//		 List<ElementEntity> elements2 = faker.entity().elementList(10).stream().peek(en->en.setExpired(true)).map(this.elementDao::create).collect(Collectors.toList());
+		// Faker faker = new Faker();
+		// List<ElementEntity> elements = faker.entity().elementList(10).stream().map(this.elementDao::create).collect(Collectors.toList());
+		// List<ElementEntity> elements2 = faker.entity().elementList(10).stream().peek(en->en.setExpired(true)).map(this.elementDao::create).collect(Collectors.toList());
 
 	}
 
