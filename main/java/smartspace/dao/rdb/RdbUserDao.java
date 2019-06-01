@@ -26,8 +26,8 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 		super();
 		this.userCrud = userCrud;
 	}
-	
-	@Value("${smartspace.name}") 
+
+    @Value("${smartspace.name}") 
 	public void setAppSmartspace(String appSmartspace) {
 		this.appSmartspace = appSmartspace;
 	}
@@ -85,6 +85,16 @@ public class RdbUserDao implements EnhancedUserDao<UserKey> {
 		}
 		//existing.setPoints(update.getPoints()); the only way to get points is to do actions
 
+		this.userCrud.save(existing);
+	}
+
+	@Override
+	@Transactional
+	public void addPoints(UserEntity update) {
+		UserEntity existing = this.readById(update.getKey())
+				.orElseThrow(() -> new RuntimeException("no user to update"));
+		
+		existing.setPoints(update.getPoints());
 		this.userCrud.save(existing);
 	}
 
