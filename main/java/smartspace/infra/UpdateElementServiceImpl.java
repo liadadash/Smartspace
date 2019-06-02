@@ -34,7 +34,7 @@ public class UpdateElementServiceImpl implements UpdateElementService {
 			this.elementDao.update(elementEntity); // if the elementEntity not in DB elementDao.update() throw runTimeExepcion
 		}
 		else {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This action for Manager only");
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This action is for Manager only");
 		}
 	}
 

@@ -35,4 +35,6 @@ public interface EnhancedUserDao<UserKey> extends UserDao<UserKey> {
 	 * @return the user entity
 	 */
 	public UserEntity importUser(UserEntity user);
+
+	public void addPoints(UserEntity update);
 }
