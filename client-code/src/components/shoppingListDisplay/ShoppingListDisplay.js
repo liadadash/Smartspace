@@ -32,7 +32,7 @@ class ShoppingListDisplay extends React.Component {
 
 
 	handleNewMemberEmailChange(event) {
-		this.setState({ newMemberEmail: event.target.value });
+		this.setState({ newMemberEmail: event.target.value.toLowerCase() });
 	}
 
 	membersAlreadyContains(members, memberToCheck) {
