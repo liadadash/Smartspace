@@ -1,0 +1,12 @@
+.sidebar {
+    height: calc(100vh - 80px);
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    min-width: 290px;
+}
+
+.mainContent {
+    height: calc(100vh - 80px);
+    overflow-x: hidden;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}

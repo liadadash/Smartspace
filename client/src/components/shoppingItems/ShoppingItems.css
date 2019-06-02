@@ -1,0 +1,39 @@
+.checked {
+    background-image: url('/checked.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.textChecked {
+    text-decoration: line-through;
+}
+
+.addIcon {
+    background-image: url('/plus.png');
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.myCheckbox {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    max-width: 32px;
+    max-height: 32px;
+}
+
+.itemText {
+    display: block;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.itemBox {
+    height: 48px;
+}
+
+.addItemField {
+    max-height: 30px;
+}

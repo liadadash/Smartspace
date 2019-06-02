@@ -1,0 +1,28 @@
+.membersBox {
+    display: inline-block;
+    max-width: 50%;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.online {
+    position: absolute;
+    background-color: rgb(15, 190, 35);
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    border: solid 1px white;
+    margin-top: 36px;
+    margin-left: 38px;
+}
+
+.manager {
+    position: absolute;
+    background-color: royalblue;
+    border-radius: 50%;
+    height: 10px;
+    width: 10px;
+    border: solid 1px white;
+    margin-top: 36px;
+    margin-left: 38px;
+}
