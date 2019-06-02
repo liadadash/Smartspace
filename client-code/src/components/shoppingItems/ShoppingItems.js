@@ -55,6 +55,10 @@ class ShoppingItems extends React.Component {
 		socketClient.on("list_items_changed", this.updateItems);
 	}
 
+	componentWillUnmount() {
+		socketClient.off("list_items_changed", this.updateItems);
+	}
+
 	handleAddItemNameChange(event) {
 		this.setState({ addItemName: event.target.value });
 	}

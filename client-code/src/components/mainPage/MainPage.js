@@ -18,6 +18,7 @@ class MainPage extends React.Component {
 		this.selectShoppingList = this.selectShoppingList.bind(this);
 		this.updateOnlineMembers = this.updateOnlineMembers.bind(this);
 		this.updateShoppingLists = this.updateShoppingLists.bind(this);
+		this.onlineUsersChanged = this.onlineUsersChanged.bind(this);
 	}
 
 	componentDidMount() {
@@ -36,13 +37,13 @@ class MainPage extends React.Component {
 			}
 		});
 
-		socketClient.on("userCheckIn", data => {console.log(data)});
-		socketClient.on("online_users_changed", data => {this.updateOnlineMembers(this.state.selectedShoppingList)});
+		socketClient.on("online_users_changed", this.onlineUsersChanged);
 		socketClient.on("update_lists", this.updateShoppingLists);
 	}
 
 	componentWillUnmount() {
-		// maybe do logout / my profile check out here?? 
+		socketClient.off("online_users_changed", this.onlineUsersChanged);
+		socketClient.off("update_lists", this.updateShoppingLists);
 	}
 
 	selectShoppingList(newListData) {
@@ -111,6 +112,10 @@ class MainPage extends React.Component {
 				})
 				.catch(api.errorHandler);
 		}
+	}
+
+	onlineUsersChanged () {
+		this.updateOnlineMembers(this.state.selectedShoppingList);
 	}
 
 	updateShoppingLists() {

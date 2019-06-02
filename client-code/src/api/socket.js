@@ -1,7 +1,7 @@
 import socketIOClient from "socket.io-client";
 import { toast } from 'react-toastify';
 
-export const getSocketClient = () => {
+export const getSocketClient = (shouldRetry) => {
     if (!localStorage.getItem("socket_ip")) {
         localStorage.setItem("socket_ip", "localhost");
     }
@@ -12,7 +12,9 @@ export const getSocketClient = () => {
     const socketIp = localStorage.getItem("socket_ip");
     const socketPort = localStorage.getItem("socket_port");
 
-    let socketClient = socketIOClient(`http://${socketIp}:${socketPort}`);
+    let socketClient = socketIOClient(`http://${socketIp}:${socketPort}`, {
+        reconnection: shouldRetry
+    });
 
     // add toast event handler here
     socketClient.on("toast_info", msg => {
@@ -22,4 +24,11 @@ export const getSocketClient = () => {
     return socketClient;
 }
 
-export let socketClient = getSocketClient();
+export const updateSocketSettings = () => {
+    if (socketClient) {
+        socketClient.disconnect();
+        socketClient = getSocketClient(true);
+    }
+}
+
+export let socketClient = getSocketClient(true);

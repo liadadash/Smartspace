@@ -45,7 +45,7 @@ class ShoppingListsNav extends React.Component {
 		}
 
 		this.props.selectShoppingList(null);
-		this.timer = setTimeout(() => {this.props.selectShoppingList(listData)}, 850);
+		this.timer = setTimeout(() => {this.props.selectShoppingList(listData)}, 1100);
 	}
 
 	handleCreateList() {

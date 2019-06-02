@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import * as api from '../../api/smartspace';
-import { getSocketClient } from '../../api/socket';
+import { getSocketClient, updateSocketSettings } from '../../api/socket';
 
 import NavBar from "../NavBar";
 import './Settings.css';
@@ -24,6 +24,8 @@ class Settings extends React.Component {
         this.handleServerIpChange = this.handleServerIpChange.bind(this);
         this.handleServerPortChange = this.handleServerPortChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.connectionSuccess = this.connectionSuccess.bind(this);
+        this.socketTest = null;
     }
 
     componentDidMount() {
@@ -34,6 +36,13 @@ class Settings extends React.Component {
             api.getUserByKey(params.smartspace, params.email)
                 .then(res => this.setState({ user: res.data }))
                 .catch(api.errorHandler);
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.socketTest !== null) {
+            this.socketTest.off("connection_success", this.connectionSuccess);
+            this.socketTest.disconnect();
         }
     }
 
@@ -48,23 +57,30 @@ class Settings extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        if (this.socketTest !== null) {
+            this.socketTest.off("connection_success", this.connectionSuccess);
+            this.socketTest.disconnect();
+        }
+
         localStorage.setItem("socket_ip", this.state.serverIp);
         localStorage.setItem("socket_port", this.state.serverPort);
 
-        let socketTest = getSocketClient();
+        this.socketTest = getSocketClient(false);
 
-        socketTest.on("connection_success", data => {
-            this.setState({ saved: true });
-            toast.success("Connected! Please refresh the page.");
-        });
-
-        socketTest.emit("test_connection", this.state.user.key);
+        this.socketTest.on("connection_success", this.connectionSuccess);
+        this.socketTest.emit("test_connection", this.state.user.key);
 
         setTimeout(() => {
             if (!this.state.saved) {
                 toast.error("Connection failed");
             }
         }, 2000);
+    }
+
+    connectionSuccess() {
+        this.setState({ saved: true });
+        toast.success("Connected! You should refresh the page.");
+        updateSocketSettings();
     }
 
     render() {

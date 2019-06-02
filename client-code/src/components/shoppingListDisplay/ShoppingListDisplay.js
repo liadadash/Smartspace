@@ -37,7 +37,12 @@ class ShoppingListDisplay extends React.Component {
 
 	membersAlreadyContains(members, memberToCheck) {
 		members = JSON.parse(JSON.stringify(members)); // clone
-		return (members.map(m => JSON.stringify(m)).indexOf(JSON.stringify(memberToCheck)) >= 0);
+
+		const userToString = (userKey) => {
+			return `user_${userKey.userSmartspace}_${userKey.userEmail}`;
+		}
+
+		return (members.map(member => userToString(member)).indexOf(userToString(memberToCheck)) >= 0);
 	}
 
 	handleAddNewMember() {

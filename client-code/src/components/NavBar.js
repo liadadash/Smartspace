@@ -12,9 +12,9 @@ function ProfileDropdown(props) {
                     <small className="dropdown-toggle"></small>
                 </div>
                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <CreateRow title="View Profile" link="./profile" icon="info-sign" />
-                    <CreateRow title="Socket Settings" link="./settings" icon="info-sign" />
-                    <CreateRow title="Log Out" link="/" icon="log-out" />
+                    <CreateRow title="View Profile" link="./profile" icon="far fa-address-card" />
+                    <CreateRow title="Sockets" link="./settings" icon="fas fa-cog" />
+                    <CreateRow title="Log Out" link="/" icon="fas fa-sign-out-alt" />
                 </div>
             </div>
         );
@@ -55,8 +55,8 @@ function CreateRow(props) {
     return (
         <Link className="dropdown-item" to={props.link}>
             <div className="row">
-                <div className="col">{props.title}</div>
-                <div className="col-3 text-center"><span className={`glyphicon glyphicon-${props.icon}`}></span></div>
+                <div className="col-9">{props.title}</div>
+                <div className="col-2 text-center"><i className={props.icon}></i></div>
             </div>
         </Link>
     );

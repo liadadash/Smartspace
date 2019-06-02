@@ -6,7 +6,7 @@ server.on("connection", (socket) => {
 
 	socket.on("joinList", (listKey) => {
 		let oldListRoom = socket.lastListJoined;
-		let listRoomKey = `list_${JSON.stringify(listKey)}`;
+		let listRoomKey = `list_${listKey.smartspace}_${listKey.id}`;
 
 		if (oldListRoom) {
 			socket.leave(oldListRoom);
@@ -49,13 +49,11 @@ server.on("connection", (socket) => {
 	});
 
 	socket.on("changed_item", (listKey) => {
-		let currentListRoom = `list_${JSON.stringify(listKey)}`;
-		server.to(currentListRoom).emit("list_items_changed");
+		let currentListRoom = `list_${listKey.smartspace}_${listKey.id}`;
+		socket.to(currentListRoom).emit("list_items_changed");
 	});
 
 	socket.on("test_connection", (userKey) => {
-		console.log("recived test connection");
-
 		let userRoomKey = `user_${userKey.smartspace}_${userKey.email}`;
 		socket.join(userRoomKey);
 
