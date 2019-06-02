@@ -1,0 +1,5 @@
+body { 
+ 
+    height: 100vh;
+    background-image: linear-gradient(rgba(62, 20, 20, 0.4), rgba(62, 20, 20, 0.4)), url(mainPic.jpg);
+}

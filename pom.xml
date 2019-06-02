@@ -7,11 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Smartspace</name>
 	<build>
-		<sourceDirectory>main/java</sourceDirectory>
-		<testSourceDirectory>test/java</testSourceDirectory>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<resources>
 			<resource>
-				<directory>main/resources</directory>
+				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
